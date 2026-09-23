@@ -11,3 +11,38 @@
 @media(max-width:760px){.top{padding:0 1rem;height:68px}.session span{display:none}.logo{font-size:.9rem}.main-nav{padding:.6rem .75rem}.main-nav button{font-size:.875rem;padding:.65rem .8rem}.main-nav svg{width:18px;height:18px}#workspace-main{padding:1.5rem 1rem 2rem}.workspace{grid-template-columns:1fr}.result{position:static}.result textarea{height:350px;min-height:250px}.heading{align-items:flex-start}.heading h1{font-size:1.9rem}.intro{padding:1.75rem;border-radius:20px;margin-bottom:1.5rem}.intro h1{font-size:2.5rem}.intro-number{font-size:7rem;position:absolute;right:1rem;bottom:1rem;color:#ffffff0e;pointer-events:none}.intro>div{position:relative;z-index:1}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.card{padding:1.15rem;min-height:195px;border-radius:16px}.card .arrow{right:1.1rem;top:1.2rem}.card strong{font-size:1rem;line-height:1.35}.card p{font-size:.875rem}.module-heading>span{display:none}.bottom-note{align-items:flex-start;flex-direction:column}.panel{padding:1.25rem;border-radius:16px}.lab-row{grid-template-columns:1fr 1fr}.mobile-generate{display:block;position:sticky;bottom:12px;width:100%;z-index:5;box-shadow:0 5px 18px #123e3730;padding:1rem;border-radius:99px}.login{grid-template-columns:1fr;padding:8px;gap:0}.login-brand{min-height:auto;padding:1.5rem;border-radius:20px}.login-message{padding:2rem 0 .25rem}.login-message h1{font-size:2.6rem;margin:1rem 0}.login-message p,.login-foot{display:none}.login-access{padding:2rem 1.25rem}.login-card h2{font-size:1.75rem}.login-card>.muted{margin-bottom:1.5rem}.login-note{margin-top:1.5rem}.login-card{width:min(420px,100%)}#rx-host{margin:0 1rem 1.5rem}#rx-frame{height:80dvh;min-height:580px}}
 @media(max-width:400px){.fields,.fields.two,.protege-block .fields.two{grid-template-columns:1fr}.card{padding:1rem}.card strong{font-size:.9375rem}.intro h1{font-size:2.2rem}.panel{padding:1rem}.heading>button{padding:.6rem .8rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Touch layouts: a module picker, full-width form and reachable actions. */
+.mobile-nav,.mobile-actions,.mobile-back{display:none}
+html{scroll-padding-bottom:6rem}button,input,select,textarea{touch-action:manipulation}
+#clinical,.workspace,.result,.heading>div{min-width:0}
+@media(max-width:1100px){
+.main-nav{display:none}.top{height:68px;padding:0 1.25rem}.session span{display:none}
+.mobile-nav{display:flex;align-items:center;gap:1rem;padding:.7rem 1.25rem;background:#fff;border-bottom:1px solid var(--line)}
+.mobile-nav label{color:var(--muted);flex-shrink:0}.mobile-nav select{margin:0;max-width:480px;min-height:48px;background:#edf3fd;border-color:#c6d6ee;font-weight:500;color:var(--navy)}
+#workspace-main{margin-left:0;padding:1.5rem 1.25rem 7rem;min-height:0}
+.workspace{grid-template-columns:minmax(0,1fr);gap:1rem}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+.result{position:static;scroll-margin-top:1rem}.result textarea{height:22rem;min-height:16rem;max-height:none}.result .privacy{margin-bottom:.75rem}
+.mobile-actions{display:flex;gap:.6rem;position:fixed;bottom:0;left:0;right:0;padding:.7rem max(1.25rem,env(safe-area-inset-right)) calc(.7rem + env(safe-area-inset-bottom)) max(1.25rem,env(safe-area-inset-left));background:#fffffff5;backdrop-filter:blur(12px);border-top:1px solid var(--line);box-shadow:0 -4px 24px #0f2f630c;z-index:25}
+.mobile-actions .primary{flex:1}.mobile-actions button{min-height:48px}.mobile-back{display:block;width:100%;min-height:48px;margin-top:1rem}
+body:has(input:focus,textarea:focus,select:focus) .mobile-actions{display:none}
+.form-shortcuts{white-space:normal;flex-wrap:wrap;overflow:visible}.form-shortcuts button{min-height:44px;max-width:100%;text-align:left}.shortcut-label{width:100%;font-size:.875rem}
+.chip{min-height:48px}.chip input{width:20px;height:20px}.actions button{min-height:46px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+#rx-host{margin:0 1.25rem 1.25rem}.rx-open #workspace-main{padding-bottom:1rem}#rx-frame{min-height:650px;height:82dvh}
+.login{min-height:100svh}.login-brand{min-height:0}.login-message h1{font-size:clamp(2.5rem,5vw,4rem)}
+}
+@media(max-width:600px){
+.top{height:60px;padding:0 1rem}.top .mark{width:32px;height:32px}.session button{min-height:44px}
+.mobile-nav{padding:.6rem 1rem;gap:.7rem}.mobile-nav label{font-size:.8125rem}.mobile-nav select{flex:1;min-width:0;font-size:1rem}
+#workspace-main{padding:1.1rem 1rem 7rem}.heading{gap:.6rem;margin-bottom:1.25rem}.heading h1{font-size:1.65rem;overflow-wrap:anywhere}.heading .eyebrow{font-size:.75rem;letter-spacing:.08em}.heading>button{min-height:44px}
+.fields,.fields.two,.protege-block .fields.two{grid-template-columns:minmax(0,1fr);gap:1rem}.panel,.lab-group{padding:1rem}
+.chips{display:grid;grid-template-columns:minmax(0,1fr);gap:.5rem}.chip{width:100%}.panel h2{line-height:1.45}
+.form-shortcuts{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;padding-bottom:.65rem;scroll-snap-type:x proximity}.form-shortcuts button{scroll-snap-align:start}.shortcut-label{width:auto;flex-shrink:0}
+.intro{padding:1.35rem;margin-bottom:1.25rem}.intro h1{font-size:2rem}.intro .eyebrow{margin-bottom:.8rem}.intro p{font-size:.875rem}
+.cards{grid-template-columns:minmax(0,1fr);gap:.65rem}.card{min-height:0;display:grid;grid-template-columns:44px minmax(0,1fr);gap:.25rem 1rem;padding:1rem 2.5rem 1rem 1rem}.card .icon{grid-row:1/3;margin:0;width:44px;height:44px;align-self:center}.card strong{font-size:1rem}.card p{margin:.15rem 0 0;line-height:1.5}.card .arrow{right:1rem;top:1.15rem}
+.actions{display:grid;grid-template-columns:1fr 1fr}.actions .primary{grid-column:1/-1}.actions button{padding:.8rem .5rem}.lab-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.login{display:flex;flex-direction:column;min-height:100svh;gap:0}.login-brand{padding:1.2rem}.login-message{padding:1rem 0 0}.login-message .eyebrow{display:none}.login-message h1{font-size:2rem;margin:0;line-height:1.1}.login-access{padding:1.5rem 1.1rem}.login-card h2{font-size:1.65rem}.login-note{font-size:.8125rem}.login-card input{min-height:50px}
+#rx-host{margin:0 .5rem 1rem}#rx-frame{height:85dvh;min-height:540px}
+#toast{bottom:calc(90px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100% - 2rem)}
+}
+@media(max-height:500px) and (orientation:landscape){.login{display:grid;grid-template-columns:1fr 1fr}.login-brand{min-height:0}.login-access{padding:1rem}.login-card h2{font-size:1.4rem}.login-card>.muted,.login-note{display:none}.mobile-actions{position:static}.top{height:56px}}
