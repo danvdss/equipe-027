@@ -23,3 +23,9 @@ Em Settings → Pages, selecione Deploy from a branch, branch `main` e pasta `/ 
 - `html2canvas.min.js`: exportação PNG; licença original incluída no arquivo.
 
 Não envie preenchimentos clínicos nem dados de pacientes ao repositório.
+
+## Solicitação de Implanon
+
+A aba Implanon reúne história menstrual e obstétrica, contracepção, avaliação de possibilidade de gestação, antecedentes, medicamentos, testes rápidos, orientações, consentimento, avaliação de vulnerabilidade e situação da solicitação. A evolução usa apenas os dados informados e não registra inserção nem decide elegibilidade. Pontuação de vulnerabilidade é transcrita com identificação do instrumento local; não há cálculo ou corte presumido.
+
+Referências consultadas em 23/09/2026: Manual do Ministério da Saúde para inserção do implante subdérmico (versão preliminar 2025, disponível na ESPPE) e Nota Técnica Conjunta 419/2025. Links no formulário. Confirmar protocolo municipal vigente.
