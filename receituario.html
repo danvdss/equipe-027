@@ -186,7 +186,8 @@ body{background:#f4f6f9;font-family:Onest,system-ui,sans-serif}
 <style>
 @media screen and (max-width:1100px){.layout{grid-template-columns:minmax(0,1fr)}.app{height:auto;min-height:100dvh}.layout{overflow:visible}.panel{overflow:visible;border-right:0;padding-bottom:24px}.topbar{flex-wrap:wrap;padding:16px}.preview{padding:16px}.actions button,summary{min-height:46px}.toolbar{flex-wrap:wrap;gap:10px}.status{white-space:normal}.stage-shell{flex-shrink:0}}
 @media screen and (max-width:600px){.panel{padding:16px}.row2{grid-template-columns:minmax(0,1fr)}.topbar .brand{min-width:0}.topbar h1{font-size:16px}.topbar p{line-height:1.5}.actions{gap:8px}.actions button{font-size:14px;min-height:48px}input[type=text],select{font-size:16px;min-height:48px}.coord-header,.coord-row{grid-template-columns:1fr 1.2fr 1.2fr}.coord-row input{font-size:16px;min-width:0;min-height:44px}.coord-row .pair{min-width:0}.check{min-height:44px;line-height:1.5}.check input{width:20px;height:20px;flex-shrink:0}.preview{padding:12px}.note{font-size:13px}input[type=range]{min-height:32px}}
-</style></head>
+</style><link rel="stylesheet" href="rx-workflow.css?v=2026.09.24.1">
+</head>
 <body>
 <div class="app">
 
@@ -209,8 +210,8 @@ body{background:#f4f6f9;font-family:Onest,system-ui,sans-serif}
   <div class="group">
     <div class="title">Modelo do receituário</div>
     <label class="field">
-      <span class="lbl">Substituir modelo (opcional) <small>(PDF, JPG ou PNG)</small></span>
-      <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+      <span class="lbl">Substituir modelo (opcional) <small>(JPG ou PNG)</small></span>
+      <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
     </label>
     <div class="file-note" id="fileNote">
       O modelo oficial (receita.pdf) já está carregado, calibrado com os dois
@@ -608,7 +609,7 @@ coordsBox.addEventListener("input", e=>{
   if(t.tagName !== "INPUT") return;
   const k = t.dataset.k, side = t.dataset.side, axis = t.dataset.axis;
   const v = parseFloat(t.value.replace(",","."));
-  if(Number.isNaN(v)) return;
+  if(!Number.isFinite(v)||v<0||v>100){t.setAttribute("aria-invalid","true");return;}t.removeAttribute("aria-invalid");
   fields[k][side][axis] = v;
   layoutAll();
 });
@@ -640,52 +641,9 @@ fileInput.addEventListener("change", e=>{
 ========================================================= */
 document.getElementById("fill").addEventListener("click", fillFromInputs);
 
-document.getElementById("print").addEventListener("click", ()=>{
-  fillFromInputs();
-  window.print();
-});
-
-document.getElementById("clear").addEventListener("click", ()=>{
-  document.getElementById("nome").value = "";
-  document.getElementById("endereco").value = "";
-  medOrder.forEach(key=>{
-    document.getElementById("f_"+key+"_nome").value = "";
-    document.getElementById("f_"+key+"_pos").value = "";
-  });
-  fillFromInputs();
-  status.textContent = "Receituário limpo";
-});
-
-document.getElementById("export").addEventListener("click", async ()=>{
-  fillFromInputs();
-  status.textContent = "Gerando imagem...";
-  try{
-    // Freeze container-relative text sizes for the canvas renderer.
-    const measures = [...stage.querySelectorAll('.overlay, .txt-nome, .txt-pos')].map(el => {
-      const computed = getComputedStyle(el);
-      return {fontSize:computed.fontSize, marginTop:computed.marginTop};
-    });
-    const canvas = await html2canvas(stage, {
-      scale:3, backgroundColor:"#ffffff", useCORS:true,
-      onclone(doc){
-        const clone = doc.getElementById('stage');
-        clone.classList.remove('guides');
-        clone.querySelectorAll('.overlay, .txt-nome, .txt-pos').forEach((el,i)=>{
-          el.style.fontSize = measures[i].fontSize;
-          el.style.marginTop = measures[i].marginTop;
-        });
-      }
-    });
-    const link = document.createElement("a");
-    link.download = "receituario.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-    status.textContent = "PNG exportado";
-  }catch(err){
-    console.error(err);
-    status.textContent = "Falha ao exportar PNG";
-  }
-});
+document.getElementById("print").addEventListener("click", ()=>RxFlow.output('print'));
+document.getElementById("clear").addEventListener("click", ()=>RxFlow.clear());
+document.getElementById("export").addEventListener("click", ()=>RxFlow.output('png'));
 
 /* =========================================================
    INICIALIZAÇÃO
@@ -696,5 +654,6 @@ fillFromInputs();
 </script>
 
 <script src="html2canvas.min.js"></script>
+<script src="rx-workflow.js?v=2026.09.24.1"></script>
 </body>
 </html>
