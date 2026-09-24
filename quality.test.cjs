@@ -26,6 +26,7 @@ function setup(t) {
       w.copied = s;
     },
   };
+  w.Access = {start() {}, screen() {}, async signOut() { w.eval("logged=false"); }};
   for (const file of [
     "care.js",
     "workflow.js",

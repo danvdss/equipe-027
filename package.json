@@ -3,10 +3,13 @@
   "private": true,
   "version": "2026.9.24",
   "scripts": {
-    "test": "node --test quality.test.cjs",
-    "check": "node --check app.js && node --check workflow.js && node --check care.js && node --check diu.js && node --check rx-workflow.js && node --check lab-details.js && node --check shortcuts.js"
+    "test": "node --test quality.test.cjs auth.test.cjs",
+    "check": "node --check app.js && node --check workflow.js && node --check care.js && node --check diu.js && node --check rx-workflow.js && node --check lab-details.js && node --check shortcuts.js && node --check auth.js"
   },
   "devDependencies": {
     "jsdom": "26.1.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.117.1"
   }
 }

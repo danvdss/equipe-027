@@ -1,8 +1,12 @@
 # Acesso e limites operacionais
 
-A versão estática no GitHub Pages é pública. A tela de login não protege o código nem autentica usuários em servidor. Credenciais não são exibidas na interface nem neste documento; remover o aviso não tornaria o acesso seguro.
+A plataforma usa Supabase Auth para validar e-mail/senha e recuperar acesso. Projeto `equipe-027` (`lqmvzdibbmbkbexeywwo`), região São Paulo, criado em 24/09/2026 após confirmação do custo informado de US$ 0/mês. Cadastro público e entrada anônima desativados; e-mail confirmado exigido. Contas são criadas por convite no painel. Primeira conta ainda pendente de convite/aceite.
 
-Para acesso restrito real, é necessário conectar e configurar um provedor de identidade e uma infraestrutura capaz de impor autorização em servidor. O Supabase foi conectado em 24/09/2026. A consulta retornou zero projetos e a organização disponível “danvdss's Org”. É necessário confirmar a organização de criação e, em seguida, o custo retornado pela ferramenta antes de provisionar o projeto. A implementação depende de conta/projeto autorizado, usuários permitidos, recuperação de acesso e política de sessão. Apenas adicionar um SDK de login ao GitHub Pages não protege os arquivos públicos. A implantação deve incluir hospedagem com controle de acesso ou funções/serviços protegidos; as rotas de dados devem verificar a sessão no servidor.
+O SDK 2.117.1 é distribuído localmente, com dependência e lockfile fixados. A chave publicada é publishable, sem privilégios de administração. Tokens ficam somente na memória; o logout solicita revogação da sessão atual e apaga rascunhos. Não há senha embutida nem fallback de demonstração. Erros de recuperação não revelam se a conta existe.
+
+GitHub Pages e os arquivos do repositório permanecem públicos. A autenticação identifica o usuário no serviço; ela não impede o download dos scripts estáticos. Não há dados clínicos no servidor. Para disponibilizar dados ou operações protegidas no futuro, cada API deve verificar identidade e autorização no servidor; tabelas expostas precisam de RLS. Não usar a interface como única barreira de autorização.
+
+O SMTP padrão do Supabase é limitado a endereços autorizados da equipe da organização e tem limite de envio. Para outros usuários é necessário configurar SMTP próprio. Não adicionar profissionais à organização administrativa apenas para contornar essa restrição. A recuperação e o aceite precisam ser validados com o e-mail real do titular; os testes automáticos usam simulações e não enviam e-mails.
 
 Não adicionar dados de pacientes ao repositório, aos testes ou aos arquivos de calibração. Os formulários atuais usam memória temporária, sem banco de pacientes. Textos copiados, impressões e PNGs ficam fora do controle da plataforma. Recarregar, sair ou iniciar novo atendimento apaga o estado local. A confirmação de saída depende do suporte do navegador e não impede encerramento forçado pelo sistema.
 
@@ -11,6 +15,6 @@ Não adicionar dados de pacientes ao repositório, aos testes ou aos arquivos de
 - Aprovação dos modelos pelo responsável clínico e identificação do protocolo institucional adotado.
 - Testes em Android/Chrome e iPhone/Safari reais, incluindo teclado, rotação, área segura, compartilhamento e impressão.
 - Calibração de impressão com a impressora e as configurações de escala do serviço.
-- Criação do projeto no Supabase conectado, configuração do provedor e definição da lista de usuários autorizados.
+- Convite e aceite da primeira conta, teste de login com o titular e configuração de SMTP para ampliar a equipe.
 
-Versão funcional: 2026.09.24.1. Não há decisão automatizada de elegibilidade, prescrição ou aprovação clínica.
+Versão funcional: 2026.09.24.3. Não há decisão automatizada de elegibilidade, prescrição ou aprovação clínica.
