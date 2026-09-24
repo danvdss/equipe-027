@@ -311,7 +311,7 @@ test("EPF and EAS use separate dates and survive navigating away", async (t) => 
 test("team shortcuts use the four supplied URLs and safe new tabs", (t) => {
   const { w } = setup(t);
   const expected = [
-    "https://lagarto-vigilancia.mms.inf.br/portal_servicos/",
+    "https://lagarto.mms.inf.br/sispec/login",
     "https://drive.google.com/drive/u/0/mobile/my-drive?hl=pt-br&pli=1",
     "http://departamentos.cardiol.br/sbc-da/2015/calculadoraer2017/etapa1.html",
     "https://sbn.org.br/medicos/utilidades/calculadoras-nefrologicas/ckd-epi-2021/",

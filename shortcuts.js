@@ -3,7 +3,7 @@ const Shortcuts = (() => {
     [
       "SISPEC",
       "Portal de serviços",
-      "https://lagarto-vigilancia.mms.inf.br/portal_servicos/",
+      "https://lagarto.mms.inf.br/sispec/login",
       "M4 21V5h16v16 M8 5V3h8v2 M9 10h6 M12 7v6 M9 21v-5h6v5",
     ],
     [
