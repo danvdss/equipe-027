@@ -337,7 +337,7 @@ function clinical() {
   return `<div class="workspace"><form id="clinical" autocomplete="off">${body}</form>${outputPanel()}</div>`;
 }
 function labForm() {
-  return `<div class="workspace"><form id="clinical" autocomplete="off">${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}</form>${outputPanel()}</div>`;
+  return `<div class="workspace"><form id="clinical" autocomplete="off">${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}</form>${outputPanel()}</div>`;
 }
 function addLab(values = {}) {
   const id = extraCount++;
@@ -404,6 +404,7 @@ function render() {
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
+  Shortcuts.mount();
   app
     .querySelectorAll("[data-nav]")
     .forEach((b) => (b.onclick = () => navigate(b.dataset.nav)));
@@ -587,6 +588,7 @@ function composeBody(d, p) {
         if (has(k) && has(v))
           items.push(d[k] + " " + Care.labValue(d[v], has(u) ? d[u] : ""));
       });
+    items.push(...LabDetails.compose(d));
     if (!items.length) throw Error("Preencha ao menos um resultado.");
     return `LAB (${date}): ${items.join(" | ")}.`;
   }

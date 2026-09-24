@@ -33,6 +33,8 @@ function setup(t) {
     "prenatal.js",
     "implante.js",
     "diu.js",
+    "lab-details.js",
+    "shortcuts.js",
     "app.js",
   ])
     vm.runInContext(fs.readFileSync(file, "utf8"), dom.getInternalVMContext(), {
@@ -261,4 +263,64 @@ test("prescription clearing is confirmed and undo restores both copies", async (
     run('overlays.nome.right.querySelector(".txt").textContent'),
     "Pessoa teste",
   );
+});
+test("EPF and EAS start blank, preserve findings and reject conflicting results", async (t) => {
+  const { w, run, set } = setup(t);
+  run("navigate('lab')");
+  set("date", "2026-09-24");
+  assert.equal(w.document.querySelector("[name=epfStatus]").value, "");
+  assert.equal(w.document.querySelector("[name=urine_nitrite]").value, "");
+  set("epf_giardia", "Cistos");
+  set("epf_histolytica", "Cistos e trofozoítos");
+  set("urine_leukocytes", "5–10/campo");
+  set("urine_nitrite", "Negativo");
+  assert.equal(await run("generate()"), true);
+  const out = w.document.querySelector("#output").value;
+  assert.match(out, /Giardia duodenalis \(G. lamblia\): Cistos/);
+  assert.match(out, /Entamoeba histolytica\/dispar/);
+  assert.match(out, /Leucócitos \/ piócitos: 5–10\/campo/);
+  assert.match(out, /Nitrito: Negativo/);
+  assert.doesNotMatch(
+    out,
+    /Proteínas:|Hemácias:|diagnóstico|infecção urinária/i,
+  );
+  set("epfStatus", "Não encontrados na amostra examinada");
+  assert.equal(await run("generate()"), false);
+  assert.equal(
+    w.document.querySelector("[name=epfStatus]").getAttribute("aria-invalid"),
+    "true",
+  );
+});
+test("EPF and EAS use separate dates and survive navigating away", async (t) => {
+  const { w, run, set } = setup(t);
+  run("navigate('lab')");
+  set("date", "2026-09-24");
+  set("epfDate", "2026-09-23");
+  set("epfStatus", "Não encontrados na amostra examinada");
+  set("urineDate", "2026-09-22");
+  set("urine_rbc", "10.000/mL");
+  run("navigate('general');navigate('lab')");
+  assert.equal(w.document.querySelector("[name=urine_rbc]").value, "10.000/mL");
+  assert.equal(await run("generate()"), true);
+  const out = w.document.querySelector("#output").value;
+  assert.match(out, /EPF \(coleta 23\/09\/2026\)/);
+  assert.match(out, /EAS \(coleta 22\/09\/2026\)/);
+  assert.doesNotMatch(out, /Giardia/);
+});
+test("team shortcuts use the four supplied URLs and safe new tabs", (t) => {
+  const { w } = setup(t);
+  const expected = [
+    "https://lagarto-vigilancia.mms.inf.br/portal_servicos/",
+    "https://drive.google.com/drive/u/0/mobile/my-drive?hl=pt-br&pli=1",
+    "http://departamentos.cardiol.br/sbc-da/2015/calculadoraer2017/etapa1.html",
+    "https://sbn.org.br/medicos/utilidades/calculadoras-nefrologicas/ckd-epi-2021/",
+  ];
+  const links = [...w.document.querySelectorAll(".shortcut-card")];
+  assert.equal(links.length, 4);
+  links.forEach((link, i) => {
+    assert.equal(link.href, expected[i]);
+    assert.equal(link.target, "_blank");
+    assert.match(link.rel, /noopener/);
+    assert.ok(link.querySelector("svg"));
+  });
 });

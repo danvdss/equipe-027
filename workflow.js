@@ -90,6 +90,7 @@ const Flow = (() => {
   }
   function showError(e) {
     clearError();
+    view("form");
     const form = q("#clinical");
     const box = document.createElement("p");
     box.id = "form-error";
@@ -105,7 +106,6 @@ const Flow = (() => {
       field.focus();
       field.scrollIntoView({ block: "center" });
     } else box.scrollIntoView({ block: "center" });
-    view("form");
   }
   function clearError() {
     q("#form-error")?.remove();

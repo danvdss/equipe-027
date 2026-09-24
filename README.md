@@ -47,3 +47,14 @@ Execute `npm test` para testar modelos e interações em DOM simulado. Testes em
 - Receituário com revisão das duas vias, proteção contra sobreposição, PNG de 3368 × 2380 px e importação/exportação apenas da calibração.
 - `npm ci && npm run check && npm test`: testes de interação em DOM simulado. Não substituem testes em aparelhos reais.
 - Consulte `ACCESS.md` para a dependência de autenticação e validação institucional.
+
+## Atalhos e exames · 2026.09.24.2
+
+Atalhos com ícones para SISPEC, Drive da equipe, calculadora cardiovascular da SBC e CKD-EPI 2021 da SBN. Links mantidos conforme fornecidos, em nova aba. O atalho do Drive abre “Meu Drive” da conta conectada; não aponta para uma pasta compartilhada específica.
+
+EPF: resultado informado, método, amostras, Giardia duodenalis, E. histolytica/dispar, E. coli, Endolimax nana, Iodamoeba bütschlii, Blastocystis spp. e outros achados. EAS: características físicas, fita reagente e sedimento. Datas específicas opcionais, preservação de unidades, campos inicialmente vazios e bloqueio de resultado negativo com organismos presentes. A transcrição não gera diagnóstico nem recomenda tratamento.
+
+Referências para estrutura e nomenclatura consultadas em 24/09/2026:
+- Ministério da Saúde: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/giardiase
+- CDC DPDx: https://www.cdc.gov/dpdx/amebiasis/index.html
+- HC-UFTM, Urina Tipo 1 / Urinálise, versão 3: https://www.gov.br/hubrasil/pt-br/hospitais-universitarios/regiao-sudeste/hc-uftm/documentos/procedimentos-e-rotinas-operacionais-padrao/pops/copy_of_POP.HCUFTMUACAP.008UrinaTipo1Urinaliseversao3.pdf
