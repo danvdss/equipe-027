@@ -3,6 +3,7 @@ const app = $("#app");
 const modules = [
   ["home", "Início"],
   ["general", "Evolução"],
+  ["renewal", "Renovação"],
   ["has", "Hipertensão"],
   ["dm", "Diabetes"],
   ["both", "HAS + DM"],
@@ -13,6 +14,7 @@ const modules = [
   ["rx", "Receituário"],
 ];
 const titles = {
+  renewal: "Renovação de medicamentos",
   diu: "DIU · avaliação e inserção",
   implante: "Implanon · solicitação",
   prenatal: "Pré-natal",
@@ -181,8 +183,10 @@ const esc = (s) =>
 const unique = (a) => [...new Set(a)];
 const join = (a) =>
   a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " e " + a.at(-1);
-const sentence = (s) =>
-  s ? s.charAt(0).toUpperCase() + s.slice(1).replace(/[.\s]+$/, "") + "." : "";
+const sentence = (s) => {
+  s = String(s ?? "").trim().replace(/[.\s]+$/, "");
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) + "." : "";
+};
 function toast(msg) {
   const t = $("#toast");
   t.textContent = msg;
@@ -203,6 +207,7 @@ function login() {
   };
 }
 const iconPaths = {
+  renewal: "M4 8a8 8 0 0113-3l3 3 M20 3v5h-5 M20 16a8 8 0 01-13 3l-3-3 M4 21v-5h5",
   diu: "M5 5h14 M12 5v13 M9 21c0-3 3-3 3-3s3 0 3 3",
   home: "M3 10l9-7 9 7v10H3z M9 20v-7h6v7",
   general: "M9 5H5v16h14V5h-4 M9 3h6v4H9z M8 12h8 M8 16h5",
@@ -362,6 +367,7 @@ function addLab(values = {}) {
 function dashboard() {
   const cards = [
     ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
+    ["renewal", "℞", "Renovação", "Solicitação, avaliação médica, medicamentos renovados e MUC."],
     ["has", "♡", "Hipertensão", "Acompanhamento da pressão arterial."],
     ["dm", "◇", "Diabetes", "Controle glicêmico e orientações."],
     [
@@ -400,7 +406,7 @@ function dashboard() {
 }
 function render() {
   if (!logged) return login();
-  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas de enfermagem</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : clinical())}</main>`;
+  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas de enfermagem</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "renewal" ? Renewal.form() : clinical())}</main>`;
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
@@ -415,6 +421,7 @@ function render() {
     if (page === "prenatal") Prenatal.mount();
     if (page === "implante") Implante.mount();
     if (page === "diu") DIU.mount();
+    if (page === "renewal") Renewal.mount();
     Notes.mount();
     Flow.mount();
     $("#clinical").onsubmit = (e) => e.preventDefault();
@@ -521,6 +528,7 @@ function compose(raw, p) {
   return Care.decorate(composeBody(d, p), d, p);
 }
 function composeBody(d, p) {
+  if (p === "renewal") return Renewal.compose(d);
   if (p === "diu") return DIU.compose(d);
   if (p === "implante") return Implante.compose(d);
   if (p === "prenatal") return Prenatal.compose(d);

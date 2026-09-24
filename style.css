@@ -1759,3 +1759,11 @@ textarea {
     min-height: 72px;
   }
 }
+
+/* Medication records: comfortably stacked on phones, paired on tablets. */
+.medicine-row { min-width: 0; border: 1px solid var(--hairline, #dce3eb); border-radius: 1rem; padding: 1rem; margin: 1.25rem 0; }
+.medicine-row legend { padding: 0 .5rem; font-weight: 600; }
+.medicine-row .remove-medicine { margin-top: 1rem; }
+.medicine-shortcuts { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.medicine-shortcuts button { min-height: 44px; text-align: left; padding: .55rem .8rem; font-size: .8rem; }
+@media(max-width: 600px) { .medicine-row .fields { grid-template-columns: minmax(0,1fr); } .medicine-row { padding: .8rem; } }

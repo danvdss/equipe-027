@@ -107,12 +107,14 @@ const Notes = (() => {
           d.adherence.toLowerCase() +
           ".",
       );
-    if (states.length)
+    if (states.includes("Sem alterações relevantes"))
+      parts.push("Sem alterações relevantes registradas.");
+    if (states.filter(v => v !== "Sem alterações relevantes").length)
       parts.push(
         sentence(
           "Apresenta-se " +
             join(
-              states.map(
+              states.filter(v => v !== "Sem alterações relevantes").map(
                 (v) =>
                   (["Bom estado geral", "Regular estado geral"].includes(v)
                     ? "em "
@@ -204,7 +206,7 @@ const Notes = (() => {
     if (renewalText) parts.push(renewalText);
     if (acts.includes("Tratamento mantido conforme prescrição"))
       parts.push("Mantido tratamento conforme prescrição.");
-    if (!renewed && acts.includes("Necessidade de avaliação médica sinalizada"))
+    if (!renewed && d.medicalRequested !== "Sim" && d.medicalDone !== "Sim" && acts.includes("Necessidade de avaliação médica sinalizada"))
       parts.push("Sinalizada necessidade de avaliação médica.");
     const exams = unique([
       ...values("exams"),
@@ -234,7 +236,7 @@ const Notes = (() => {
     if (guides.includes("alimentação saudável"))
       guides = guides.filter((v) => v !== "alimentação");
     if (guides.length)
-      parts.push("Fornecidas orientações sobre " + join(guides) + ".");
+      parts.push("Orientações realizadas: " + join(guides) + ".");
     else if (acts.includes("Orientações realizadas"))
       parts.push("Realizadas orientações.");
     if (has("otherActions")) parts.push(sentence(d.otherActions));
@@ -244,7 +246,7 @@ const Notes = (() => {
       parts.push("Realizado encaminhamento.");
     if (all.includes("Reavaliação orientada"))
       parts.push("Orientada reavaliação.");
-    if (all.includes("Retorno orientado")) parts.push("Orientado retorno.");
+    if (!d.followStatus && all.includes("Retorno orientado")) parts.push("Orientado retorno.");
     if (all.includes("Acompanhamento mantido"))
       parts.push("Mantido acompanhamento de enfermagem.");
     if (!parts.length)

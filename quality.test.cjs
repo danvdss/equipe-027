@@ -35,6 +35,7 @@ function setup(t) {
     "diu.js",
     "lab-details.js",
     "shortcuts.js",
+    "renewal.js",
     "app.js",
   ])
     vm.runInContext(fs.readFileSync(file, "utf8"), dom.getInternalVMContext(), {
@@ -340,4 +341,46 @@ test("shared login accepts the requested credentials, rejects others, and clears
   assert.doesNotMatch(w.document.querySelector('#login').textContent,/equipe27|e27/);
   assert.equal(w.document.querySelector('script[src*="auth.js"]'),null);
   assert.equal(w.document.querySelector('script[src*="supabase.min.js"]'),null);
+});
+
+test('renewal keeps request, MUC and medical decision separate without defaults', t => {
+  const {run,w,set}=setup(t);
+  run("navigate('renewal')");
+  assert.equal(w.document.querySelector('[name=medicalDone]').value,'');
+  w.document.querySelector('[data-med-add=req][data-drug="Clonazepam"]').click();
+  set('req_1_strength','0.5');set('req_1_strengthUnit','mg');
+  set('req_1_dose','1');set('req_1_doseUnit','comprimido(s)');set('req_1_frequency','1 vez ao dia');
+  w.document.querySelector('[data-med-add=muc][data-drug="Sinvastatina"]').click();
+  run("collect();navigate('general');navigate('renewal')");
+  assert.equal(w.document.querySelector('[name=req_1_strength]').value,'0.5');
+  assert.equal(w.document.querySelector('[name=muc_1_name]').value,'Sinvastatina');
+  let result=run("collect();compose(drafts.renewal,'renewal')");
+  assert.match(result,/solicitar renovação de Clonazepam, concentração\/apresentação 0.5 mg/);
+  assert.match(result,/MUC \(medicamentos em uso\): Sinvastatina/);
+  assert.doesNotMatch(result,/Após avaliação médica|aguardando avaliação médica|renovada a prescrição/);
+  set('medicalRequested','Sim');set('medicalDone','Sim');
+  w.document.querySelector('#renew-all').click();
+  result=run("collect();compose(drafts.renewal,'renewal')");
+  assert.match(result,/Após avaliação médica, renovada a prescrição de Clonazepam/);
+  assert.doesNotMatch(result,/renovada a prescrição de Sinvastatina/);
+});
+test('renewal rejects unsupported decisions, missing dose units and unspecified insulin', t => {
+  const {run}=setup(t);
+  const call=d=>run(`compose(${JSON.stringify(d)},'renewal')`);
+  for(const d of [
+    {req_1_name:'Insulina'},
+    {req_1_name:'Teste',req_1_dose:'2'},
+    {req_1_name:'Teste',req_1_result:'Renovado sem alteração'},
+    {req_1_name:'Teste',medicalRequested:'Sim',medicalDone:'Sim',req_1_result:'Renovado com alteração'},
+    {req_1_name:'Teste',prescriptionDate:'2026-09-24'}
+  ])assert.throws(()=>call(d));
+  assert.match(call({req_1_name:'Teste',medicalRequested:'Sim',medicalDone:'Sim',req_1_result:'Renovado com alteração',req_1_newRegimen:'Esquema transcrito da receita'}),/com alteração: Esquema transcrito da receita/);
+});
+test('metadata preserves decimal medication values and missing evaluation stays unspecified', t => {
+  const {run}=setup(t);
+  assert.equal(run("Care.renewalText({medicalRequested:'Sim'})"),'Solicitada avaliação médica.');
+  const text=run("Care.decorate('Paciente, 25 anos, comparece à unidade para avaliação. Dose 0.5 mg.',{recordSetting:'No domicílio',recordDate:'2026-09-24'},'implante')");
+  assert.match(text,/Paciente, 25 anos, recebe atendimento no domicílio/);
+  assert.match(text,/0.5 mg/);
+  assert.match(text,/Atendimento em 24\/09\/2026/);
 });

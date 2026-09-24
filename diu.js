@@ -658,7 +658,7 @@ const DIU = (() => {
             Recusado: "Paciente recusou toque bimanual",
           },
         };
-        parts.push(narrative[x.key]?.[v] || label + ": " + v);
+        parts.push(narrative[x.key]?.[v] || label.replace(/\?\s*$/, "") + ": " + v);
       }
       if (i === groups.length - 1) {
         const gs = (d["c:diuGuides"] || [])

@@ -168,7 +168,7 @@ const Prenatal = (() => {
         const a = age(d);
         result.classList.remove("invalid");
         result.textContent = a
-          ? `${a.weeks} semanas e ${a.days} dias · ${a.method.toUpperCase()} · em ${fmt(d.visitDate)}`
+          ? `${a.weeks} semana${a.weeks === 1 ? "" : "s"} e ${a.days} dia${a.days === 1 ? "" : "s"} · ${a.method.toUpperCase()} · em ${fmt(d.visitDate)}`
           : method === "none"
             ? "Idade gestacional não será incluída."
             : "Preencha a referência para calcular.";
@@ -197,9 +197,9 @@ const Prenatal = (() => {
       let reference =
         a.method === "dum"
           ? `DUM ${fmt(d.dum)}`
-          : `USG de ${fmt(d.usgDate)}, com ${d.usgWeeks} semanas e ${d.usgDays} dias no exame`;
+          : `USG de ${fmt(d.usgDate)}, com ${d.usgWeeks} semana${Number(d.usgWeeks) === 1 ? "" : "s"} e ${d.usgDays} dia${Number(d.usgDays) === 1 ? "" : "s"} no exame`;
       p.push(
-        `Idade gestacional de ${a.weeks} semanas e ${a.days} dias em ${fmt(d.visitDate)}, calculada pela ${reference}.`,
+        `Idade gestacional de ${a.weeks} semana${a.weeks === 1 ? "" : "s"} e ${a.days} dia${a.days === 1 ? "" : "s"} em ${fmt(d.visitDate)}, calculada pela ${reference}.`,
       );
     }
     if (d.complaintStatus === "none")
@@ -290,7 +290,7 @@ const Prenatal = (() => {
         .filter(
           (v) =>
             v !== "Acompanhamento pré-natal mantido" &&
-            !(renewed.length && v === "Avaliação médica solicitada"),
+            !(d.medicalRequested === "Sim" && v === "Avaliação médica solicitada"),
         )
         .map(sentence),
     );

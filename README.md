@@ -68,3 +68,15 @@ A hospedagem GitHub Pages e os arquivos do repositório continuam públicos. O l
 ## Acesso compartilhado · 2026.09.24.4
 
 Por solicitação do responsável, foi restaurada a entrada local compartilhada. As credenciais não são exibidas na interface. Os scripts Supabase não são carregados pela página; sua integração anterior permanece no histórico/arquivos para eventual retomada. O projeto e a conta do Supabase não foram excluídos. A hospedagem continua pública e não há autenticação em servidor neste modo.
+
+## Renovação e revisão textual · 2026.09.24.5
+
+A aba Renovação separa medicamentos solicitados e MUC (medicamentos em uso). Cada linha registra nome, concentração/apresentação, quantidade por tomada, unidade, frequência, via e esquema. Atalhos preenchem apenas o nome. Não há sugestão de doses, conversão de unidades ou prescrição automática. Solicitação de avaliação, avaliação realizada e resultado de cada medicamento exigem registro explícito. Alterações de prescrição exigem transcrição do novo esquema. Campos vazios são omitidos da evolução.
+
+Pesquisa em 24/09/2026: portal oficial de Lagarto, lista municipal e registros de estoque indexados (julho/agosto de 2026). Foram encontrados Losartana potássica, Ácido fólico e Pregabalina. Os demais atalhos foram pedidos pela equipe. As páginas detalhadas retornaram erro e **não foi possível confirmar a disponibilidade atual de qualquer item na UBS Dr. Davi Marcos de Lima**; confirmar diretamente com a dispensação local. Nome comercial e formulação não são intercambiados automaticamente.
+- https://saude.lagarto.se.gov.br/lista-de-medicamentos
+- https://saude.lagarto.se.gov.br/estoque-de-medicamentos?page=6
+- https://saude.lagarto.se.gov.br/estoque-de-medicamentos?page=2
+- https://saude.lagarto.se.gov.br/unidade-de-atendimento/remume-rename
+
+Revisão de redação: avaliações não preenchidas não geram condutas presumidas; metadados preservam pontos decimais; local do atendimento preserva idade informada; correção de singular/plural da idade gestacional, pontuação e repetições nas orientações e no retorno.

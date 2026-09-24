@@ -85,6 +85,8 @@ const Care = (() => {
       );
     if (d.followStatus === "Agendado" && !value(d, "followDate"))
       error("followDate", "Informe a data do retorno agendado.");
+    if (d.followDate && !d.followStatus)
+      error("followStatus", "Informe se o retorno foi orientado ou agendado.");
     if (d.followDate && d.recordDate && d.followDate < d.recordDate)
       error("followDate", "O retorno não pode ser anterior ao atendimento.");
     if (d.adminDrug && !d.adminDose)
@@ -205,10 +207,10 @@ const Care = (() => {
       );
     } else if (d.renewDone === "Não")
       parts.push("não houve renovação de medicamentos");
-    else if (d.medicalRequested === "Sim" && d.medicalDone !== "Sim")
+    else if (d.medicalRequested === "Sim" && d.medicalDone === "Não")
       parts.push("aguardando avaliação");
     return parts.length
-      ? parts.join("; ").replace(/^./, (c) => c.toUpperCase()) + "."
+      ? parts.map(sentence).join(" ")
       : "";
   }
   function decorate(text, d, p) {
@@ -216,25 +218,25 @@ const Care = (() => {
     let result = text;
     if (d.recordSetting === "No domicílio")
       result = result.replace(
-        "Paciente comparece à unidade",
-        "Paciente recebe atendimento no domicílio",
+        /Paciente(, [^,]+,)? comparece à unidade/,
+        "Paciente$1 recebe atendimento no domicílio",
       );
     if (d.recordSetting === "À beira do leito")
       result = result.replace(
-        "Paciente comparece à unidade",
-        "Paciente recebe atendimento à beira do leito",
+        /Paciente(, [^,]+,)? comparece à unidade/,
+        "Paciente$1 recebe atendimento à beira do leito",
       );
     if (d.recordSetting === "Sem especificar o local")
       result = result.replace(
-        "Paciente comparece à unidade para",
-        "Atendimento para",
+        /Paciente(, [^,]+,)? comparece à unidade para/,
+        "Paciente$1 recebe atendimento para",
       );
     const start = [];
     if (d.recordDate)
       start.push(
         "Atendimento em " + d.recordDate.split("-").reverse().join("/") + ".",
       );
-    if (start.length) result = result.replace(/(?<=\.)/, " " + start.join(" "));
+
     const tail = [];
     if (d.followStatus)
       tail.push(
@@ -250,7 +252,7 @@ const Care = (() => {
       tail.push("Orientação de retorno: " + d.followDetails + ".");
     if (d.recordProfessional)
       tail.push("Profissional responsável: " + d.recordProfessional + ".");
-    return [result, ...tail].join("\n\n");
+    return [result, ...tail.map(sentence), ...start].join("\n\n");
   }
   return {
     version,
