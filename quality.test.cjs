@@ -26,7 +26,6 @@ function setup(t) {
       w.copied = s;
     },
   };
-  w.Access = {start() {}, screen() {}, async signOut() { w.eval("logged=false"); }};
   for (const file of [
     "care.js",
     "workflow.js",
@@ -324,4 +323,21 @@ test("team shortcuts use the four supplied URLs and safe new tabs", (t) => {
     assert.match(link.rel, /noopener/);
     assert.ok(link.querySelector("svg"));
   });
+});
+
+test("shared login accepts the requested credentials, rejects others, and clears on logout", async t => {
+  const {w,run}=setup(t);
+  run("logged=false;login()");
+  const submit=()=>w.document.querySelector('#login').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  w.document.querySelector('[name=login]').value='equipe27';
+  w.document.querySelector('[name=password]').value='wrong';submit();
+  assert.equal(run('logged'),false);
+  w.document.querySelector('[name=password]').value='e27';submit();
+  assert.equal(run('logged'),true);
+  await run('Flow.end(true)');
+  assert.equal(run('logged'),false);
+  assert.ok(w.document.querySelector('#login'));
+  assert.doesNotMatch(w.document.querySelector('#login').textContent,/equipe27|e27/);
+  assert.equal(w.document.querySelector('script[src*="auth.js"]'),null);
+  assert.equal(w.document.querySelector('script[src*="supabase.min.js"]'),null);
 });

@@ -9,9 +9,9 @@ Ferramenta estática para gerar evoluções de enfermagem, registros LAB e preen
 - Receituário em duas vias, impressão e exportação PNG.
 
 ## Uso
-Abra `index.html` por um servidor HTTP local ou pelo GitHub Pages. O login usa Supabase Auth, com cadastro público desativado e contas por convite.
+Abra `index.html` por um servidor HTTP local ou pelo GitHub Pages. O acesso atual usa uma credencial compartilhada definida pelo responsável. É uma barreira visual local, sem autenticação em servidor.
 
-Os dados preenchidos ficam somente na memória da página e são apagados ao sair ou recarregar. O Supabase é usado para contas de acesso; os formulários clínicos não são enviados ao banco. Textos e arquivos exportados devem ser revisados pelo profissional.
+Os dados preenchidos ficam somente na memória da página e são apagados ao sair ou recarregar. O site não usa o Supabase no fluxo atual; os formulários clínicos não são enviados ao banco. Textos e arquivos exportados devem ser revisados pelo profissional.
 
 ## Publicação no GitHub Pages
 A publicação deve usar GitHub Actions. O fluxo `.github/workflows/quality.yml` verifica sintaxe e executa os testes antes de preparar o artefato e publicar. Em Settings → Pages, selecione GitHub Actions. Todos os recursos usam caminhos relativos.
@@ -64,3 +64,7 @@ Referências para estrutura e nomenclatura consultadas em 24/09/2026:
 E-mail e senha validados pelo Supabase, recuperação de senha, aceite de convite e saída. Tokens apenas em memória, sem localStorage/sessionStorage. A recarga exige novo login e apaga rascunhos. `supabase.min.js` é a distribuição UMD oficial de `@supabase/supabase-js` 2.117.1 (MIT), copiada de node_modules; versão e lockfile fixados. Para atualizar, instalar versão exata, copiar dist/umd/supabase.js e executar testes.
 
 A hospedagem GitHub Pages e os arquivos do repositório continuam públicos. O login não torna os scripts privados. Não há armazenamento remoto de pacientes; qualquer futura API clínica exige autorização no servidor e políticas RLS específicas.
+
+## Acesso compartilhado · 2026.09.24.4
+
+Por solicitação do responsável, foi restaurada a entrada local compartilhada. As credenciais não são exibidas na interface. Os scripts Supabase não são carregados pela página; sua integração anterior permanece no histórico/arquivos para eventual retomada. O projeto e a conta do Supabase não foram excluídos. A hospedagem continua pública e não há autenticação em servidor neste modo.

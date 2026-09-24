@@ -290,7 +290,8 @@ const Flow = (() => {
     destroyReceituario();
     page = "home";
     if (logout) {
-      await Access.signOut();
+      logged = false;
+      login();
     } else render();
   }
   function reveal(el) {

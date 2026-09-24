@@ -190,7 +190,18 @@ function toast(msg) {
   clearTimeout(toast.timer);
   toast.timer = setTimeout(() => (t.style.display = "none"), 3000);
 }
-function login() { Access.screen(); }
+function login() {
+  destroyReceituario();
+  app.innerHTML = `<main class="login"><section class="login-brand"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="login-message"><span class="eyebrow">Ferramentas de enfermagem</span><h1>Mais cuidado.<br>Mais clareza.</h1><p>Evoluções, exames e receituário em um só lugar.</p></div><div class="login-foot"><span>Registro clínico</span><span>027 /</span></div></section><section class="login-access"><form class="login-card" id="login"><span class="eyebrow">Área da equipe</span><h2>Bem-vindo de volta.</h2><p class="muted">Entre para preparar seus registros.</p><label>Login<input name="login" autocomplete="username" placeholder="Seu login" required autofocus></label><label>Senha<input name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required></label><p id="error" class="error" role="alert"></p><button class="primary">Entrar <span aria-hidden="true">↗</span></button><p class="login-note">Rascunhos temporários. Arquivos exportados e textos copiados permanecem fora da plataforma. Esta tela não oferece autenticação segura.</p></form></section></main>`;
+  $("#login").onsubmit = (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    if (f.get("login") === "equipe27" && f.get("password") === "e27") {
+      logged = true;
+      render();
+    } else $("#error").textContent = "Login ou senha incorretos.";
+  };
+}
 const iconPaths = {
   diu: "M5 5h14 M12 5v13 M9 21c0-3 3-3 3-3s3 0 3 3",
   home: "M3 10l9-7 9 7v10H3z M9 20v-7h6v7",
@@ -625,10 +636,10 @@ window.addEventListener("pagehide", () => {
   app.replaceChildren();
 });
 window.addEventListener("pageshow", (e) => {
-  if (e.persisted) Access.signOut();
+  if (e.persisted) login();
 });
 
-Access.start();
+login();
 
 // Keep one isolated document mounted across tab changes, only in memory.
 function syncReceituario() {
