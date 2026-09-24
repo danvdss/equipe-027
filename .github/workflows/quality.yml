@@ -24,7 +24,7 @@ jobs:
       - name: Preparar arquivos públicos
         run: |
           mkdir public
-          cp index.html style.css app.js care.js workflow.js notes.js prenatal.js implante.js diu.js receituario.html rx-workflow.js rx-workflow.css html2canvas.min.js public/
+          cp index.html style.css lab-details.js shortcuts.js app.js care.js workflow.js notes.js prenatal.js implante.js diu.js receituario.html rx-workflow.js rx-workflow.css html2canvas.min.js public/
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
