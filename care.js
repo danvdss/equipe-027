@@ -1,6 +1,6 @@
 /* Shared data normalization and documentary checks. No eligibility decisions. */
 const Care = (() => {
-  const version = "2026.09.24.2";
+  const version = "2026.09.27.1";
   const numeric = [
     "fc",
     "fr",

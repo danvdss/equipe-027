@@ -384,3 +384,64 @@ test('metadata preserves decimal medication values and missing evaluation stays 
   assert.match(text,/0.5 mg/);
   assert.match(text,/Atendimento em 24\/09\/2026/);
 });
+
+test('live preview updates while typing without generating history and escapes markup', async t => {
+  const {w,run,set}=setup(t);run("navigate('general')");
+  set('complaint','Dor relatada <img src=x onerror=alert(1)>');
+  await new Promise(r=>setTimeout(r,240));
+  assert.match(w.document.querySelector('#live-preview').textContent,/Dor relatada/);
+  assert.match(w.document.querySelector('#output').value,/Dor relatada/);
+  assert.equal(w.document.querySelector('#live-preview img'),null);
+  assert.equal(run('history.length'),0);
+  set('complaint','Queixa revisada');
+  await run('Flow.copyCurrent()');
+  assert.match(w.copied,/Queixa revisada/);
+});
+test('live conflicts remain selected until explicit correction and block copying', async t => {
+  const {w,run,set}=setup(t);run("navigate('general')");
+  const no=w.document.querySelector('input[value="Sem queixas no momento"]');no.click();
+  set('complaint','Dor no braço');
+  run('LiveReview.update()');
+  assert.equal(no.checked,true);
+  assert.match(w.document.querySelector('#live-issues').textContent,/desmarque/);
+  assert.match(w.document.querySelector('#live-preview .incoherent').textContent,/Sem queixas|Dor no braço/);
+  await run('Flow.copyCurrent()');assert.equal(w.copied,undefined);
+  [...w.document.querySelectorAll('#live-issues button')].find(b=>b.textContent==='Desmarcar “Sem queixas no momento”').click();
+  assert.equal(no.checked,false);
+  assert.equal(w.document.querySelectorAll('#live-issues .live-issue').length,0);
+  assert.match(w.document.querySelector('#output').value,/Dor no braço/);
+});
+test('live partial renewal retains incomplete input and manual edits survive subsequent changes', t => {
+  const {w,run,set}=setup(t);run("navigate('renewal')");
+  set('req_1_name','Sinvastatina');set('req_1_dose','1');run('LiveReview.update()');
+  assert.match(w.document.querySelector('#live-preview').textContent,/Sinvastatina/);
+  assert.match(w.document.querySelector('#live-issues').textContent,/unidade/);
+  set('req_1_doseUnit','comprimido(s)');run('LiveReview.update()');
+  const out=w.document.querySelector('#output');out.value+=' Texto manual preservado.';out.dispatchEvent(new w.Event('input',{bubbles:true}));
+  set('req_1_frequency','1 vez ao dia');run('LiveReview.update()');
+  assert.match(out.value,/Texto manual preservado/);
+  assert.match(w.document.querySelector('#live-preview').textContent,/1 vez ao dia/);
+  assert.equal(out.dataset.stale,'true');
+});
+test('live validation covers EPF contradiction and pending callbacks cannot cross modules', async t => {
+  const {w,run,set}=setup(t);run("navigate('lab')");set('date','2026-09-27');
+  set('epfStatus','Não encontrados na amostra examinada');set('epf_giardia','Cistos');run('LiveReview.update()');
+  assert.match(w.document.querySelector('#live-issues').textContent,/EPF/);
+  assert.ok(w.document.querySelectorAll('#live-preview .incoherent').length>=2);
+  run("navigate('general')");set('complaint','Apenas geral');run("navigate('renewal')");
+  await new Promise(r=>setTimeout(r,240));
+  assert.doesNotMatch(w.document.querySelector('#live-preview').textContent,/Apenas geral|Giardia/);
+});
+test('manual text lexical conflicts are highlighted as possible, not diagnosed', t => {
+  const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Dor');run('LiveReview.update()');
+  const out=w.document.querySelector('#output');out.value='Paciente sem queixas. Refere dor no braço.';out.dispatchEvent(new w.Event('input',{bubbles:true}));run('LiveReview.update()');
+  assert.equal(w.document.querySelectorAll('#manual-review .incoherent').length,2);
+  assert.match(w.document.querySelector('#manual-review').textContent,/Possível incoerência/);
+});
+
+test('free-text conflicts participate in live review without mistaking explicit negation', t => {
+  const {w,run,set}=setup(t);run("navigate('general')");
+  set('complaint','Dor no braço');set('observations','Sem queixas no momento');run('LiveReview.update()');
+  assert.match(w.document.querySelector('#live-issues').textContent,/Possível incoerência/);
+  assert.equal(run("LiveReview.analyzeText('Sem queixas. Não refere dor.').length"),0);
+});

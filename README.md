@@ -80,3 +80,9 @@ Pesquisa em 24/09/2026: portal oficial de Lagarto, lista municipal e registros d
 - https://saude.lagarto.se.gov.br/unidade-de-atendimento/remume-rename
 
 Revisão de redação: avaliações não preenchidas não geram condutas presumidas; metadados preservam pontos decimais; local do atendimento preserva idade informada; correção de singular/plural da idade gestacional, pontuação e repetições nas orientações e no retorno.
+
+## Prévia em tempo real · 2026.09.27.1
+
+Prévia local atualizada após 180 ms de digitação e imediatamente antes de copiar ou revisar/salvar. Nenhuma chamada externa nem gravação no histórico por tecla. Quando faltam dados exigidos ou existem conflitos, a prévia parcial mostra os campos preenchidos sem produzir uma evolução final válida. Pontos associados são destacados em vermelho e os botões levam aos campos; desmarcar uma opção exige clique explícito. Não há alteração automática de respostas.
+
+Regras documentais: queixa versus ausência de queixa, etapas de avaliação/renovação, gestação e teste registrado, G/P/A, decisão/consentimento e inserção, datas e achados de EPF. As validações existentes continuam ativas. Texto livre editado recebe somente checagens lexicais limitadas, indicadas como possíveis conflitos. Isso não é revisão clínica completa. Edições manuais permanecem separadas da prévia; substituir exige comparação e confirmação. Copiar é bloqueado enquanto houver pontos sinalizados. Em celular/tablet, a prévia recolhível fica visível acima do formulário durante o preenchimento.

@@ -1767,3 +1767,25 @@ textarea {
 .medicine-shortcuts { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
 .medicine-shortcuts button { min-height: 44px; text-align: left; padding: .55rem .8rem; font-size: .8rem; }
 @media(max-width: 600px) { .medicine-row .fields { grid-template-columns: minmax(0,1fr); } .medicine-row { padding: .8rem; } }
+
+/* Live narrative and explicit documentary review. */
+.live-panel { margin-bottom: 1rem; }
+.live-panel summary { cursor: pointer; font-weight: 600; min-height: 44px; padding: .4rem 0; }
+.live-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.7; font-size: 1rem; }
+#live-preview { max-height: 38vh; overflow: auto; padding: .6rem; background: #f8fafc; border-radius: .7rem; }
+#live-status { color: #45566e; margin: .5rem 0; }
+.incoherent { color: #a01824; background: #fff0f1; border-bottom: 2px solid #b42332; padding: .1rem; }
+.live-issue { color: #991b2b; border-left: 3px solid #b42332; background: #fff3f4; padding: .75rem; margin: .75rem 0; border-radius: .3rem; }
+.live-issue button { margin: .35rem .35rem 0 0; min-height: 44px; font-size: .8rem; color: #991b2b; background: white; border: 1px solid #ce8490; }
+label.live-conflict { outline: 2px solid #b42332; outline-offset: 3px; border-radius: .25rem; }
+#manual-review { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #dce3eb; }
+@media(min-width:900px) { .result { max-height: calc(100svh - 2rem); overflow-y: auto; } }
+@media(max-width:899px) {
+  .workspace[data-view="form"] > .result { display: block; grid-row: 2; position: sticky; top: 0; z-index: 15; background: white; border-bottom: 1px solid #cbd8eb; }
+  .workspace[data-view="form"] > #clinical { grid-row: 3; }
+  .workspace[data-view="form"] > .result > :not(.live-panel) { display: none; }
+  .workspace[data-view="form"] .live-panel { margin: 0; padding: .65rem; max-height: 32svh; overflow: auto; }
+  .workspace[data-view="form"] #live-preview { max-height: none; }
+  .workspace[data-view="form"] .live-panel .privacy { font-size: .72rem; }
+  .workspace[data-view="text"] > .result { max-height: none; }
+}

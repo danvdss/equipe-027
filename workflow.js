@@ -1,3 +1,123 @@
+/* Local documentary preview. Never changes clinical answers or calls a server. */
+const LiveReview = (() => {
+  let timer;
+  const q = s => document.querySelector(s);
+  function entries() {
+    return [...(q('#clinical')?.querySelectorAll('input,select,textarea') || [])]
+      .filter(x => x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
+      .map(x => ({el:x,key:x.name.split(':').slice(0,2).join(':'),value:x.value.trim(),label:[...(x.closest('label')?.childNodes||[])].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ') || x.name}));
+  }
+  function inspect(d, p) {
+    const issues=[];
+    const add=(message,keys,values=[])=>issues.push({message,keys,values});
+    const states=[...(d['c:state']||[]),...(d['c:evaluation']||[])];
+    if(states.includes('Sem queixas no momento') && (d.complaint || states.some(v=>['Queixa principal','Refere queixas','Apresenta queixa'].includes(v))))
+      add('Há registro de ausência de queixas e de queixa presente. Confira o relato e desmarque a opção incompatível ou revise a queixa.', ['c:state','c:evaluation','complaint'],['Sem queixas no momento','Queixa principal','Refere queixas','Apresenta queixa',d.complaint].filter(Boolean));
+    for(const pair of [['Bom estado geral','Regular estado geral'],['Deambulando','Restrito ao leito']])
+      if(pair.every(v=>states.includes(v)))add('Foram selecionados estados incompatíveis. Mantenha apenas o que foi observado.', ['c:state','c:evaluation'],pair);
+    if(d.complaintStatus==='none' && d.pnComplaint)add('Ausência de queixas e queixa descrita: revise a seleção ou a descrição.', ['complaintStatus','pnComplaint']);
+    if(d.pregnancyTest==='Positivo' && d.pregnancyAssessment==='Razoável certeza de ausência de gestação')add('Teste positivo e conclusão de ausência de gestação: revise os dois registros.', ['pregnancyTest','pregnancyAssessment']);
+    if(d.renewDone==='Sim' && d.medicalDone!=='Sim')add('A renovação está confirmada sem avaliação médica realizada. Confira a avaliação ou altere a situação da renovação.', ['renewDone','medicalDone']);
+    if(d.medicalRequested==='Não' && d.medicalDone==='Sim')add('A solicitação e a realização da avaliação médica estão incompatíveis. Revise essas etapas.', ['medicalRequested','medicalDone']);
+    if(d.g && ((d.p && +d.p>+d.g)||(d.a && +d.a>+d.g)||(d.p&&d.a&&+d.p + +d.a > +d.g)))add('G/P/A incompatíveis: confira os números de gestações, partos e abortamentos.', ['g','p','a']);
+    if(d.outcome==='Inserção concluída') {
+      if(['Inserção adiada','Paciente optou por não prosseguir'].includes(d.plan))add('A inserção concluída contradiz o planejamento informado. Revise o resultado ou o planejamento.', ['outcome','plan']);
+      if(d.consent==='Paciente não consentiu' || ['Prefere outro método','Não deseja prosseguir'].includes(d.choice))add('A inserção concluída está incompatível com a decisão ou o consentimento. Confira o registro do atendimento.', ['outcome','consent','choice']);
+    }
+    if(d.requestStatus==='Inserção agendada' && (d.consent==='Paciente não consentiu neste momento'||['Não deseja prosseguir no momento','Prefere outro método'].includes(d.decision)))add('Agendamento incompatível com a decisão ou o consentimento registrados. Revise os campos.', ['requestStatus','consent','decision']);
+    for(const key of ['menarche','sexarche'])if(d[key]&&d.age&&+d[key]>+d.age)add('O antecedente não pode ter idade maior que a idade atual informada. Confira os valores.', [key,'age']);
+    const encounter=d.visitDate||d.recordDate;
+    for(const key of ['returnDate','scheduledDate','followDate'])if(d[key]&&encounter&&d[key]<encounter)add('A data de retorno ou agendamento é anterior ao atendimento. Confira ambas as datas.', [key,d.visitDate?'visitDate':'recordDate']);
+    const found=Object.keys(d).filter(k=>k.startsWith('epf_')&&d[k]);
+    if(d.epfStatus==='Não encontrados na amostra examinada' && (found.length||d.epfOther))add('O EPF está negativo, mas há organismos registrados. Confira o laudo e revise o resultado ou os achados.', ['epfStatus',...found,'epfOther']);
+    if(p==='renewal')for(const r of Renewal.rows(d,'req')) {
+      if(r.result.startsWith('Renovado') && (d.medicalDone!=='Sim'||d.medicalRequested!=='Sim'))add('Renovação de '+r.name+' sem confirmação das etapas médicas. Revise a avaliação ou o resultado deste medicamento.',[r.prefix+'result','medicalRequested','medicalDone']);
+    }
+    return issues;
+  }
+  function focusField(key) {
+    const field=[...q('#clinical').elements].find(x=>x.name===key || x.name.startsWith(key+':'));
+    if(!field)return;
+    Flow.view('form');
+    for(let n=field;n&&n!==q('#clinical');n=n.parentElement){if(n.tagName==='DETAILS')n.open=true;if(n.classList?.contains('section-body'))n.hidden=false;}
+    field.closest('section')?.querySelector('.section-toggle')?.setAttribute('aria-expanded','true');
+    field.focus();field.scrollIntoView({block:'center'});
+  }
+  function analyzeText(text) {
+    // Conservative lexical checks, always presented as possible conflicts.
+    const issues=[];
+    for(const [a,b] of [[/\bsem queixas(?: no momento)?/i,/\b(?:refere|apresenta) (?:como queixa principal|queixas?|dor\b)[^.!?\n]*/i],[/\bafebril\b/i,/\bfebril\b/i]]){
+      const left=text.match(a),right=text.match(b);
+      if(left&&right && !/(?:não|nega)\s*$/i.test(text.slice(Math.max(0,right.index-12),right.index)))issues.push({message:'Possível incoerência no texto: “'+left[0]+'” e “'+right[0]+'”. Confira o contexto e ajuste manualmente.',keys:[],values:[left[0],right[0]]});
+    }
+    return issues;
+  }
+  function painted(text,terms) {
+    const clean=[...new Set(terms.filter(Boolean))].sort((a,b)=>b.length-a.length);
+    if(!clean.length)return esc(text);
+    const re=new RegExp(clean.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'gi');
+    let html='',start=0;
+    for(const m of text.matchAll(re)){html+=esc(text.slice(start,m.index))+'<mark class="incoherent">'+esc(m[0])+'</mark>';start=m.index+m[0].length;}
+    return html+esc(text.slice(start));
+  }
+  function update() {
+    clearTimeout(timer);
+    const form=q('#clinical'),box=q('#live-preview'),out=q('#output');
+    if(!form||!box)return {issues:[]};
+    const d=Care.normalize(Flow.data()), rows=entries(), issues=inspect(d,page);
+    let text='',failure;
+    try{text=compose(d,page);}catch(e){failure=e;}
+    const meaningful=rows.some(r=>!['recordDate','recordSetting','visitDate','encounterSetting','encounterReason','mode','igMethod','usgDays'].includes(r.key));
+    if(failure && meaningful && !issues.some(i=>i.message===failure.message))issues.push({message:failure.message,keys:failure.field?[failure.field]:[],values:[]});
+    if(text)for(const issue of analyzeText(text)){
+      issue.keys=[...new Set(rows.filter(r=>issue.values.some(v=>r.value.toLowerCase().includes(v.toLowerCase())||v.toLowerCase().includes(r.value.toLowerCase()))).map(r=>r.key))];
+      issues.push(issue);
+    }
+    const partial=!!failure || issues.length>0;
+    q('#live-heading').textContent=partial&&meaningful?'Prévia em construção · confira os trechos em vermelho':'Evolução em tempo real';
+    if(!meaningful && !text)box.textContent='Preencha um campo para acompanhar o texto aqui.';
+    else if(partial) {
+      const opening= ['general','has','dm','both','prenatal'].includes(page)?(()=>{try{return Notes.opening(d,page);}catch{return 'Registro em construção.';}})(): 'Registro em construção.';
+      box.innerHTML=esc(opening)+'\n\n'+rows.map(r=>{
+        const invalid=issues.some(i=>i.keys.includes(r.key)&&(!i.values.length||i.values.includes(r.value)));
+        const s=esc(r.label+': '+r.value)+'.';
+        return invalid?'<mark class="incoherent">'+s+'</mark>':s;
+      }).join('\n');
+    } else box.textContent=text;
+    q('#live-issues').replaceChildren();
+    form.querySelectorAll('.live-conflict').forEach(el=>el.classList.remove('live-conflict'));
+    for(const issue of issues) {
+      const item=document.createElement('div');item.className='live-issue';
+      const message=document.createElement('p');message.textContent='Revisar: '+issue.message;item.append(message);
+      for(const key of issue.keys){
+        const fields=[...form.elements].filter(x=>x.name===key||x.name.startsWith(key+':'));
+        fields.filter(x=>!issue.values.length||issue.values.includes(x.value)).forEach(x=>x.closest('label')?.classList.add('live-conflict'));
+        if(fields.length){const b=document.createElement('button');b.type='button';b.textContent='Revisar '+(rows.find(r=>r.key===key)?.label||fields[0].closest('label')?.childNodes[0]?.textContent||key);b.onclick=()=>focusField(key);item.append(b);}
+      }
+      const candidates=rows.filter(r=>issue.keys.includes(r.key)&&r.el.type==='checkbox'&&(!issue.values.length||issue.values.includes(r.value)));
+      for(const r of candidates){const b=document.createElement('button');b.type='button';b.textContent='Desmarcar “'+r.value+'”';b.onclick=()=>{r.el.checked=false;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();};item.append(b);}
+      q('#live-issues').append(item);
+    }
+    const manual=out.dataset.manual==='true';
+    const manualIssues=manual?analyzeText(out.value):[];
+    const review=q('#manual-review');review.hidden=!manual;
+    if(manual){review.innerHTML='<strong>Texto editado manualmente · preservado</strong><p>A prévia acima acompanha o formulário. Use “Revisar e salvar” para comparar antes de substituir sua edição.</p><div class="live-text">'+painted(out.value,manualIssues.flatMap(i=>i.values))+'</div>'+manualIssues.map(i=>'<p class="live-issue">'+esc(i.message)+'</p>').join('');}
+    if(!partial && !manual){out.value=text;out.dataset.baseline=text;out.dataset.manual='false';out.dataset.stale='false';}
+    else if(partial && out.value)out.dataset.stale='true';
+    q('#live-status').textContent=issues.length?issues.length+' ponto(s) para revisar.':meaningful?'Prévia atualizada. Nenhum conflito detectado pelas regras disponíveis.':'Aguardando preenchimento.';
+    Flow.updateStatus();
+    return {issues,manualIssues,text,partial};
+  }
+  function schedule(){const form=q('#clinical');clearTimeout(timer);timer=setTimeout(()=>{if(q('#clinical')===form)update();},180);}
+  function mount(){
+    const panel=document.createElement('section');panel.className='panel live-panel';
+    panel.innerHTML='<details open id="live-details"><summary id="live-heading">Evolução em tempo real</summary><p class="privacy">Atualização automática. Vermelho indica informação a revisar. A checagem usa regras dos campos e não substitui a revisão do texto livre.</p><p id="live-status" role="status" aria-live="polite"></p><div id="live-preview" class="live-text" aria-label="Prévia automática da evolução"></div><div id="live-issues"></div><div id="manual-review" hidden></div></details>';
+    q('.result').prepend(panel);
+    q('#output').addEventListener('input',schedule);
+    update();
+  }
+  return {mount,update,schedule,inspect,analyzeText};
+})();
 const Flow = (() => {
   let undo = null,
     rxDirty = false,
@@ -82,6 +202,7 @@ const Flow = (() => {
     updateStatus();
     summaries();
     clearError();
+    LiveReview.schedule();
   }
   function updateStatus() {
     const s = q("#output-status");
@@ -120,6 +241,8 @@ const Flow = (() => {
     if (busy) return false;
     busy = true;
     try {
+      const review = LiveReview.update();
+      if (review.issues.length) { const e = new Error(review.issues[0].message); e.field = review.issues[0].keys[0]; throw e; }
       collect();
       const d = Care.normalize(drafts[page]);
       Care.validate(d, page);
@@ -200,6 +323,11 @@ const Flow = (() => {
     }
   }
   async function copyCurrent() {
+    const review = LiveReview.update();
+    if (review.issues.length || review.manualIssues?.length) {
+      view("text");
+      return toast("Revise os pontos destacados em vermelho antes de copiar.");
+    }
     if (!q("#output").value.trim())
       return toast("Gere um texto antes de copiar.");
     if (q("#output").dataset.stale === "true") {
@@ -533,7 +661,7 @@ const Flow = (() => {
     const bar = document.createElement("div");
     bar.className = "mobile-actions";
     bar.innerHTML =
-      '<button type="button" class="primary" id="mobile-generate">Gerar ' +
+      '<button type="button" class="primary" id="mobile-generate">Revisar ' +
       (page === "lab" ? "LAB" : "evolução") +
       '</button><button type="button" id="mobile-review">Ver texto</button>';
     q(".workspace").after(bar);
@@ -548,6 +676,7 @@ const Flow = (() => {
       }
     });
     updateStatus();
+    LiveReview.mount();
   }
   function summaries() {
     if (page === "implante") {

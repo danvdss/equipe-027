@@ -265,7 +265,7 @@ function section(title, content) {
   return `<section class="panel"><h2>${title}</h2>${content}</section>`;
 }
 function outputPanel() {
-  return `<aside class="result"><button class="primary generate" id="generate">${page === "lab" ? "GERAR LAB" : "GERAR EVOLUÇÃO"}</button><section class="panel"><div class="row-title"><h2>${page === "lab" ? "LAB gerado" : "Evolução gerada"}</h2><span class="tag">Editável</span></div><label for="output" class="muted">Revise antes de copiar</label><textarea id="output" placeholder="O texto gerado aparecerá aqui. Apenas as informações preenchidas serão incluídas." spellcheck="true"></textarea><div class="actions"><button class="primary" id="copy">${page === "lab" ? "COPIAR LAB" : "COPIAR"}</button><button id="edit">Editar</button><button id="regenerate">Gerar novamente</button><button id="clear">Limpar</button></div></section><p class="privacy">Sem cadastro de pacientes. Os rascunhos ficam na memória desta sessão. Cópias, impressões e arquivos exportados permanecem fora do controle da plataforma.</p></aside>`;
+  return `<aside class="result"><button class="primary generate" id="generate">REVISAR E SALVAR</button><section class="panel"><div class="row-title"><h2>${page === "lab" ? "LAB gerado" : "Evolução gerada"}</h2><span class="tag">Editável</span></div><label for="output" class="muted">Revise antes de copiar</label><textarea id="output" placeholder="O texto gerado aparecerá aqui. Apenas as informações preenchidas serão incluídas." spellcheck="true"></textarea><div class="actions"><button class="primary" id="copy">${page === "lab" ? "COPIAR LAB" : "COPIAR"}</button><button id="edit">Editar</button><button id="regenerate">Revisar e salvar</button><button id="clear">Limpar</button></div></section><p class="privacy">Sem cadastro de pacientes. Os rascunhos ficam na memória desta sessão. Cópias, impressões e arquivos exportados permanecem fora do controle da plataforma.</p></aside>`;
 }
 function clinical() {
   const g = page === "general",
@@ -431,7 +431,7 @@ function render() {
     $("#edit").onclick = () => $("#output").focus();
     $("#clear").onclick = () => Flow.clear();
     if ($("#addLab")) $("#addLab").onclick = () => addLab();
-    $("#clinical").addEventListener("change", resolveConflicts);
+
   }
   app
     .querySelectorAll("[data-copy-index]")
