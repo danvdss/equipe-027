@@ -445,3 +445,11 @@ test('free-text conflicts participate in live review without mistaking explicit 
   assert.match(w.document.querySelector('#live-issues').textContent,/Possível incoerência/);
   assert.equal(run("LiveReview.analyzeText('Sem queixas. Não refere dor.').length"),0);
 });
+
+test('clearing the last clinical field also clears the automatic output', t => {
+  const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Queixa temporária');run('LiveReview.update()');
+  assert.match(w.document.querySelector('#output').value,/Queixa temporária/);
+  set('complaint','');run('LiveReview.update()');
+  assert.equal(w.document.querySelector('#output').value,'');
+  assert.doesNotMatch(w.document.querySelector('#live-preview').textContent,/Queixa temporária/);
+});

@@ -102,7 +102,8 @@ const LiveReview = (() => {
     const manualIssues=manual?analyzeText(out.value):[];
     const review=q('#manual-review');review.hidden=!manual;
     if(manual){review.innerHTML='<strong>Texto editado manualmente · preservado</strong><p>A prévia acima acompanha o formulário. Use “Revisar e salvar” para comparar antes de substituir sua edição.</p><div class="live-text">'+painted(out.value,manualIssues.flatMap(i=>i.values))+'</div>'+manualIssues.map(i=>'<p class="live-issue">'+esc(i.message)+'</p>').join('');}
-    if(!partial && !manual){out.value=text;out.dataset.baseline=text;out.dataset.manual='false';out.dataset.stale='false';}
+    if(!meaningful && !text && !manual){out.value='';out.dataset.baseline='';out.dataset.stale='false';}
+    else if(!partial && !manual){out.value=text;out.dataset.baseline=text;out.dataset.manual='false';out.dataset.stale='false';}
     else if(partial && out.value)out.dataset.stale='true';
     q('#live-status').textContent=issues.length?issues.length+' ponto(s) para revisar.':meaningful?'Prévia atualizada. Nenhum conflito detectado pelas regras disponíveis.':'Aguardando preenchimento.';
     Flow.updateStatus();
