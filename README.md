@@ -9,9 +9,9 @@ Ferramenta estática para gerar evoluções de enfermagem, registros LAB e preen
 - Receituário em duas vias, impressão e exportação PNG.
 
 ## Uso
-Abra `index.html` por um servidor HTTP local ou pelo GitHub Pages. O acesso atual usa uma credencial compartilhada definida pelo responsável. É uma barreira visual local, sem autenticação em servidor.
+Abra `index.html` por um servidor HTTP local ou pelo GitHub Pages. O acesso usa nome de usuário e senha validados pelo Supabase Auth através de uma função no servidor.
 
-Os dados preenchidos ficam somente na memória da página e são apagados ao sair ou recarregar. O site não usa o Supabase no fluxo atual; os formulários clínicos não são enviados ao banco. Textos e arquivos exportados devem ser revisados pelo profissional.
+Os dados preenchidos ficam somente na memória da página e são apagados ao sair ou recarregar. O Supabase é usado exclusivamente para autenticação; os formulários clínicos não são enviados ao banco. Textos e arquivos exportados devem ser revisados pelo profissional.
 
 ## Publicação no GitHub Pages
 A publicação deve usar GitHub Actions. O fluxo `.github/workflows/quality.yml` verifica sintaxe e executa os testes antes de preparar o artefato e publicar. Em Settings → Pages, selecione GitHub Actions. Todos os recursos usam caminhos relativos.
@@ -65,7 +65,7 @@ E-mail e senha validados pelo Supabase, recuperação de senha, aceite de convit
 
 A hospedagem GitHub Pages e os arquivos do repositório continuam públicos. O login não torna os scripts privados. Não há armazenamento remoto de pacientes; qualquer futura API clínica exige autorização no servidor e políticas RLS específicas.
 
-## Acesso compartilhado · 2026.09.24.4
+## Acesso compartilhado anterior · 2026.09.24.4 (substituído)
 
 Por solicitação do responsável, foi restaurada a entrada local compartilhada. As credenciais não são exibidas na interface. Os scripts Supabase não são carregados pela página; sua integração anterior permanece no histórico/arquivos para eventual retomada. O projeto e a conta do Supabase não foram excluídos. A hospedagem continua pública e não há autenticação em servidor neste modo.
 
@@ -86,3 +86,23 @@ Revisão de redação: avaliações não preenchidas não geram condutas presumi
 Prévia local atualizada após 180 ms de digitação e imediatamente antes de copiar ou revisar/salvar. Nenhuma chamada externa nem gravação no histórico por tecla. Quando faltam dados exigidos ou existem conflitos, a prévia parcial mostra os campos preenchidos sem produzir uma evolução final válida. Pontos associados são destacados em vermelho e os botões levam aos campos; desmarcar uma opção exige clique explícito. Não há alteração automática de respostas.
 
 Regras documentais: queixa versus ausência de queixa, etapas de avaliação/renovação, gestação e teste registrado, G/P/A, decisão/consentimento e inserção, datas e achados de EPF. As validações existentes continuam ativas. Texto livre editado recebe somente checagens lexicais limitadas, indicadas como possíveis conflitos. Isso não é revisão clínica completa. Edições manuais permanecem separadas da prévia; substituir exige comparação e confirmação. Copiar é bloqueado enquanto houver pontos sinalizados. Em celular/tablet, a prévia recolhível fica visível acima do formulário durante o preenchimento.
+
+
+## Terapia Ocupacional — 2026.09.27.3
+
+Aba independente com modalidades de atendimento, perfil ocupacional, tarefas e ajuda por contexto, intervenções, texto corrido/SOAP e prévia em tempo real. Mantém edição manual e revisão de conflitos. Campos inativos de ausência não entram no texto. Dados clínicos continuam apenas na memória da sessão.
+
+Permite registrar vários instrumentos (M-CHAT-R/F, COPM, Katz, Lawton e Brody, PEDI-CAT, Perfil Sensorial 2, MoCA e outros), resultados por domínio e origem externa. M-CHAT-R/F valida os escores informados e distingue seguimento pendente, completo e revisão necessária. Não reproduz seus itens ou fluxogramas: publicação eletrônica requer licença dos autores. Fonte verificada: https://www.mchatscreen.com/mchat-rf/ e https://www.mchatscreen.com/mchat-rf/scoring/ (27/09/2026).
+
+Questionários completos não estão habilitados nesta versão. O motor determinístico foi preparado, mas nenhuma licença/versionamento de formulário foi presumida. Katz/Lawton exigem definição e verificação do formulário e direitos; instrumentos comerciais permanecem como registro de aplicação/relatório. Não há inferência diagnóstica nem conversão normativa de escores. Estes limites aparecem na interface.
+
+Validação: testes de integração com dados fictícios, limites do M-CHAT, seguimento, ausência, contexto, troca de abas e preservação manual. Revisão profissional do conteúdo continua necessária antes do registro institucional.
+
+
+## Autenticação por usuário · 2026.09.27.4
+
+O login local foi removido. O formulário envia usuário e senha à Edge Function `username-login`, que resolve o alias no servidor e submete a senha ao Supabase Auth. Após receber os tokens, o navegador valida a identidade com `getUser`. Falha de rede ou de validação nunca libera a interface. A senha válida é a já cadastrada na conta confirmada do Supabase; a antiga senha local não foi migrada nem inserida em código público. Recuperação continua pelo e-mail da conta. Nenhuma senha da conta foi alterada.
+
+Sessões somente em memória; saída e recarga apagam dados locais. A função usa somente a chave pública/anon, sem privilégios administrativos. Supabase Auth mantém suas próprias políticas de senha e limites de tentativas; o proxy propaga 429. O limite de origem CORS não substitui autenticação. A conta compartilhada não oferece autoria individual. Repositório e interface permanecem públicos, e a versão anterior do login pode continuar no histórico Git. Nenhum dado clínico é enviado ao serviço de autenticação.
+
+A função deve ser implantada com `verify_jwt=false`, pois é o ponto de entrada antes da sessão; a autenticação é feita dentro dela pelo endpoint oficial de senha do Supabase. Não existe emissão própria de JWT, comparação de senha local ou chave de serviço no cliente.

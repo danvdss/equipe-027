@@ -9,11 +9,12 @@ async function setup(t,overrides={},hash='') {
  const w=d.window;const calls=[];let callback;
  const auth={
   onAuthStateChange(fn){callback=fn;},getSession:async()=>({data:{session:null},error:null}),
-  signInWithPassword:async data=>{calls.push(['signin',data]);return {error:null};},
+  setSession:async data=>{calls.push(['session',data]);return {error:null};},
   getUser:async()=>({data:{user:{id:'test-user',email_confirmed_at:'2026-01-01'}},error:null}),
   resetPasswordForEmail:async()=>({error:null}),updateUser:async()=>({error:null}),
   signOut:async()=>({error:null}),stopAutoRefresh(){},...overrides
  };
+ w.fetch=async(url,options)=>{calls.push(['login-request',JSON.parse(options.body)]);return {ok:true,status:200,json:async()=>({access_token:'synthetic-access',refresh_token:'synthetic-refresh'})};};
  w.supabase={createClient:(url,key,options)=>{calls.push(['options',options]);return {auth};}};
  vm.runInContext('let logged=false,drafts={},history=[],extraCount=0,page="home";const app=document.querySelector("#app");const Flow={reset(){}};function destroyReceituario(){};function render(){app.textContent="Workspace";}',d.getInternalVMContext());
  vm.runInContext(fs.readFileSync('auth.js','utf8'),d.getInternalVMContext());
@@ -24,16 +25,16 @@ async function setup(t,overrides={},hash='') {
  return {w,run,fill,submit,calls,auth,event:name=>callback(name)};
 }
 test('auth uses ephemeral sessions and rejects invalid credentials without opening workspace',async t=>{
- const s=await setup(t,{signInWithPassword:async()=>({error:{status:400}})});
+ const s=await setup(t,{setSession:async()=>({error:{status:400}})});
  assert.equal(s.calls[0][1].auth.persistSession,false);
- s.fill('email','test@example.test');s.fill('password','synthetic-password');await s.submit();
+ s.fill('username','test-user');s.fill('password','synthetic-password');await s.submit();
  assert.equal(s.run('logged'),false);assert.match(s.w.document.querySelector('#error').textContent,/Não foi possível entrar/);
  assert.equal(s.w.document.querySelector('[name=password]').value,'');
  assert.equal(s.w.localStorage.length,0);
 });
 test('login requires server user validation and confirmed email',async t=>{
  const s=await setup(t,{getUser:async()=>({data:{user:null},error:{status:401}})});
- s.fill('email','test@example.test');s.fill('password','synthetic-password');await s.submit();
+ s.fill('username','test-user');s.fill('password','synthetic-password');await s.submit();
  assert.equal(s.run('logged'),false);
  s.auth.getUser=async()=>({data:{user:{id:'user'}},error:null});await s.submit();assert.equal(s.run('logged'),false);
  s.auth.getUser=async()=>({data:{user:{id:'user',email_confirmed_at:'2026-01-01'}},error:null});await s.submit();

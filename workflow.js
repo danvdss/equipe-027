@@ -4,11 +4,11 @@ const LiveReview = (() => {
   const q = s => document.querySelector(s);
   function entries() {
     return [...(q('#clinical')?.querySelectorAll('input,select,textarea') || [])]
-      .filter(x => x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
+      .filter(x => !(page === "occupational" && (x.closest("[data-session][hidden]") || x.closest("section[hidden]"))) && x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
       .map(x => ({el:x,key:x.name.split(':').slice(0,2).join(':'),value:x.value.trim(),label:[...(x.closest('label')?.childNodes||[])].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ') || x.name}));
   }
   function inspect(d, p) {
-    const issues=[];
+    const issues=p==='occupational'?Occupational.issues(d):[];
     const add=(message,keys,values=[])=>issues.push({message,keys,values});
     const states=[...(d['c:state']||[]),...(d['c:evaluation']||[])];
     if(states.includes('Sem queixas no momento') && (d.complaint || states.some(v=>['Queixa principal','Refere queixas','Apresenta queixa'].includes(v))))
@@ -420,7 +420,8 @@ const Flow = (() => {
     page = "home";
     if (logout) {
       logged = false;
-      login();
+      if (typeof Access !== "undefined") await Access.signOut();
+      else login();
     } else render();
   }
   function reveal(el) {
@@ -532,7 +533,7 @@ const Flow = (() => {
       output.dataset.manual = String(output.value !== output.dataset.baseline);
       updateStatus();
     });
-    const sections = [...form.children].filter((x) =>
+    const sections = [...(page === "occupational" ? form.querySelectorAll("section.panel") : form.children)].filter((x) =>
       x.matches("section,details"),
     );
     const toolbar = document.createElement("div");
@@ -567,7 +568,7 @@ const Flow = (() => {
         count.className = "section-count";
         b.append(count);
         title.replaceChildren(b);
-        const collapsed = ["diu", "implante"].includes(page) && i > 2;
+        const collapsed = (["diu", "implante"].includes(page) && i > 2) || (page === "occupational" && i > 3);
         body.hidden = collapsed;
         b.setAttribute("aria-expanded", String(!collapsed));
         b.onclick = () => {

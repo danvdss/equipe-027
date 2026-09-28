@@ -1789,3 +1789,12 @@ label.live-conflict { outline: 2px solid #b42332; outline-offset: 3px; border-ra
   .workspace[data-view="form"] .live-panel .privacy { font-size: .72rem; }
   .workspace[data-view="text"] > .result { max-height: none; }
 }
+
+/* Occupational documentation uses the same accessible field and preview system. */
+.ot-workspace [data-session] { min-width: 0; }
+.ot-workspace details { margin: .8rem 0; }
+.ot-workspace details > summary { padding: .7rem 0; cursor: pointer; font-weight: 600; }
+.ot-workspace .medicine-row > button { margin: .5rem .5rem .5rem 0; }
+.ot-workspace .ot-license { padding: .8rem; background: var(--surface); border-radius: .6rem; }
+.ot-workspace [hidden] { display: none !important; }
+.ot-workspace input, .ot-workspace select, .ot-workspace textarea { min-width: 0; max-width: 100%; }

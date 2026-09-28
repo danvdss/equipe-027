@@ -1,6 +1,6 @@
 /* Shared data normalization and documentary checks. No eligibility decisions. */
 const Care = (() => {
-  const version = "2026.09.27.2";
+  const version = "2026.09.27.4";
   const numeric = [
     "fc",
     "fr",
@@ -104,6 +104,7 @@ const Care = (() => {
     return d;
   }
   function warnings(d, p) {
+    if (p === "occupational") return Occupational.warnings(d);
     const a = [];
     if (
       p === "diu" &&
