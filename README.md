@@ -110,3 +110,7 @@ A função deve ser implantada com `verify_jwt=false`, pois é o ponto de entrad
 ## Editor único · 2026.09.29.1
 
 Substitui o fluxo anterior de prévia e resultado separados. Texto automático e editável no mesmo campo; copiar usa o texto visível e guarda uma cópia no histórico temporário. Alertas vermelhos são sugestões e não bloqueiam cópia. Edição manual é preservada; retomar automático exige confirmação e mantém a versão anterior no histórico. Em falha de composição, os dados aparecem como registro parcial, sem resultados clínicos inferidos. No celular o editor compacto fica no fluxo normal; Ctrl/Cmd+Enter copia. Verificações locais: 37 testes em DOM simulado e sintaxe; aparelhos físicos e impressão real não homologados nesta revisão.
+
+
+## Visual escuro · 2026.09.29.2
+Tema grafite com acentos verde-água, azul e lavanda. Login, navegação, módulos, editor, alertas e controles do receituário seguem a mesma paleta; papel e exportação conservam fundo branco. Ícone próprio de Terapia Ocupacional, movimentos curtos sem bloqueio, respeito a movimento reduzido e campos com contraste para leitura. Sem bibliotecas adicionais ou mudança em autenticação e composição clínica.

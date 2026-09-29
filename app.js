@@ -326,6 +326,8 @@ function login() {
   app.textContent = "Não foi possível carregar a autenticação. Recarregue a página.";
 }
 const iconPaths = {
+  occupational: "M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6 M5 12l7 2 7-2 M12 14v4 M12 18l-4 4 M12 18l4 4",
+  arrow: "M7 17L17 7 M7 7h10v10",
   renewal: "M4 8a8 8 0 0113-3l3 3 M20 3v5h-5 M20 16a8 8 0 01-13 3l-3-3 M4 21v-5h5",
   diu: "M5 5h14 M12 5v13 M9 21c0-3 3-3 3-3s3 0 3 3",
   home: "M3 10l9-7 9 7v10H3z M9 20v-7h6v7",
@@ -522,7 +524,7 @@ function dashboard() {
       "Modelo de Lagarto/SE, impressão e exportação PNG.",
     ],
   ];
-  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Qual registro<br>vamos preparar?</h1><p>Selecione um módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="icon">${uiIcon(id)}</span><span class="arrow">↗</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
+  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Qual registro<br>vamos preparar?</h1><p>Selecione um módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
 }
 function render() {
   if (!logged) return login();

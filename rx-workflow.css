@@ -95,3 +95,22 @@
     display: none !important;
   }
 }
+
+/* Dark controls; the prescription paper and export remain white. */
+@media screen {
+  :root { color-scheme:dark; --ink:#e9f0f8; --soft:#a1b0c3; --line:#304257; --teal:#63d6c5; --teal-dark:#9ae6d7; --teal-soft:#203e40; --bg:#0c1420; --danger:#ffadbb; }
+  body,.preview { background:#0c1420; color:var(--ink); }
+  .topbar,.panel,.rx-switch,.rx-dialog { background:#131f2e; color:var(--ink); border-color:var(--line); }
+  .medgroup,details,summary { background:#182637; border-color:var(--line); }
+  input[type=text],input[type=file],select { background:#0d1827; color:var(--ink); border-color:#35465c; }
+  .actions { background:linear-gradient(180deg,#131f2e00,#131f2e 28%); }
+  button { background:#23364b; color:#e2ecf7; transition:background 160ms; }
+  button:hover { background:#304960; }
+  .primary,.rx-switch button[aria-pressed="true"] { background:#63d6c5; color:#072c2b; }
+  .primary:hover { background:#91e9db; }
+  .danger { background:#3c2934; border-color:#805267; }
+  .num,.status { background:#23433e; color:#b2f5e4; }
+  .stage-shell { color-scheme:light; color:#111; }
+  :focus-visible { outline:2px solid #91d9ff; outline-offset:3px; }
+}
+@media(prefers-reduced-motion:reduce) { * { transition:none!important; } }
