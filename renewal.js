@@ -2,7 +2,7 @@
 const Renewal = (() => {
   const requested = ['Glifage XR','Sinvastatina','Rosuvastatina','Insulina','Insulina NPH','Clonazepam','Sertralina','Escitalopram','Risperidona','Amitriptilina'];
   const municipal = ['Losartana potássica','Ácido fólico','Pregabalina'];
-  const keys = ['name','strength','strengthUnit','dose','doseUnit','frequency','route','schedule','result','newRegimen'];
+  const keys = ['name','strength','strengthUnit','dose','doseUnit','frequency','route','schedule','result','newRegimen','useType'];
   const val = (d,k) => String(d[k] || '').trim();
   const select = (name,label,options) => `<label>${label}<select name="${name}"><option value="">Não informado</option>${options.map(x=>`<option>${esc(x)}</option>`).join('')}</select></label>`;
   const input = (name,label,extra='') => `<label>${label}<input name="${name}" autocomplete="off" ${extra}></label>`;
@@ -12,14 +12,14 @@ const Renewal = (() => {
   }
   function row(group,id) {
     const p=`${group}_${id}_`;
-    return `<fieldset class="medicine-row" data-med-group="${group}" data-med-id="${id}"><legend>${group==='req'?'Solicitação':'MUC'} · medicamento ${id}</legend><div class="fields two">${input(p+'name','Medicamento / tipo de insulina','list="renewal-drugs" placeholder="Selecione ou digite o nome"')}${input(p+'strength','Concentração / apresentação','placeholder="Conforme receita ou embalagem"')}${select(p+'strengthUnit','Unidade da concentração',['mg','mcg','mg/mL','mcg/mL','UI/mL','%','g'])}${input(p+'dose','Quantidade por tomada','inputmode="decimal" placeholder="Quantidade prescrita"')}${select(p+'doseUnit','Unidade da tomada',['mcg','mL','UI','comprimido(s)','cápsula(s)','gota(s)','dose(s)'])}${input(p+'frequency','Frequência','list="renewal-frequency" placeholder="Vezes ao dia ou intervalo"')}${input(p+'route','Via de administração','list="renewal-routes"')}${input(p+'schedule','Horários / esquema / observações','placeholder="Ex.: doses diferentes por horário, conforme receita"')}</div>${group==='req'?`<div class="fields two section-extra">${select(p+'result','Resultado da solicitação',['Renovado sem alteração','Renovado com alteração','Não renovado','Aguardando avaliação'])}<label>Nova prescrição / motivo / encaminhamento<textarea name="${p}newRegimen" rows="2" placeholder="Se houve alteração, transcreva o esquema completo renovado"></textarea></label></div>`:''}<button type="button" class="remove-medicine" aria-label="Remover ${group==='req'?'solicitação':'MUC'} medicamento ${id}">Remover medicamento</button></fieldset>`;
+    return `<fieldset class="medicine-row" data-med-group="${group}" data-med-id="${id}"><legend>${group==='req'?'Solicitação':'MUC'} · medicamento ${id}</legend><div class="fields two">${input(p+'name','Medicamento / tipo de insulina','list="renewal-drugs" placeholder="Selecione ou digite o nome"')}${select(p+'useType','Tipo de uso',['Contínuo','Não contínuo'])}${input(p+'strength','Concentração / apresentação','placeholder="Conforme receita ou embalagem"')}${select(p+'strengthUnit','Unidade da concentração',['mg','mcg','mg/mL','mcg/mL','UI/mL','%','g'])}${input(p+'dose','Quantidade por tomada','inputmode="decimal" placeholder="Quantidade prescrita"')}${select(p+'doseUnit','Unidade da tomada',['mcg','mL','UI','comprimido(s)','cápsula(s)','gota(s)','dose(s)'])}${input(p+'frequency','Frequência','list="renewal-frequency" placeholder="Vezes ao dia ou intervalo"')}${input(p+'route','Via de administração','list="renewal-routes"')}${input(p+'schedule','Horários / esquema / observações','placeholder="Ex.: doses diferentes por horário, conforme receita"')}</div>${group==='req'?`<div class="fields two section-extra">${select(p+'result','Resultado da solicitação',['Renovado sem alteração','Renovado com alteração','Não renovado','Aguardando avaliação'])}<label>Nova prescrição / motivo / encaminhamento<textarea name="${p}newRegimen" rows="2" placeholder="Se houve alteração, transcreva o esquema completo renovado"></textarea></label></div>`:''}<button type="button" class="remove-medicine" aria-label="Remover ${group==='req'?'solicitação':'MUC'} medicamento ${id}">Remover medicamento</button></fieldset>`;
   }
   function groupForm(group,title) {
     const existing=ids(drafts.renewal||{},group);
     return section(title,`<p class="privacy">${group==='req'?'Registre o medicamento e o esquema cuja renovação foi solicitada.':'Registre separadamente os medicamentos em uso (MUC), conforme informação obtida no atendimento.'} Concentração e quantidade por tomada são campos diferentes. Nenhuma dose é sugerida.</p><div class="medicine-shortcuts" aria-label="Atalhos ${title}">${requested.map(n=>`<button type="button" data-med-add="${group}" data-drug="${esc(n)}">+ ${esc(n)}</button>`).join('')}</div><details class="section-extra"><summary>Outros nomes e fonte municipal</summary><p class="privacy">Nomes encontrados em registros públicos municipais: não confirmam estoque atual na UBS Dr. Davi Marcos de Lima. Os atalhos acima foram solicitados pela equipe.</p><div class="medicine-shortcuts">${municipal.map(n=>`<button type="button" data-med-add="${group}" data-drug="${esc(n)}">+ ${esc(n)}</button>`).join('')}</div><a href="https://saude.lagarto.se.gov.br/lista-de-medicamentos" target="_blank" rel="noopener noreferrer">Consultar lista municipal ↗</a></details><div id="med-${group}">${(existing.length?existing:[1]).map(id=>row(group,id)).join('')}</div><button type="button" data-med-add="${group}">+ Outro medicamento</button>`);
   }
   function form() {
-    return `<div class="workspace"><form id="clinical">${groupForm('req','Medicamentos solicitados para renovação')}${groupForm('muc','MUC · medicamentos em uso')}${section('Avaliação e decisão médica',`<div class="fields two">${select('medicalRequested','Avaliação médica solicitada',['Sim','Não'])}${select('medicalDone','Avaliação médica realizada',['Sim','Não'])}${input('renewPhysician','Médico responsável / registro')}${input('prescriptionDate','Data da prescrição renovada','type="date"')}</div><p class="privacy">Marque o resultado de cada medicamento. A solicitação, a avaliação e a renovação não são confirmadas automaticamente.</p><button type="button" id="renew-all">Marcar todos os solicitados como renovados sem alteração</button><label class="section-extra">Registro da avaliação / conduta médica<textarea name="renewAssessment" rows="3"></textarea></label>`)}${section('Informações do atendimento',`<div class="fields two">${input('renewReason','Motivo da renovação / contexto')}${input('renewComplaints','Queixas relatadas')}${input('renewAllergies','Alergias informadas')}${select('renewSource','Fonte das informações sobre medicamentos',['Relato do paciente','Relato do acompanhante','Receita apresentada','Receita e relato conferidos'])}</div><label class="section-extra">Outras informações relevantes<textarea name="renewOther" rows="2"></textarea></label>`)}${section('Orientações e retorno',`${chips('renewGuides',['Uso conforme prescrição médica','Conferência da receita e das doses','Não alterar ou interromper medicamentos por conta própria','Seguimento com a equipe de referência'])}<label class="section-extra">Outras orientações realizadas<textarea name="renewGuidance" rows="2"></textarea></label><div class="fields two section-extra">${select('followStatus','Retorno',['Orientado','Agendado'])}${input('followDate','Data do retorno','type="date"')}${input('followDetails','Finalidade / horário / local')}</div>`)}</form>${outputPanel()}<datalist id="renewal-drugs">${[...requested,...municipal].map(n=>`<option value="${esc(n)}">`).join('')}</datalist><datalist id="renewal-frequency">${['1 vez ao dia','2 vezes ao dia','3 vezes ao dia','4 vezes ao dia','A cada 12 horas','A cada 8 horas','A cada 6 horas','Conforme esquema descrito'].map(n=>`<option value="${n}">`).join('')}</datalist><datalist id="renewal-routes"><option value="Oral"><option value="Subcutânea"><option value="Inalatória"><option value="Tópica"><option value="Intramuscular"></datalist></div>`;
+    return `<div class="workspace"><form id="clinical">${groupForm('req','Medicamentos solicitados para renovação')}${groupForm('muc','MUC · medicamentos em uso')}${section('Avaliação e decisão médica',`<div class="fields two">${select('medicalRequested','Avaliação médica solicitada',['Sim','Não'])}${select('medicalDone','Avaliação médica realizada',['Sim','Não'])}${select('renewDoctorTeam','Médico solicitado',['Médico da equipe','Médico de outra equipe por ausência do médico da equipe'])}${input('renewPhysician','Médico responsável / registro')}${input('prescriptionDate','Data da prescrição renovada','type="date"')}</div><p class="privacy">Marque o resultado de cada medicamento. A solicitação, a avaliação e a renovação não são confirmadas automaticamente.</p><button type="button" id="renew-all">Marcar todos os solicitados como renovados sem alteração</button><label class="section-extra">Registro da avaliação / conduta médica<textarea name="renewAssessment" rows="3"></textarea></label>`)}${section('Informações do atendimento',`<div class="fields two">${input('renewReason','Motivo da renovação / contexto')}${input('renewComplaints','Queixas relatadas')}${input('renewAllergies','Alergias informadas')}${select('renewSource','Fonte das informações sobre medicamentos',['Relato do paciente','Relato do acompanhante','Receita apresentada','Receita e relato conferidos'])}</div><label class="section-extra">Outras informações relevantes<textarea name="renewOther" rows="2"></textarea></label>`)}${section('Orientações e retorno',`${chips('renewGuides',['Uso conforme prescrição médica','Conferência da receita e das doses','Não alterar ou interromper medicamentos por conta própria','Seguimento com a equipe de referência'])}<label class="section-extra">Outras orientações realizadas<textarea name="renewGuidance" rows="2"></textarea></label><div class="fields two section-extra">${select('followStatus','Retorno',['Orientado','Agendado'])}${input('followDate','Data do retorno','type="date"')}${input('followDetails','Finalidade / horário / local')}</div>`)}</form>${outputPanel()}<datalist id="renewal-drugs">${[...requested,...municipal].map(n=>`<option value="${esc(n)}">`).join('')}</datalist><datalist id="renewal-frequency">${['À noite','Pela manhã','À tarde','Ao deitar','1 vez ao dia','2 vezes ao dia','3 vezes ao dia','4 vezes ao dia','A cada 12 horas','A cada 8 horas','A cada 6 horas','Conforme esquema descrito'].map(n=>`<option value="${n}">`).join('')}</datalist><datalist id="renewal-routes"><option value="Oral"><option value="Subcutânea"><option value="Inalatória"><option value="Tópica"><option value="Intramuscular"></datalist></div>`;
   }
   function mount() {
     const f=document.querySelector('#clinical');
@@ -47,7 +47,13 @@ const Renewal = (() => {
     return ids(d,group).map(id=>({id,prefix:`${group}_${id}_`,...Object.fromEntries(keys.map(k=>[k,val(d,`${group}_${id}_${k}`)]))})).filter(r=>keys.some(k=>r[k]));
   }
   function describe(r) {
-    return [r.name,r.strength?`concentração/apresentação ${r.strength}${r.strengthUnit?' '+r.strengthUnit:''}`:'',r.dose?`${r.dose} ${r.doseUnit} por tomada`:'',r.frequency,r.route?'via '+r.route.toLowerCase():'',r.schedule].filter(Boolean).join(', ');
+    const units={'comprimido(s)':'cp','cápsula(s)':'cápsula(s)','gota(s)':'gota(s)'};
+    const medicine=[r.name,r.strength ? r.strength+(r.strengthUnit?' '+r.strengthUnit:'') : ''].filter(Boolean).join(' ');
+    const dose=r.dose ? r.dose+' '+(units[r.doseUnit]||r.doseUnit||'') : '';
+    const frequency=r.frequency ? r.frequency.charAt(0).toLowerCase()+r.frequency.slice(1) : '';
+    const timing=/^(à noite|pela manhã|à tarde|ao deitar)$/i.test(frequency);
+    const regimen=timing ? [dose,frequency].filter(Boolean).join(' ') : [dose,frequency].filter(Boolean).join(', ');
+    return [medicine,regimen,r.route?'via '+r.route.toLowerCase():'',r.schedule].filter(Boolean).join(', ');
   }
   function compose(d) {
     const req=rows(d,'req'),muc=rows(d,'muc');
@@ -64,29 +70,33 @@ const Renewal = (() => {
     }
     if(d.prescriptionDate && !req.some(r=>r.result.startsWith('Renovado')))Care.error('prescriptionDate','Registre quais medicamentos foram renovados antes de informar a data da prescrição renovada.');
     if(d.prescriptionDate && d.recordDate && d.prescriptionDate>d.recordDate)Care.error('prescriptionDate','A prescrição renovada não pode ter data posterior ao atendimento registrado.');
-    const p=[sentence('Paciente comparece à unidade para solicitar renovação de '+req.map(describe).join('; '))];
+    const list = a => a.length < 2 ? (a[0] || '') : a.slice(0,-1).join(', ')+' e '+a[a.length-1];
+    const requestedText=req.map(r=>describe(r)+(r.useType==='Contínuo'?' (de uso contínuo)':r.useType==='Não contínuo'?' (de uso não contínuo)':''));
+    const p=[sentence('Paciente comparece à unidade para solicitar renovação de receituário de '+(req.length===1?'medicamento: ':'medicamentos: ')+requestedText.join('; '))];
     if(d.renewReason)p.push(sentence('Motivo informado: '+d.renewReason));
-    if(muc.length)p.push(sentence('MUC (medicamentos em uso): '+muc.map(describe).join('; ')));
+    if(muc.length)p.push(sentence('MUC: '+muc.map(describe).join('; ')));
     if(d.renewSource)p.push(sentence('Fonte das informações: '+d.renewSource.toLowerCase()));
     if(d.renewComplaints)p.push(sentence('Queixas relatadas: '+d.renewComplaints));
     if(d.renewAllergies)p.push(sentence('Alergias informadas: '+d.renewAllergies));
     if(d.renewOther)p.push(sentence(d.renewOther));
     const assessment=[];
-    if(d.medicalRequested==='Sim')assessment.push('Foi solicitada avaliação médica');
-    if(d.medicalDone==='Sim')assessment.push('Avaliação médica realizada'+(d.renewPhysician?' por '+d.renewPhysician:''));
+    if(d.medicalRequested==='Sim')assessment.push(d.renewDoctorTeam==='Médico da equipe'?'Solicitada avaliação do médico da equipe':d.renewDoctorTeam==='Médico de outra equipe por ausência do médico da equipe'?'Solicitada avaliação de médico de outra equipe devido à ausência do médico da equipe':'Solicitada avaliação médica');
+    const renewed=req.filter(r=>r.result==='Renovado sem alteração');
+    if(d.medicalDone==='Sim'&&!req.some(r=>r.result.startsWith('Renovado')))assessment.push('Avaliação médica realizada'+(d.renewPhysician?' por '+d.renewPhysician:''));
+    if(renewed.length)assessment.push('Após avaliação, '+(d.renewPhysician?'médico '+d.renewPhysician:'médico')+' renova '+list(renewed.map(r=>r.name))+', sem alteração do esquema informado');
     if(d.medicalRequested==='Sim'&&d.medicalDone==='Não')assessment.push('Avaliação médica ainda não realizada');
     if(d.renewAssessment)assessment.push('Registro da avaliação/conduta: '+d.renewAssessment);
     for(const r of req){
-      if(r.result==='Renovado sem alteração')assessment.push('Após avaliação médica, renovada a prescrição de '+describe(r)+'; mantido o esquema informado'+(r.newRegimen?'; '+r.newRegimen:''));
+      if(r.result==='Renovado sem alteração'&&r.newRegimen)assessment.push(r.name+': '+r.newRegimen);
       if(r.result==='Renovado com alteração')assessment.push('Após avaliação médica, renovada a prescrição de '+r.name+' com alteração: '+r.newRegimen);
       if(r.result==='Não renovado')assessment.push('Não realizada renovação de '+r.name+(r.newRegimen?': '+r.newRegimen:''));
       if(r.result==='Aguardando avaliação')assessment.push('Solicitação de '+r.name+' aguardando avaliação médica'+(r.newRegimen?': '+r.newRegimen:''));
     }
     if(d.prescriptionDate)assessment.push('Data da prescrição renovada: '+d.prescriptionDate.split('-').reverse().join('/'));
-    if(assessment.length)p.push(assessment.map(sentence).join(' '));
     const guides=d['c:renewGuides']||[];
-    if(guides.length)p.push(sentence('Orientações realizadas: '+guides.map(x=>x.charAt(0).toLowerCase()+x.slice(1)).join('; ')));
-    if(d.renewGuidance)p.push(sentence(d.renewGuidance));
+    if(guides.length)assessment.push('Realizadas orientações sobre '+guides.map(x=>x.charAt(0).toLowerCase()+x.slice(1)).join('; '));
+    if(d.renewGuidance)assessment.push('Orientações realizadas: '+d.renewGuidance);
+    if(assessment.length)p.push('Conduta: '+assessment.map(sentence).join(' '));
     return p.join('\n\n');
   }
   return {form,mount,compose,rows,describe};

@@ -114,3 +114,6 @@ Substitui o fluxo anterior de prévia e resultado separados. Texto automático e
 
 ## Visual escuro · 2026.09.29.2
 Tema grafite com acentos verde-água, azul e lavanda. Login, navegação, módulos, editor, alertas e controles do receituário seguem a mesma paleta; papel e exportação conservam fundo branco. Ícone próprio de Terapia Ocupacional, movimentos curtos sem bloqueio, respeito a movimento reduzido e campos com contraste para leitura. Sem bibliotecas adicionais ou mudança em autenticação e composição clínica.
+
+## Renovação · 2026.09.29.3
+Modelo com solicitação de renovação de receituário, MUC e Conduta. Tipo de uso contínuo/não contínuo por medicamento e escolha explícita entre médico da equipe e médico de outra equipe por ausência. Medicamentos em formato compacto, por exemplo “Sertralina 50 mg, 1 cp à noite”, somente a partir do preenchimento. Renovação e orientações continuam dependentes do registro do profissional; não são presumidas. 39 testes passaram.

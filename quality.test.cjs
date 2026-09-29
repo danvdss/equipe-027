@@ -331,13 +331,13 @@ test('renewal keeps request, MUC and medical decision separate without defaults'
   assert.equal(w.document.querySelector('[name=req_1_strength]').value,'0.5');
   assert.equal(w.document.querySelector('[name=muc_1_name]').value,'Sinvastatina');
   let result=run("collect();compose(drafts.renewal,'renewal')");
-  assert.match(result,/solicitar renovação de Clonazepam, concentração\/apresentação 0.5 mg/);
-  assert.match(result,/MUC \(medicamentos em uso\): Sinvastatina/);
+  assert.match(result,/solicitar renovação de receituário de medicamento: Clonazepam 0.5 mg/);
+  assert.match(result,/MUC: Sinvastatina/);
   assert.doesNotMatch(result,/Após avaliação médica|aguardando avaliação médica|renovada a prescrição/);
   set('medicalRequested','Sim');set('medicalDone','Sim');
   w.document.querySelector('#renew-all').click();
   result=run("collect();compose(drafts.renewal,'renewal')");
-  assert.match(result,/Após avaliação médica, renovada a prescrição de Clonazepam/);
+  assert.match(result,/Após avaliação, médico renova Clonazepam/);
   assert.doesNotMatch(result,/renovada a prescrição de Sinvastatina/);
 });
 test('renewal rejects unsupported decisions, missing dose units and unspecified insulin', t => {
@@ -428,4 +428,22 @@ test('clearing the last clinical field also clears the automatic output', t => {
   set('complaint','');run('LiveReview.update()');
   assert.equal(w.document.querySelector('#output').value,'');
   assert.doesNotMatch(w.document.querySelector('#live-preview').textContent,/Queixa temporária/);
+});
+
+
+test('renewal follows MUC and Conduta template with explicit use and physician team', t => {
+  const {run}=setup(t);
+  const d={req_1_name:'Medicamento A',req_1_useType:'Contínuo',muc_1_name:'Medicamento B',medicalRequested:'Sim',renewDoctorTeam:'Médico de outra equipe por ausência do médico da equipe','c:renewGuides':['Uso conforme prescrição médica']};
+  const text=run('Renewal.compose('+JSON.stringify(d)+')');
+  assert.match(text,/Paciente comparece à unidade para solicitar renovação de receituário de medicamento: Medicamento A \(de uso contínuo\)/);
+  assert.match(text,/MUC: Medicamento B/);
+  assert.match(text,/Conduta: Solicitada avaliação de médico de outra equipe devido à ausência do médico da equipe/);
+  assert.match(text,/Realizadas orientações sobre uso conforme prescrição médica/);
+  assert.doesNotMatch(text,/médico renova/);
+});
+
+
+test('renewal uses compact medicine notation without documentary labels', t => {
+  const {run}=setup(t);
+  assert.equal(run("Renewal.describe({name:'Sertralina',strength:'50',strengthUnit:'mg',dose:'1',doseUnit:'comprimido(s)',frequency:'À noite'})"),'Sertralina 50 mg, 1 cp à noite');
 });
