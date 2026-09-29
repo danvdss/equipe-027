@@ -384,7 +384,7 @@ function section(title, content) {
   return `<section class="panel"><h2>${title}</h2>${content}</section>`;
 }
 function outputPanel() {
-  return `<aside class="result"><button class="primary generate" id="generate">REVISAR E SALVAR</button><section class="panel"><div class="row-title"><h2>${page === "lab" ? "LAB gerado" : "Evolução gerada"}</h2><span class="tag">Editável</span></div><label for="output" class="muted">Revise antes de copiar</label><textarea id="output" placeholder="O texto gerado aparecerá aqui. Apenas as informações preenchidas serão incluídas." spellcheck="true"></textarea><div class="actions"><button class="primary" id="copy">${page === "lab" ? "COPIAR LAB" : "COPIAR"}</button><button id="edit">Editar</button><button id="regenerate">Revisar e salvar</button><button id="clear">Limpar</button></div></section><p class="privacy">Sem cadastro de pacientes. Os rascunhos ficam na memória desta sessão. Cópias, impressões e arquivos exportados permanecem fora do controle da plataforma.</p></aside>`;
+  return `<aside class="result"><section class="panel editor-panel"><div class="row-title"><h2>${page === "lab" ? "Registro dos exames" : "Evolução"}</h2><span class="tag" id="editor-mode">Automático</span></div><p class="privacy">Preencha e acompanhe aqui. Você pode editar o texto e copiar a qualquer momento.</p><label for="output" class="muted">Texto do atendimento</label><div class="editor-stack"><div id="live-preview" aria-hidden="true"></div><textarea id="output" placeholder="Comece a preencher o atendimento…" spellcheck="true" aria-describedby="output-status"></textarea></div><div class="actions"><button class="primary" id="copy">Copiar texto</button><button id="generate">Guardar no histórico</button></div><details class="editor-options"><summary>Opções do texto</summary><div class="actions"><button id="edit">Editar texto</button><button id="regenerate">Retomar automático</button><button id="clear">Limpar módulo</button></div></details><p id="live-status" role="status" aria-live="polite"></p><details id="review-details"><summary id="live-heading">Pontos para revisar</summary><p class="privacy">Alertas são sugestões, não comprovação de informação falsa. Não impedem copiar ou continuar.</p><div id="live-issues"></div></details></section><p class="privacy">Rascunho temporário: recarregar ou fechar apaga o preenchimento.</p></aside>`;
 }
 function clinical() {
   const g = page === "general",
@@ -547,7 +547,7 @@ function render() {
     Flow.mount();
     $("#clinical").onsubmit = (e) => e.preventDefault();
     $("#generate").onclick = generate;
-    $("#regenerate").onclick = generate;
+    $("#regenerate").onclick = () => LiveReview.resume();
     $("#copy").onclick = () => Flow.copyCurrent();
     $("#edit").onclick = () => $("#output").focus();
     $("#clear").onclick = () => Flow.clear();

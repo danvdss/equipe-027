@@ -106,3 +106,7 @@ O login local foi removido. O formulário envia usuário e senha à Edge Functio
 Sessões somente em memória; saída e recarga apagam dados locais. A função usa somente a chave pública/anon, sem privilégios administrativos. Supabase Auth mantém suas próprias políticas de senha e limites de tentativas; o proxy propaga 429. O limite de origem CORS não substitui autenticação. A conta compartilhada não oferece autoria individual. Repositório e interface permanecem públicos, e a versão anterior do login pode continuar no histórico Git. Nenhum dado clínico é enviado ao serviço de autenticação.
 
 A função deve ser implantada com `verify_jwt=false`, pois é o ponto de entrada antes da sessão; a autenticação é feita dentro dela pelo endpoint oficial de senha do Supabase. Não existe emissão própria de JWT, comparação de senha local ou chave de serviço no cliente.
+
+## Editor único · 2026.09.29.1
+
+Substitui o fluxo anterior de prévia e resultado separados. Texto automático e editável no mesmo campo; copiar usa o texto visível e guarda uma cópia no histórico temporário. Alertas vermelhos são sugestões e não bloqueiam cópia. Edição manual é preservada; retomar automático exige confirmação e mantém a versão anterior no histórico. Em falha de composição, os dados aparecem como registro parcial, sem resultados clínicos inferidos. No celular o editor compacto fica no fluxo normal; Ctrl/Cmd+Enter copia. Verificações locais: 37 testes em DOM simulado e sintaxe; aparelhos físicos e impressão real não homologados nesta revisão.

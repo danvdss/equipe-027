@@ -73,17 +73,23 @@ const LiveReview = (() => {
       issue.keys=[...new Set(rows.filter(r=>issue.values.some(v=>r.value.toLowerCase().includes(v.toLowerCase())||v.toLowerCase().includes(r.value.toLowerCase()))).map(r=>r.key))];
       issues.push(issue);
     }
-    const partial=!!failure || issues.length>0;
-    q('#live-heading').textContent=partial&&meaningful?'Prévia em construção · confira os trechos em vermelho':'Evolução em tempo real';
-    if(!meaningful && !text)box.textContent='Preencha um campo para acompanhar o texto aqui.';
-    else if(partial) {
-      const opening= ['general','has','dm','both','prenatal'].includes(page)?(()=>{try{return Notes.opening(d,page);}catch{return 'Registro em construção.';}})(): 'Registro em construção.';
-      box.innerHTML=esc(opening)+'\n\n'+rows.map(r=>{
-        const invalid=issues.some(i=>i.keys.includes(r.key)&&(!i.values.length||i.values.includes(r.value)));
-        const s=esc(r.label+': '+r.value)+'.';
-        return invalid?'<mark class="incoherent">'+s+'</mark>':s;
-      }).join('\n');
-    } else box.textContent=text;
+    const partial=!!failure;
+    if (failure) {
+      // Keep incomplete answers visible; do not invent a clinical conclusion.
+      text = meaningful ? rows.map(r => r.label + ': ' + r.value + '.').join('\n') : '';
+    }
+    const manual=out.dataset.manual==='true';
+    if(!manual) {
+      out.value=text;out.dataset.baseline=text;out.dataset.stale='false';
+    } else out.dataset.stale=String(text!==out.dataset.baseline);
+    const manualIssues=manual?analyzeText(out.value):[];
+    issues.push(...manualIssues);
+    const terms=issues.flatMap(i=>i.values?.length?i.values:rows.filter(r=>i.keys.includes(r.key)).map(r=>r.value));
+    box.innerHTML=painted(out.value,terms)+'\n';
+    box.scrollTop=out.scrollTop;
+    q('#editor-mode').textContent=manual?'Edição manual':'Automático';
+    q('#live-heading').textContent=issues.length ? issues.length+' ponto(s) para revisar — opcional' : 'Nenhum conflito identificado';
+    q('#review-details').hidden=!issues.length;
     q('#live-issues').replaceChildren();
     form.querySelectorAll('.live-conflict').forEach(el=>el.classList.remove('live-conflict'));
     for(const issue of issues) {
@@ -98,26 +104,27 @@ const LiveReview = (() => {
       for(const r of candidates){const b=document.createElement('button');b.type='button';b.textContent='Desmarcar “'+r.value+'”';b.onclick=()=>{r.el.checked=false;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();};item.append(b);}
       q('#live-issues').append(item);
     }
-    const manual=out.dataset.manual==='true';
-    const manualIssues=manual?analyzeText(out.value):[];
-    const review=q('#manual-review');review.hidden=!manual;
-    if(manual){review.innerHTML='<strong>Texto editado manualmente · preservado</strong><p>A prévia acima acompanha o formulário. Use “Revisar e salvar” para comparar antes de substituir sua edição.</p><div class="live-text">'+painted(out.value,manualIssues.flatMap(i=>i.values))+'</div>'+manualIssues.map(i=>'<p class="live-issue">'+esc(i.message)+'</p>').join('');}
-    if(!meaningful && !text && !manual){out.value='';out.dataset.baseline='';out.dataset.stale='false';}
-    else if(!partial && !manual){out.value=text;out.dataset.baseline=text;out.dataset.manual='false';out.dataset.stale='false';}
-    else if(partial && out.value)out.dataset.stale='true';
-    q('#live-status').textContent=issues.length?issues.length+' ponto(s) para revisar.':meaningful?'Prévia atualizada. Nenhum conflito detectado pelas regras disponíveis.':'Aguardando preenchimento.';
+    q('#live-status').textContent=manual ? (out.dataset.stale==='true'?'Formulário alterado. Sua edição foi preservada; use Retomar automático se desejar.':'Sua edição está preservada.') : partial?'Texto parcial: confira os campos indicados. Você pode continuar e copiar.':'Atualizado automaticamente. Revise antes de copiar.';
     Flow.updateStatus();
     return {issues,manualIssues,text,partial};
   }
   function schedule(){const form=q('#clinical');clearTimeout(timer);timer=setTimeout(()=>{if(q('#clinical')===form)update();},180);}
+  async function resume(){
+    const out=q('#output');
+    if(out.dataset.manual==='true') {
+      const choice=await Flow.dialog('Retomar atualização automática?', 'Sua edição manual será substituída pelo texto dos campos. Uma cópia ficará no histórico desta sessão.', [['cancel','Manter minha edição'],['replace','Retomar automático']]);
+      if(choice!=='replace')return;
+      if(out.value.trim())saveHistory(out.value);
+    }
+    out.dataset.manual='false';update();collect();
+  }
   function mount(){
-    const panel=document.createElement('section');panel.className='panel live-panel';
-    panel.innerHTML='<details open id="live-details"><summary id="live-heading">Evolução em tempo real</summary><p class="privacy">Atualização automática. Vermelho indica informação a revisar. A checagem usa regras dos campos e não substitui a revisão do texto livre.</p><p id="live-status" role="status" aria-live="polite"></p><div id="live-preview" class="live-text" aria-label="Prévia automática da evolução"></div><div id="live-issues"></div><div id="manual-review" hidden></div></details>';
-    q('.result').prepend(panel);
-    q('#output').addEventListener('input',schedule);
+    const out=q('#output');
+    out.addEventListener('input',schedule);
+    out.addEventListener('scroll',()=>{q('#live-preview').scrollTop=out.scrollTop;q('#live-preview').scrollLeft=out.scrollLeft;});
     update();
   }
-  return {mount,update,schedule,inspect,analyzeText};
+  return {mount,update,schedule,inspect,analyzeText,resume};
 })();
 const Flow = (() => {
   let undo = null,
@@ -208,7 +215,7 @@ const Flow = (() => {
   function updateStatus() {
     const s = q("#output-status");
     if (s)
-      s.textContent = Care.textState(state()) + ". Revise antes de copiar.";
+      s.textContent = q("#output").value.length + " caracteres · " + (q("#output").dataset.manual === "true" ? "edição manual preservada" : "atualização automática");
   }
   function showError(e) {
     clearError();
@@ -239,113 +246,16 @@ const Flow = (() => {
       });
   }
   async function generate() {
-    if (busy) return false;
-    busy = true;
-    try {
-      const review = LiveReview.update();
-      if (review.issues.length) { const e = new Error(review.issues[0].message); e.field = review.issues[0].keys[0]; throw e; }
-      collect();
-      const d = Care.normalize(drafts[page]);
-      Care.validate(d, page);
-      const text = compose(d, page);
-      const warnings = Care.warnings(d, page);
-      q("#pending-list")?.remove();
-      if (warnings.length) {
-        const box = document.createElement("div");
-        box.id = "pending-list";
-        box.className = "pending-list";
-        for (const w of warnings) {
-          const b = document.createElement("button");
-          b.type = "button";
-          b.textContent = w.text;
-          b.onclick = () => {
-            view("form");
-            const f = q("#clinical").elements.namedItem(w.key);
-            if (f) {
-              reveal(f);
-              f.focus();
-              f.scrollIntoView({ block: "center" });
-            }
-          };
-          box.append(b);
-        }
-        q("#clinical").prepend(box);
-        if (
-          (await dialog(
-            "Revisar informações não registradas",
-            warnings.map((w) => w.text).join("\n"),
-            [
-              ["back", "Voltar ao formulário"],
-              ["continue", "Gerar com as informações disponíveis"],
-            ],
-          )) !== "continue"
-        )
-          return false;
-      }
-      if (
-        q("#output").dataset.manual === "true" &&
-        q("#output").value !== text
-      ) {
-        const choice = await dialog(
-          "Preservar edição manual",
-          "Compare os textos antes de substituir. O texto atual permanece se você cancelar.",
-          [
-            ["cancel", "Manter texto atual"],
-            ["replace", "Substituir pelo novo texto"],
-          ],
-          [
-            ["Texto atual", q("#output").value],
-            ["Novo texto", text],
-          ],
-        );
-        if (choice !== "replace") return false;
-      }
-      q("#output").value = text;
-      q("#output").dataset.stale = "false";
-      q("#output").dataset.manual = "false";
-      q("#output").dataset.baseline = text;
-      drafts[page] = {
-        ...d,
-        output: text,
-        stale: false,
-        manual: false,
-        baseline: text,
-      };
-      clearError();
-      updateStatus();
-      saveHistory(text);
-      toast("Texto gerado. Revise antes de copiar.");
-      return true;
-    } catch (e) {
-      showError(e);
-      return false;
-    } finally {
-      busy = false;
-    }
+    LiveReview.update();
+    const text=q('#output').value;
+    if(!text.trim()){toast('Preencha um campo ou escreva no texto.');return false;}
+    collect();saveHistory(text);toast('Texto guardado no histórico desta sessão.');return true;
   }
   async function copyCurrent() {
-    const review = LiveReview.update();
-    if (review.issues.length || review.manualIssues?.length) {
-      view("text");
-      return toast("Revise os pontos destacados em vermelho antes de copiar.");
-    }
-    if (!q("#output").value.trim())
-      return toast("Gere um texto antes de copiar.");
-    if (q("#output").dataset.stale === "true") {
-      const choice = await dialog(
-        "O formulário mudou",
-        "O texto pode não refletir as respostas atuais.",
-        [
-          ["cancel", "Cancelar"],
-          ["update", "Atualizar texto"],
-          ["old", "Copiar versão atual mesmo assim"],
-        ],
-      );
-      if (choice === "update") {
-        if (!(await generate())) return;
-      } else if (choice !== "old") return;
-    }
-    await copy(q("#output").value);
+    LiveReview.update();
+    const text=q('#output').value;
+    if(!text.trim())return toast('Preencha um campo ou escreva no texto.');
+    collect();saveHistory(text);await copy(text);
   }
   async function clear() {
     collect();
@@ -662,19 +572,14 @@ const Flow = (() => {
     initial = snapshot();
     const bar = document.createElement("div");
     bar.className = "mobile-actions";
-    bar.innerHTML =
-      '<button type="button" class="primary" id="mobile-generate">Revisar ' +
-      (page === "lab" ? "LAB" : "evolução") +
-      '</button><button type="button" id="mobile-review">Ver texto</button>';
-    q(".workspace").after(bar);
-    q("#mobile-generate").onclick = async () => {
-      if (await generate()) view("text");
-    };
+    bar.innerHTML = '<button type="button" class="primary" id="mobile-generate">Copiar texto</button><button type="button" id="mobile-review">Ver evolução</button>';
+    q('.workspace').after(bar);
+    q('#mobile-generate').onclick = copyCurrent;
     q("#mobile-review").onclick = () => view("text");
     form.addEventListener("keydown", async (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        await generate();
+        await copyCurrent();
       }
     });
     updateStatus();

@@ -105,29 +105,19 @@ test("all modules mount and module drafts survive navigation", (t) => {
     "Queixa de teste",
   );
 });
-test("stale copy requires explicit decision and manual text is preserved on cancel", async (t) => {
+test("one editor preserves manual text and copies without mandatory dialogs", async (t) => {
   const { w, run, set, answer } = setup(t);
-  run("navigate('general')");
-  set("complaint", "Queixa inicial");
-  assert.equal(await run("generate()"), true);
-  const out = w.document.querySelector("#output");
-  out.value += "\nEdição manual";
-  out.dispatchEvent(new w.Event("input", { bubbles: true }));
-  set("complaint", "Queixa revisada");
-  assert.equal(out.dataset.stale, "true");
-  const p = run("Flow.copyCurrent()");
-  answer("Cancelar");
-  await p;
-  assert.equal(w.copied, undefined);
-  const g = run("generate()");
-  answer("Manter texto atual");
-  assert.equal(await g, false);
-  assert.match(out.value, /Edição manual/);
-  const g2 = run("generate()");
-  answer("Substituir pelo novo texto");
-  assert.equal(await g2, true);
-  assert.match(out.value, /Queixa revisada/);
-  assert.doesNotMatch(out.value, /Edição manual/);
+  run("navigate('general')");set('complaint','Queixa inicial');run('LiveReview.update()');
+  const out=w.document.querySelector('#output');out.value+=' Edição manual';out.dispatchEvent(new w.Event('input',{bubbles:true}));
+  set('complaint','Queixa revisada');await run('Flow.copyCurrent()');
+  assert.match(w.copied,/Edição manual/);assert.equal(w.document.querySelector('dialog'),null);
+  const cancel=run('LiveReview.resume()');answer('Manter minha edição');await cancel;
+  assert.match(out.value,/Edição manual/);
+  const resume=run('LiveReview.resume()');answer('Retomar automático');await resume;
+  assert.match(out.value,/Queixa revisada/);assert.doesNotMatch(out.value,/Edição manual/);
+  assert.ok(run("history.some(h=>h.text.includes('Edição manual'))"));
+  assert.equal(w.document.querySelectorAll('#output').length,1);
+  assert.equal(w.document.querySelector('#live-preview').getAttribute('aria-hidden'),'true');
 });
 test("clear can be undone; new encounter clears all modules and history", async (t) => {
   const { w, run, set, answer } = setup(t);
@@ -182,11 +172,8 @@ test("validation focuses field, section search and mobile view switch work", asy
   const { w, run, set } = setup(t);
   run("navigate('general')");
   set("spo", "140");
-  assert.equal(await run("generate()"), false);
-  assert.equal(
-    w.document.querySelector("[name=spo]").getAttribute("aria-invalid"),
-    "true",
-  );
+  assert.equal(await run("generate()"), true);
+  assert.match(w.document.querySelector("#live-issues").textContent,/percentual/);
   const search = w.document.querySelector("#form-search");
   search.value = "queixa";
   search.dispatchEvent(new w.Event("input"));
@@ -286,11 +273,8 @@ test("EPF and EAS start blank, preserve findings and reject conflicting results"
     /Proteínas:|Hemácias:|diagnóstico|infecção urinária/i,
   );
   set("epfStatus", "Não encontrados na amostra examinada");
-  assert.equal(await run("generate()"), false);
-  assert.equal(
-    w.document.querySelector("[name=epfStatus]").getAttribute("aria-invalid"),
-    "true",
-  );
+  assert.equal(await run("generate()"), true);
+  assert.match(w.document.querySelector("#live-issues").textContent,/EPF/);
 });
 test("EPF and EAS use separate dates and survive navigating away", async (t) => {
   const { w, run, set } = setup(t);
@@ -389,15 +373,15 @@ test('live preview updates while typing without generating history and escapes m
   await run('Flow.copyCurrent()');
   assert.match(w.copied,/Queixa revisada/);
 });
-test('live conflicts remain selected until explicit correction and block copying', async t => {
+test('live conflicts remain selected until explicit correction without blocking copying', async t => {
   const {w,run,set}=setup(t);run("navigate('general')");
   const no=w.document.querySelector('input[value="Sem queixas no momento"]');no.click();
   set('complaint','Dor no braço');
   run('LiveReview.update()');
   assert.equal(no.checked,true);
   assert.match(w.document.querySelector('#live-issues').textContent,/desmarque/);
-  assert.match(w.document.querySelector('#live-preview .incoherent').textContent,/Sem queixas|Dor no braço/);
-  await run('Flow.copyCurrent()');assert.equal(w.copied,undefined);
+  assert.match(w.document.querySelector('#live-preview').textContent,/Sem queixas|Dor no braço/);
+  await run('Flow.copyCurrent()');assert.match(w.copied,/Dor no braço/);
   [...w.document.querySelectorAll('#live-issues button')].find(b=>b.textContent==='Desmarcar “Sem queixas no momento”').click();
   assert.equal(no.checked,false);
   assert.equal(w.document.querySelectorAll('#live-issues .live-issue').length,0);
@@ -412,7 +396,7 @@ test('live partial renewal retains incomplete input and manual edits survive sub
   const out=w.document.querySelector('#output');out.value+=' Texto manual preservado.';out.dispatchEvent(new w.Event('input',{bubbles:true}));
   set('req_1_frequency','1 vez ao dia');run('LiveReview.update()');
   assert.match(out.value,/Texto manual preservado/);
-  assert.match(w.document.querySelector('#live-preview').textContent,/1 vez ao dia/);
+  assert.equal(w.document.querySelector('#live-preview').textContent.trim(),out.value.trim());
   assert.equal(out.dataset.stale,'true');
 });
 test('live validation covers EPF contradiction and pending callbacks cannot cross modules', async t => {
@@ -427,8 +411,8 @@ test('live validation covers EPF contradiction and pending callbacks cannot cros
 test('manual text lexical conflicts are highlighted as possible, not diagnosed', t => {
   const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Dor');run('LiveReview.update()');
   const out=w.document.querySelector('#output');out.value='Paciente sem queixas. Refere dor no braço.';out.dispatchEvent(new w.Event('input',{bubbles:true}));run('LiveReview.update()');
-  assert.equal(w.document.querySelectorAll('#manual-review .incoherent').length,2);
-  assert.match(w.document.querySelector('#manual-review').textContent,/Possível incoerência/);
+  assert.equal(w.document.querySelectorAll('#live-preview .incoherent').length,2);
+  assert.match(w.document.querySelector('#live-issues').textContent,/Possível incoerência/);
 });
 
 test('free-text conflicts participate in live review without mistaking explicit negation', t => {
