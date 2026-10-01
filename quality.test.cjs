@@ -459,3 +459,25 @@ test('puericultura flags inconsistent dates and results without blocking copy',a
  const {run,set,w}=setup(t);run("navigate('child')");set('pcBirth','2026-01-01');set('recordDate','0200-01-02');set('pcHeelStatus','Não realizado');set('pcScreen0','Dentro da normalidade');run('LiveReview.update()');assert.match(w.document.querySelector('#live-issues').textContent,/ano informado/);assert.match(w.document.querySelector('#live-issues').textContent,/resultados preenchidos/);await run('Flow.copyCurrent()');assert.match(w.copied,/Fenilcetonúria/);
  assert.equal(run("ChildCare.bmi({pcWeight:'0',pcLength:'50'})"),'');assert.equal(run("ChildCare.age({pcBirth:'2026-01-01',recordDate:'2025-12-31'})"),'');
 });
+
+test('motor and primitive reflex entries are exclusive, optional and restored in live narrative',t=>{
+ const {run,set,w}=setup(t);run("navigate('child')");
+ assert.equal(w.document.querySelectorAll('[name^="pcMotor_"]:checked').length,0);
+ const choose=(id,value)=>w.document.querySelector(`[name="pcMotor_${id}"][value="${value}"]`).click();
+ choose('roll','Presente');choose('moro','Ausente');choose('galant','Não avaliado');
+ set('pcMotorSource_roll','Relatado pelo responsável');set('pcMotorNote_moro','Avaliado bilateralmente');run('LiveReview.update()');
+ let text=w.document.querySelector('#output').value;
+ assert.match(text,/Marcos motores: Rola de prono para supino: Presente — relatado pelo responsável/);
+ assert.match(text,/Reflexos primitivos: Moro: Ausente \(Avaliado bilateralmente\)/);
+ assert.match(text,/Galant \/ encurvamento do tronco: Não avaliado/);
+ assert.doesNotMatch(text,/Preensão palmar:|atraso|desaparecer até|normalidade/);
+ choose('roll','Ausente');run('LiveReview.update()');
+ assert.equal(w.document.querySelectorAll('[name="pcMotor_roll"]:checked').length,1);
+ run("navigate('home');navigate('child')");assert.equal(w.document.querySelector('[name="pcMotor_roll"][value="Ausente"]').checked,true);
+});
+test('motor loss alert is nonblocking and never inserts a diagnosis',async t=>{
+ const {run,set,w}=setup(t);run("navigate('child')");set('pcMotorLoss','Relatada / observada');set('pcMotorLossDetails','Deixou de realizar habilidade previamente relatada');run('LiveReview.update()');
+ assert.match(w.document.querySelector('#live-issues').textContent,/requer avaliação profissional/);
+ await run('Flow.copyCurrent()');assert.match(w.copied,/Perda de habilidade/);assert.doesNotMatch(w.copied,/diagnóstico|atraso confirmado/);
+ assert.equal(run("ChildCare.compose({pcMotor_moro:'',pcMotor_roll:''})"),'');
+});

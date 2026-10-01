@@ -120,3 +120,13 @@ Modelo com solicitação de renovação de receituário, MUC e Conduta. Tipo de 
 
 ## Puericultura · 2026.10.01.1
 Aba independente com identificação, nascimento/pré-natal, triagens do pezinho por doença e outras triagens, vacinação por fonte/data, antropometria, alimentação, desenvolvimento, exame físico e conduta/retorno. Campos vazios não geram negativas ou exames normais. Idade cronológica e IMC aritmético calculados, sem classificação nutricional ou diagnóstico. Idade corrigida e curvas/percentis não são calculados. Gráficos registrados apenas mediante escolha explícita; a plataforma não desenha curvas. Alertas documentais opcionais para datas, unidades e respostas conflitantes; edição manual e cópia continuam disponíveis. Dados do exemplo não são pré-preenchidos. Fonte estrutural consultada em 01/10/2026: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-crianca/caderneta .
+
+### Puericultura: desenvolvimento motor e reflexos (2026.10.01.2)
+
+- 21 marcos organizados nas referências de 2–24 meses de Zubler et al., Pediatrics (2022), tabela 6: https://doi.org/10.1542/peds.2021-052138. Idades de vigilância (maioria ≥75%), não datas exatas de aquisição ou limites diagnósticos. Observação livre de 0–2 meses.
+- Janelas OMS (percentis 1–99) identificadas separadamente: https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/motor-development-milestones/mm_windows_table.pdf.
+- Oito reflexos: Moro, preensões palmar e plantar, busca, sucção reflexa, marcha automática, RTCA e Galant. Futagi et al., International Journal of Pediatrics (2012), https://doi.org/10.1155/2012/191562, embasa Moro e preensões. Material didático da FCM–Unicamp complementa os demais, explicitamente identificado como fonte acadêmica, não artigo: https://www.fcm.unicamp.br/fcm/neuropediatria-conteudo-didatico/exame-neurologico/reflexos-primitivos.
+- Variação em prematuros contextualizada por Olhweiler et al., Arq Neuropsiquiatr (2005): https://www.scielo.br/j/anp/a/nMyVy6WXGgNyrTSFg7cY5cK/?lang=pt. Não extrapola a coorte para prazos individuais.
+- Presente/Ausente/Não avaliado são opções mutuamente exclusivas, sem padrão marcado. Fonte e observações por item; somente dados preenchidos entram na evolução. Nenhuma ausência produz diagnóstico ou classificação automática.
+- Habilidades adquiridas não têm desaparecimento esperado. Perda registrada gera alerta opcional e não bloqueia cópia. Idade corrigida é informada pelo profissional, não inferida.
+- Verificação: 43 testes aprovados e checagem sintática. Referências consultadas em 01/10/2026.

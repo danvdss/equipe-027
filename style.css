@@ -1924,3 +1924,13 @@ svg { flex-shrink:0; }
 @media(max-width:760px) { .login-access { padding:1rem .5rem; } .login-card { border-radius:18px; } .intro { padding:1.4rem; } .card { min-height:160px; } .main-nav { background:#101d2c; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
 @media(forced-colors:active) { .editor-stack #live-preview { display:none; } .result .editor-stack #output { color:CanvasText; -webkit-text-fill-color:CanvasText; caret-color:CanvasText; } }
+
+/* Motor documentation: mutually exclusive, keyboard-accessible choices. */
+.motor-row { min-width:0; margin:1rem 0; padding:1rem; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+.motor-row legend { padding:0 .4rem; font-weight:500; }
+.motor-row .chip input { flex:0 0 18px; }
+.motor-row details { margin-top:.65rem; }
+.motor-row summary,.motor-age>summary { min-height:44px; padding:.7rem 0; cursor:pointer; }
+.motor-age { border-top:1px solid var(--line); padding:.25rem 0; }
+.motor-sources { padding-left:1.2rem; line-height:1.65; font-size:.875rem; }
+.motor-row .fields { margin-top:.5rem; }
