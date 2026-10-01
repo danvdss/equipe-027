@@ -447,3 +447,15 @@ test('renewal uses compact medicine notation without documentary labels', t => {
   const {run}=setup(t);
   assert.equal(run("Renewal.describe({name:'Sertralina',strength:'50',strengthUnit:'mg',dose:'1',doseUnit:'comprimido(s)',frequency:'À noite'})"),'Sertralina 50 mg, 1 cp à noite');
 });
+
+test('puericultura starts empty and generates only entered findings with live calculations',t=>{
+ const {run,set,w}=setup(t);run("navigate('child')");run('LiveReview.update()');assert.equal(w.document.querySelector('#output').value,'');
+ set('pcReason','Acompanhamento de rotina');set('pcBirth','2026-01-01');set('recordDate','2026-01-15');set('pcWeight','4');set('pcLength','50');set('pcFeedDifficulty','Relatada');set('pcFeeding','Aleitamento materno exclusivo');run('LiveReview.update()');
+ const text=w.document.querySelector('#output').value;assert.match(text,/2 semanas/);assert.match(text,/16,00 kg\/m²/);assert.match(text,/Dificuldade alimentar: Relatada/);assert.doesNotMatch(text,/Dentro da normalidade|Não reagente|Exame físico:|gráficos: Realizado/);
+ set('pcScreen6','Não reagente');set('pcGraph','Realizado neste atendimento');set('pcGuidance','Orientação registrada no teste');run('LiveReview.update()');assert.match(w.document.querySelector('#output').value,/Toxoplasmose IgM: Não reagente/);
+ run("navigate('home');navigate('child')");assert.equal(w.document.querySelector('[name=pcWeight]').value,'4');
+});
+test('puericultura flags inconsistent dates and results without blocking copy',async t=>{
+ const {run,set,w}=setup(t);run("navigate('child')");set('pcBirth','2026-01-01');set('recordDate','0200-01-02');set('pcHeelStatus','Não realizado');set('pcScreen0','Dentro da normalidade');run('LiveReview.update()');assert.match(w.document.querySelector('#live-issues').textContent,/ano informado/);assert.match(w.document.querySelector('#live-issues').textContent,/resultados preenchidos/);await run('Flow.copyCurrent()');assert.match(w.copied,/Fenilcetonúria/);
+ assert.equal(run("ChildCare.bmi({pcWeight:'0',pcLength:'50'})"),'');assert.equal(run("ChildCare.age({pcBirth:'2026-01-01',recordDate:'2025-12-31'})"),'');
+});

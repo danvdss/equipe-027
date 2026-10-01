@@ -1,3 +1,65 @@
+/* Puericultura: documentary fields only, no inferred examination or diagnosis. */
+const ChildCare = (() => {
+  const screens=['Fenilcetonúria','Hipotireoidismo congênito','Doença falciforme / hemoglobinopatias','Fibrose cística','Hiperplasia adrenal congênita','Deficiência de biotinidase','Toxoplasmose IgM'];
+  const v=(d,k)=>String(d[k]??'').trim();
+  const input=(k,l,type='text')=>`<label>${esc(l)}<input name="${k}" type="${type}" autocomplete="off" ${type==='number'?'step="any"':''}></label>`;
+  const area=(k,l)=>`<label>${esc(l)}<textarea name="${k}" rows="2"></textarea></label>`;
+  const select=(k,l,opts)=>`<label>${esc(l)}<select name="${k}"><option value="">Não informado</option>${opts.map(x=>`<option>${esc(x)}</option>`).join('')}</select></label>`;
+  const grid=a=>'<div class="fields two">'+a.join('')+'</div>';
+  const num=s=>/^\d+(?:[.,]\d+)?$/.test(String(s))?Number(String(s).replace(',','.')):NaN;
+  function date(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;const d=new Date(s+'T12:00:00Z');return !isNaN(d)&&d.toISOString().slice(0,10)===s&&+s.slice(0,4)>=1900?d:null;}
+  const fmt=s=>date(s)?s.split('-').reverse().join('/'):s;
+  function age(d){const b=date(v(d,'pcBirth')),a=date(v(d,'recordDate'));if(!b||!a||a<b)return '';const days=Math.round((a-b)/86400000);if(days<7)return `${days} dia${days===1?'':'s'}`;if(days<28){const w=Math.floor(days/7),r=days%7;return `${w} semana${w===1?'':'s'}`+(r?` e ${r} dia${r===1?'':'s'}`:'');}let months=(a.getUTCFullYear()-b.getUTCFullYear())*12+a.getUTCMonth()-b.getUTCMonth()-(a.getUTCDate()<b.getUTCDate()?1:0);return months<24?`${months} mês(es) completos`:`${Math.floor(months/12)} ano(s) e ${months%12} mês(es) completos`;}
+  function bmi(d){const w=num(d.pcWeight),h=num(d.pcLength);return w>0&&h>0?(w/(h/100)**2).toFixed(2).replace('.',','):'';}
+  function form(){return `<div class="workspace"><form id="clinical">
+    ${section('Identificação e atendimento',grid([input('recordDate','Data do atendimento','date'),input('pcName','Nome da criança'),input('pcBirth','Data de nascimento','date'),input('pcBirthTime','Horário do nascimento','time'),input('pcAgeReported','Idade informada (se não houver datas)'),select('pcSex','Sexo registrado',['Feminino','Masculino','Outro / não especificado']),input('pcResponsible','Responsável / acompanhante'),input('pcRelationship','Vínculo com a criança'),input('pcProfessional','Profissional responsável / registro')])+'<p class="privacy" id="pc-age-status" role="status">A idade será calculada com as datas preenchidas.</p>')}
+    ${section('Motivo e relato',grid([select('pcReason','Motivo do atendimento',['Acompanhamento de rotina','Primeira consulta','Retorno','Queixa / intercorrência']),area('pcComplaint','Queixa principal / relato do responsável'),input('pcCordFall','Queda do coto umbilical: data ou tempo relatado'),area('pcSince','Intercorrências desde a última consulta')]))}
+    ${section('Gestação e nascimento',grid([select('pcPrenatal','Pré-natal realizado',['Sim','Não']),input('pcPrenatalVisits','Número de consultas','number'),select('pcDelivery','Tipo de parto',['Vaginal','Cesárea','Instrumental','Outro']),input('pcGestWeeks','Idade gestacional ao nascer: semanas','number'),input('pcGestDays','Dias adicionais (0–6)','number'),input('pcBirthWeight','Peso ao nascer (g; ex.: 3294)','number'),input('pcBirthLength','Comprimento ao nascer (cm)','number'),input('pcApgar1','Apgar no 1º minuto (0–10)','number'),input('pcApgar5','Apgar no 5º minuto (0–10)','number'),area('pcPregnancy','Intercorrências gestacionais / perinatais'),area('pcNeonatal','Internação neonatal / condições da alta')]))}
+    ${section('Triagens neonatais',grid([select('pcHeelStatus','Teste do pezinho: situação',['Coletado','Resultado apresentado','Aguardando resultado','Não realizado','Recoleta indicada']),input('pcHeelDate','Data da coleta','date'),input('pcHeelReport','Data do resultado','date')])+grid(screens.map((n,i)=>select('pcScreen'+i,n,i===6?['Não reagente','Reagente','Indeterminado','Pendente','Não consta no laudo']:['Dentro da normalidade','Alterado','Inconclusivo','Pendente','Não consta no laudo'])))+grid([area('pcHeelOther','Outras doenças triadas / detalhes do laudo'),area('pcHeelPlan','Conduta relativa à triagem'),area('pcHearing','Teste da orelhinha: data, resultado e fonte'),area('pcEye','Teste do olhinho: data, resultado e fonte'),area('pcHeart','Teste do coraçãozinho: data, resultado e fonte'),area('pcOtherScreen','Outras triagens apresentadas')])+'<p class="privacy">Transcreva apenas os resultados do laudo. Triagem não equivale a diagnóstico.</p>')}
+    ${section('Vacinação',grid([select('pcVaccineStatus','Situação vacinal',['Atualizada conforme conferência','Atrasada conforme conferência','Caderneta não apresentada','Não avaliada']),select('pcVaccineSource','Fonte da informação',['Caderneta conferida','Registro eletrônico conferido','Relato do responsável']),area('pcVaccineHistory','Vacinas registradas: nome, dose e data (ex.: BCG, hepatite B)'),area('pcVaccinesToday','Vacinas administradas neste atendimento'),area('pcVaccinePlan','Pendências / encaminhamento / próximas doses')])+'<p class="privacy">Registre as datas efetivas. A plataforma não presume vacinação nem define o calendário.</p>')}
+    ${section('Crescimento',grid([input('pcWeight','Peso atual (kg)','number'),input('pcLength','Comprimento / estatura atual (cm)','number'),select('pcMeasure','Forma de medição',['Comprimento deitado','Estatura em pé']),input('pcHead','Perímetro cefálico (cm)','number'),input('pcChest','Perímetro torácico (cm), se aferido','number'),select('pcGraph','Registro nos gráficos da caderneta',['Realizado neste atendimento','Não realizado']),area('pcGrowth','Avaliação da curva / tendência e referência utilizada')])+'<p class="privacy" id="pc-bmi-status" role="status">IMC calculado após peso e comprimento. Sem classificação automática para crianças.</p>')}
+    ${section('Alimentação e rotina',grid([select('pcFeeding','Alimentação',['Aleitamento materno exclusivo','Aleitamento materno predominante','Aleitamento materno misto / parcial','Fórmula infantil','Alimentação complementar com aleitamento','Alimentação complementar sem aleitamento','Outra']),select('pcFeedDifficulty','Dificuldade na alimentação',['Relatada','Não relatada']),area('pcFeedDetails','Dificuldade, pega, sucção, frequência e avaliação realizada'),area('pcFood','Fórmula / preparo / outros alimentos ou líquidos informados'),area('pcElimination','Diurese e evacuações'),area('pcSleep','Sono e rotina'),area('pcMeds','Medicamentos / suplementos em uso'),area('pcAllergy','Alergias informadas')]))}
+    ${section('Desenvolvimento e contexto',grid([area('pcDevReport','Aquisições / preocupações relatadas pelo responsável'),area('pcDevObserved','Habilidades e respostas observadas nesta consulta'),area('pcDevAssessment','Avaliação do desenvolvimento / instrumento e referência'),area('pcPlay','Brincar, interação e estímulos no cotidiano'),area('pcSupport','Rede de apoio / condições de cuidado')]))}
+    ${section('Exame físico realizado',grid([area('pcGeneral','Estado geral e sinais vitais aferidos'),area('pcSkin','Pele, mucosas e hidratação'),area('pcHeadExam','Cabeça, fontanelas e perímetro: achados'),area('pcMouth','Olhos, ouvidos e cavidade oral: achados'),area('pcCardio','Exame cardiopulmonar'),area('pcAbdomen','Abdome e região umbilical'),area('pcGenitals','Genitais / região perineal, se examinados'),area('pcMotor','Tônus, movimentos, quadris e reflexos avaliados'),area('pcExamOther','Outros achados')])+'<p class="privacy">Campos vazios não geram achados normais nem negativas.</p>')}
+    ${section('Avaliação, conduta e retorno',grid([area('pcAssessment','Síntese da avaliação profissional'),area('pcConduct','Condutas efetivamente realizadas'),area('pcGuidance','Orientações realizadas ao responsável'),area('pcReferral','Avaliação compartilhada / encaminhamentos e motivo'),input('pcReturnDate','Data de retorno','date'),input('pcReturn','Prazo / finalidade do retorno')])+'<p class="privacy"><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-crianca/caderneta" target="_blank" rel="noopener noreferrer">Referência: Caderneta da Criança · Ministério da Saúde ↗</a></p>')}
+    </form>${outputPanel()}</div>`;}
+  function issues(d){const a=[],add=(message,keys)=>a.push({message,keys,values:keys.map(k=>v(d,k)).filter(Boolean)});
+    for(const k of ['recordDate','pcBirth','pcHeelDate','pcHeelReport','pcReturnDate'])if(v(d,k)&&!date(d[k]))add('Confira a data e o ano informado.',[k]);
+    if(date(d.pcBirth)&&date(d.recordDate)&&d.pcBirth>d.recordDate)add('Nascimento posterior ao atendimento. Confira as datas.',['pcBirth','recordDate']);
+    for(const k of ['pcHeelDate','pcHeelReport'])if(date(d[k])&&date(d.pcBirth)&&d[k]<d.pcBirth)add('Data de triagem anterior ao nascimento.',['pcBirth',k]);
+    if(date(d.pcHeelReport)&&date(d.pcHeelDate)&&d.pcHeelReport<d.pcHeelDate)add('Resultado anterior à coleta. Confira as datas.',['pcHeelDate','pcHeelReport']);
+    for(const k of ['pcHeelDate','pcHeelReport'])if(date(d[k])&&date(d.recordDate)&&d[k]>d.recordDate)add('Triagem com data posterior ao atendimento. Confira o registro.',['recordDate',k]);
+    if(date(d.pcReturnDate)&&date(d.recordDate)&&d.pcReturnDate<d.recordDate)add('Retorno anterior ao atendimento.',['pcReturnDate','recordDate']);
+    for(const k of ['pcWeight','pcLength','pcHead','pcChest','pcBirthWeight','pcBirthLength'])if(v(d,k)&&!(num(d[k])>0))add('A medida deve ser um número maior que zero. Confira a unidade.',[k]);
+    for(const k of ['pcApgar1','pcApgar5','pcGestDays','pcGestWeeks','pcPrenatalVisits'])if(v(d,k)&&(!Number.isInteger(num(d[k]))||num(d[k])<0||(['pcApgar1','pcApgar5'].includes(k)&&num(d[k])>10)||(k==='pcGestDays'&&num(d[k])>6)||(k==='pcGestWeeks'&&(num(d[k])<1||num(d[k])>45))))add('Confira o valor inteiro e a faixa indicada no campo.',[k]);
+    if(d.pcPrenatal==='Não'&&num(d.pcPrenatalVisits)>0)add('Pré-natal não realizado com consultas informadas.',['pcPrenatal','pcPrenatalVisits']);
+    const resultKeys=screens.map((_,i)=>'pcScreen'+i).filter(k=>v(d,k)&&!['Pendente','Não consta no laudo'].includes(d[k]));
+    if(['Não realizado','Aguardando resultado'].includes(d.pcHeelStatus)&&resultKeys.length)add('Situação do teste e resultados preenchidos podem se referir a etapas diferentes. Confira o laudo.',['pcHeelStatus',...resultKeys]);
+    if(d.pcVaccineStatus?.includes('conferência')&&d.pcVaccineSource==='Relato do responsável')add('Situação definida por conferência com fonte apenas relatada. Confira a fonte.',['pcVaccineStatus','pcVaccineSource']);
+    if(d.pcFeeding==='Aleitamento materno exclusivo'&&v(d,'pcFood'))add('Aleitamento exclusivo com outros alimentos ou líquidos descritos: confira o relato.',['pcFeeding','pcFood']);
+    return a;
+  }
+  function compose(d){if(!Object.keys(d).some(k=>k.startsWith('pc')&&v(d,k)))return '';const out=['Paciente comparece à unidade para consulta de puericultura'+(d.pcReason?' — '+d.pcReason.toLowerCase():'')+'.'];
+    const block=(title,items)=>{const parts=items.filter(Boolean);if(parts.length)out.push(title+': '+parts.map(sentence).join(' '));};
+    const f=(k,label)=>v(d,k)?label+': '+v(d,k):'';
+    const dt=(k,label)=>v(d,k)?label+': '+fmt(d[k]):'';
+    const m=(k,label,unit)=>v(d,k)?label+': '+v(d,k)+' '+unit:'';
+    block('Identificação',[f('pcName','Nome'),dt('pcBirth','Nascimento'),f('pcBirthTime','Horário'),age(d)?'Idade calculada: '+age(d):f('pcAgeReported','Idade informada'),f('pcSex','Sexo'),f('pcResponsible','Responsável'),f('pcRelationship','Vínculo'),dt('recordDate','Atendimento'),f('pcProfessional','Profissional')]);
+    block('Relato',[f('pcComplaint','Queixa / relato'),f('pcCordFall','Queda do coto umbilical relatada'),f('pcSince','Intercorrências')]);
+    block('Gestação e nascimento',[f('pcPrenatal','Pré-natal'),f('pcPrenatalVisits','Consultas'),f('pcDelivery','Parto'),m('pcGestWeeks','IG ao nascer','semanas'),m('pcGestDays','Dias adicionais','dias'),m('pcBirthWeight','Peso ao nascer','g'),m('pcBirthLength','Comprimento ao nascer','cm'),f('pcApgar1','Apgar 1º minuto'),f('pcApgar5','Apgar 5º minuto'),f('pcPregnancy','Intercorrências gestacionais / perinatais'),f('pcNeonatal','Período neonatal')]);
+    block('Triagens',[f('pcHeelStatus','Teste do pezinho'),dt('pcHeelDate','Coleta'),dt('pcHeelReport','Resultado'),...screens.map((n,i)=>f('pcScreen'+i,n)),f('pcHeelOther','Outros resultados'),f('pcHeelPlan','Conduta da triagem'),f('pcHearing','Teste da orelhinha'),f('pcEye','Teste do olhinho'),f('pcHeart','Teste do coraçãozinho'),f('pcOtherScreen','Outras triagens')]);
+    block('Vacinação',[f('pcVaccineStatus','Situação'),f('pcVaccineSource','Fonte'),f('pcVaccineHistory','Registro apresentado'),f('pcVaccinesToday','Administradas hoje'),f('pcVaccinePlan','Planejamento')]);
+    block('Crescimento',[m('pcWeight','Peso','kg'),m('pcLength','Comprimento / estatura','cm'),f('pcMeasure','Medição'),m('pcHead','Perímetro cefálico','cm'),m('pcChest','Perímetro torácico','cm'),bmi(d)?'IMC calculado: '+bmi(d)+' kg/m²':'',f('pcGraph','Registro nos gráficos'),f('pcGrowth','Avaliação do crescimento')]);
+    block('Alimentação e rotina',[f('pcFeeding','Alimentação'),f('pcFeedDifficulty','Dificuldade alimentar'),f('pcFeedDetails','Avaliação / relato da alimentação'),f('pcFood','Outros alimentos / líquidos'),f('pcElimination','Eliminações'),f('pcSleep','Sono'),f('pcMeds','Medicamentos / suplementos'),f('pcAllergy','Alergias')]);
+    block('Desenvolvimento e contexto',[f('pcDevReport','Relato'),f('pcDevObserved','Observado nesta consulta'),f('pcDevAssessment','Avaliação'),f('pcPlay','Brincar / interação'),f('pcSupport','Rede de apoio')]);
+    block('Exame físico',[...['pcGeneral','pcSkin','pcHeadExam','pcMouth','pcCardio','pcAbdomen','pcGenitals','pcMotor','pcExamOther'].map(k=>v(d,k))]);
+    block('Avaliação e conduta',[v(d,'pcAssessment'),v(d,'pcConduct'),f('pcGuidance','Orientações realizadas'),f('pcReferral','Avaliação compartilhada / encaminhamento')]);
+    block('Retorno',[dt('pcReturnDate','Data'),v(d,'pcReturn')]);return out.join('\n\n');
+  }
+  function mount(){const f=document.querySelector('#clinical');const update=()=>{const d=Object.fromEntries(new FormData(f));document.querySelector('#pc-age-status').textContent=age(d)?'Idade cronológica calculada: '+age(d)+'.':'Preencha nascimento e atendimento para calcular a idade cronológica.';document.querySelector('#pc-bmi-status').textContent=bmi(d)?'IMC calculado: '+bmi(d)+' kg/m². A interpretação exige curva pediátrica apropriada.':'IMC calculado após peso e comprimento. Sem classificação automática.';};f.addEventListener('input',update);f.addEventListener('change',update);update();}
+  return {form,mount,compose,issues,age,bmi};
+})();
+
 /* Occupational therapy documentation. Session memory only; no patient network requests. */
 const Occupational = (() => {
   const catalog = {
@@ -129,6 +191,7 @@ const modules = [
   ["home", "Início"],
   ["general", "Evolução"],
   ["renewal", "Renovação"],
+  ["child", "Puericultura"],
   ["occupational", "Terapia Ocupacional"],
   ["has", "Hipertensão"],
   ["dm", "Diabetes"],
@@ -142,6 +205,7 @@ const modules = [
 const titles = {
   occupational: "Terapia Ocupacional",
   renewal: "Renovação de medicamentos",
+  child: "Puericultura",
   diu: "DIU · avaliação e inserção",
   implante: "Implanon · solicitação",
   prenatal: "Pré-natal",
@@ -326,6 +390,7 @@ function login() {
   app.textContent = "Não foi possível carregar a autenticação. Recarregue a página.";
 }
 const iconPaths = {
+  child: "M12 3a9 9 0 1 0 9 9 M12 3c4 0 6 2 6 4s-3 3-4 1 M8 11h.01 M16 11h.01 M8 15q4 4 8 0",
   occupational: "M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6 M5 12l7 2 7-2 M12 14v4 M12 18l-4 4 M12 18l4 4",
   arrow: "M7 17L17 7 M7 7h10v10",
   renewal: "M4 8a8 8 0 0113-3l3 3 M20 3v5h-5 M20 16a8 8 0 01-13 3l-3-3 M4 21v-5h5",
@@ -487,6 +552,7 @@ function addLab(values = {}) {
 }
 function dashboard() {
   const cards = [
+    ["child", "", "Puericultura", "Crescimento, desenvolvimento, triagens e cuidado infantil."],
     ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["occupational", "◎", "Terapia Ocupacional", "Evoluções, perfil ocupacional e instrumentos de avaliação."],
     ["renewal", "℞", "Renovação", "Solicitação, avaliação médica, medicamentos renovados e MUC."],
@@ -528,7 +594,7 @@ function dashboard() {
 }
 function render() {
   if (!logged) return login();
-  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
+  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
@@ -543,6 +609,7 @@ function render() {
     if (page === "prenatal") Prenatal.mount();
     if (page === "implante") Implante.mount();
     if (page === "diu") DIU.mount();
+    if (page === "child") ChildCare.mount();
     if (page === "renewal") Renewal.mount();
     if (page === "occupational") Occupational.mount();
     Notes.mount();
@@ -646,6 +713,7 @@ function resolveConflicts(e) {
   }
 }
 function compose(raw, p) {
+  if (p === "child") return ChildCare.compose(Care.normalize(raw));
   if (p === "occupational") return Occupational.compose(Care.normalize(raw));
   const d = Care.normalize(raw);
   Care.validate(d, p);

@@ -117,3 +117,6 @@ Tema grafite com acentos verde-água, azul e lavanda. Login, navegação, módul
 
 ## Renovação · 2026.09.29.3
 Modelo com solicitação de renovação de receituário, MUC e Conduta. Tipo de uso contínuo/não contínuo por medicamento e escolha explícita entre médico da equipe e médico de outra equipe por ausência. Medicamentos em formato compacto, por exemplo “Sertralina 50 mg, 1 cp à noite”, somente a partir do preenchimento. Renovação e orientações continuam dependentes do registro do profissional; não são presumidas. 39 testes passaram.
+
+## Puericultura · 2026.10.01.1
+Aba independente com identificação, nascimento/pré-natal, triagens do pezinho por doença e outras triagens, vacinação por fonte/data, antropometria, alimentação, desenvolvimento, exame físico e conduta/retorno. Campos vazios não geram negativas ou exames normais. Idade cronológica e IMC aritmético calculados, sem classificação nutricional ou diagnóstico. Idade corrigida e curvas/percentis não são calculados. Gráficos registrados apenas mediante escolha explícita; a plataforma não desenha curvas. Alertas documentais opcionais para datas, unidades e respostas conflitantes; edição manual e cópia continuam disponíveis. Dados do exemplo não são pré-preenchidos. Fonte estrutural consultada em 01/10/2026: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-crianca/caderneta .
