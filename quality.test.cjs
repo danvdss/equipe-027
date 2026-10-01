@@ -481,3 +481,25 @@ test('motor loss alert is nonblocking and never inserts a diagnosis',async t=>{
  await run('Flow.copyCurrent()');assert.match(w.copied,/Perda de habilidade/);assert.doesNotMatch(w.copied,/diagnóstico|atraso confirmado/);
  assert.equal(run("ChildCare.compose({pcMotor_moro:'',pcMotor_roll:''})"),'');
 });
+
+test('cervical collection starts blank and distinguishes sample collection from results',t=>{
+ const {run,set,w}=setup(t);run("navigate('cervical')");run('LiveReview.update()');assert.equal(w.document.querySelector('#output').value,'');
+ set('cxType','DNA-HPV oncogênico');set('cxStatus','Realizada');set('cxMethod','Coleta pelo profissional');set('cxResultState','Aguardando resultado');run('LiveReview.update()');
+ const text=w.document.querySelector('#output').value;assert.match(text,/para teste de DNA-HPV oncogênico/);assert.match(text,/Situação da coleta: Realizada/);assert.match(text,/Aguardando resultado/);assert.doesNotMatch(text,/Sem intercorrências|Sem alterações|negativo|Concorda/);
+ set('cxKit','Kit informado');run("navigate('home');navigate('cervical')");assert.equal(w.document.querySelector('[name=cxKit]').value,'Kit informado');
+});
+test('cervical inactive examination and technique fields never leak into narrative',t=>{
+ const {run,set,w}=setup(t);run("navigate('cervical')");set('cxType','Citopatológico do colo do útero');set('cxStatus','Realizada');set('cxCytoTechnique','Convencional em lâmina');set('cxExam','Realizado');set('cxAspect','Sem alterações macroscópicas observadas');run('LiveReview.update()');assert.match(w.document.querySelector('#output').value,/Convencional em lâmina/);
+ set('cxType','DNA-HPV oncogênico');set('cxExam','Não realizado');run('LiveReview.update()');assert.doesNotMatch(w.document.querySelector('#output').value,/Convencional em lâmina|Sem alterações macroscópicas/);
+ set('cxKit','Amostra de teste');set('cxStatus','Não realizada');run('LiveReview.update()');assert.doesNotMatch(w.document.querySelector('#output').value,/Amostra de teste/);
+ assert.equal(w.document.querySelector('[name=cxKit]').value,'Amostra de teste');
+});
+test('cervical documentary alerts are optional and copy is available',async t=>{
+ const {run,set,w}=setup(t);run("navigate('cervical')");set('cxType','Citopatológico do colo do útero');set('cxStatus','Realizada');set('cxConsent','Não deseja realizar neste momento');set('cxComplaintState','Sem queixas relatadas');set('cxComplaint','Dor relatada');run('LiveReview.update()');
+ assert.match(w.document.querySelector('#live-issues').textContent,/recusa/);assert.match(w.document.querySelector('#live-issues').textContent,/queixa descrita/);await run('Flow.copyCurrent()');assert.match(w.copied,/Dor relatada/);
+});
+
+test('interrupted cervical attempt retains adverse events without claiming a sample',t=>{
+ const {run}=setup(t);const text=run("Cervical.compose({cxType:'DNA-HPV oncogênico',cxStatus:'Interrompida sem amostra',cxEvent:'Com intercorrências',cxEventDetails:'Dor durante tentativa',cxKit:'Não deve aparecer'})");assert.match(text,/Dor durante tentativa/);assert.doesNotMatch(text,/Não deve aparecer/);
+ assert.match(run("Cervical.compose({cxType:'DNA-HPV oncogênico',cxStatus:'Realizada',cxMethod:'Autocoleta recebida'})"),/entrega de material obtido por autocoleta/);
+});

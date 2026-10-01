@@ -1,3 +1,70 @@
+/* Cervical sample collection: documentary model, no screening or diagnosis decisions. */
+const Cervical = (()=>{
+ const groups=[
+ ['Atendimento',[
+ ['cxType','Exame solicitado',['Citopatológico do colo do útero','DNA-HPV oncogênico']],
+ ['cxPurpose','Finalidade',['Rastreamento','Repetição de coleta','Seguimento de alteração anterior','Investigação de sintomas','Outra']],
+ ['cxReason','Indicação / motivo específico','area'],['recordDate','Data do atendimento','date'],['cxProfessional','Profissional responsável / registro','text']]],
+ ['História e relato',[
+ ['cxComplaintState','Queixas',['Sem queixas relatadas','Com queixas relatadas','Não investigadas']],['cxComplaint','Queixas / duração','area'],
+ ['cxDum','DUM','date'],['cxCycle','Contexto menstrual',['Ciclos presentes','Menopausa','Amenorreia','DUM desconhecida']],
+ ['cxPregnancy','Gestação informada',['Nega gestação','Gestante','Possibilidade de gestação não esclarecida','Não investigada']],
+ ['cxContraception','Contracepção em uso','text'],['cxPrevious','Exame anterior',['Realizado','Nunca realizado','Não sabe informar']],
+ ['cxPreviousDate','Data do exame anterior','date'],['cxPreviousResult','Exame anterior: tipo, resultado e fonte','area'],
+ ['cxHistory','Antecedentes relevantes: histerectomia, lesões, tratamento, imunossupressão','area'],
+ ['cxPreparation','Uso vaginal, sangramento ou outras condições que possam interferir','area']]],
+ ['Decisão e exame realizado',[
+ ['cxExplanation','Explicação do procedimento',['Realizada; dúvidas esclarecidas','Não realizada']],
+ ['cxConsent','Concordância da paciente',['Concorda com a coleta','Não deseja realizar neste momento','Solicitou interrupção']],
+ ['cxExam','Exame especular',['Realizado','Não realizado']],
+ ['cxExternal','Inspeção externa, se realizada','area'],
+ ['cxCervix','Visualização do colo',['Visualizado integralmente','Visualizado parcialmente','Não visualizado','Ausente após histerectomia']],
+ ['cxAspect','Aspecto do colo',['Sem alterações macroscópicas observadas','Com alterações macroscópicas observadas']],
+ ['cxSecretions','Secreções observadas',['Sem secreção anormal observada','Secreção observada']],
+ ['cxFindings','Descrição dos achados / secreções / sangramento','area'],
+ ['cxStatus','Situação da coleta',['Realizada','Interrompida com amostra obtida','Interrompida sem amostra','Não realizada']],
+ ['cxNotDone','Motivo / dificuldades / decisão compartilhada','area']]],
+ ['Amostra e procedimento',[
+ ['cxDate','Data da coleta','date'],['cxMethod','Forma de coleta DNA-HPV',['Coleta pelo profissional','Autocoleta recebida']],
+ ['cxSite','Local da amostra',['Colo uterino','Vaginal','Outro']],['cxSiteOther','Especificar local / particularidades','text'],
+ ['cxCytoTechnique','Técnica citopatológica',['Convencional em lâmina','Em meio líquido']],
+ ['cxCytoAreas','Material citopatológico obtido',['Ectocervical e endocervical','Ectocervical','Endocervical','Vaginal']],
+ ['cxKit','Kit / meio / dispositivo utilizado','text'],['cxSampleId','Identificador da amostra / requisição','text'],
+ ['cxLabel','Identificação e acondicionamento',['Conferidos e realizados','Pendência identificada']],
+ ['cxDispatch','Encaminhamento da amostra',['Encaminhada ao laboratório','Aguardando transporte','Não encaminhada']],
+ ['cxLab','Laboratório / destino','text'],['cxDispatchDate','Data do encaminhamento','date'],
+ ['cxEvent','Intercorrências',['Sem intercorrências observadas','Com intercorrências']],['cxEventDetails','Intercorrências e medidas adotadas','area'],
+ ['cxAfter','Condições após o procedimento / dor / sangramento','area']]],
+ ['Orientações e retorno',[
+ ['cxGuidance','Orientações adicionais efetivamente realizadas','area'],['cxPlan','Avaliação / conduta / encaminhamento','area'],
+ ['cxResultState','Disponibilidade do laudo',['Aguardando resultado','Resultado já disponível em atendimento posterior']],
+ ['cxReturnDate','Data prevista para retorno','date'],['cxReturn','Prazo, local e forma de acesso ao resultado','text']]]
+ ];
+ const guidance=['Explicada a finalidade do exame','Orientada sobre como obter o resultado','Orientada a retornar para avaliação do laudo','Esclarecido que a coleta não informa o resultado','Orientada sobre possíveis desconfortos após a coleta','Orientada a procurar atendimento diante de sintomas persistentes ou intensos'];
+ const val=(d,k)=>String(d[k]??'').trim();
+ const sampled=d=>['Realizada','Interrompida com amostra obtida'].includes(d.cxStatus);
+ function active(k,d){if(['cxEvent','cxEventDetails','cxAfter'].includes(k))return ['Realizada','Interrompida com amostra obtida','Interrompida sem amostra'].includes(d.cxStatus);if(k.startsWith('cxCyto'))return sampled(d)&&d.cxType==='Citopatológico do colo do útero';if(k==='cxMethod')return sampled(d)&&d.cxType==='DNA-HPV oncogênico';if(['cxCervix','cxAspect','cxSecretions','cxFindings'].includes(k))return d.cxExam==='Realizado';if(groups[3][1].some(x=>x[0]===k))return sampled(d);return true;}
+ function field([k,label,type]){return `<label data-cx-field="${k}">${esc(label)}${Array.isArray(type)?`<select name="${k}"><option value="">Não informado</option>${type.map(o=>`<option>${esc(o)}</option>`).join('')}</select>`:type==='area'?`<textarea name="${k}" rows="2"></textarea>`:`<input name="${k}" type="${type}" autocomplete="off">`}</label>`;}
+ function form(){return `<div class="workspace"><form id="clinical">${groups.map(([title,fields],i)=>section(title,`<div class="fields two">${fields.map(field).join('')}</div>${i===4?'<p class="privacy">Selecione apenas orientações realizadas.</p>'+chips('cxGuides',guidance):''}`)).join('')}${section('Como o texto é gerado',`<p class="privacy">O início será “Paciente comparece à unidade para coleta de material para exame citopatológico do colo do útero” ou “... para teste de DNA-HPV oncogênico”, conforme a escolha. A realização só é afirmada quando registrada. Campos inativos ficam preservados no rascunho, mas não entram no texto.</p><p class="privacy">Modelo documental elaborado a partir de referências oficiais, não transcrição de uma evolução padronizada nacional. A adequabilidade da amostra e o resultado pertencem ao laudo laboratorial. O protocolo local e as instruções do kit orientam a coleta. Não há definição automática de elegibilidade, periodicidade ou encaminhamento.</p><p class="privacy"><a href="https://www.inca.gov.br/publicacoes/formularios/requisicao-de-exame-citopatologico-colo-do-utero" target="_blank" rel="noopener noreferrer">INCA · requisição citopatológica ↗</a><br><a href="https://linhasdecuidado.saude.gov.br/portal/cancer-do-colo-do-utero/unidade-de-atencao-primaria/vigilancia-em-saude/tecnica-exame-citopatologico" target="_blank" rel="noopener noreferrer">Ministério da Saúde · registro da coleta e acompanhamento ↗</a><br><a href="https://www.gov.br/saude/pt-br/assuntos/pcdt/r/rastreamento-cancer-do-colo-do-utero/view" target="_blank" rel="noopener noreferrer">Diretrizes brasileiras · DNA-HPV (2025) ↗</a></p>`)}</form>${outputPanel()}</div>`;}
+ function compose(d){if(!Object.keys(d).some(k=>(k.startsWith('cx')||k==='c:cxGuides')&&(Array.isArray(d[k])?d[k].length:val(d,k))))return '';
+ const intro=d.cxType==='DNA-HPV oncogênico'&&d.cxMethod==='Autocoleta recebida'&&sampled(d)?'Paciente comparece à unidade para entrega de material obtido por autocoleta para teste de DNA-HPV oncogênico.':d.cxType==='Citopatológico do colo do útero'?'Paciente comparece à unidade para coleta de material para exame citopatológico do colo do útero.':d.cxType==='DNA-HPV oncogênico'?'Paciente comparece à unidade para coleta de material para teste de DNA-HPV oncogênico.':'Paciente comparece à unidade para atendimento relacionado à coleta de exame do colo do útero.';
+ const out=[intro];groups.forEach(([title,fields])=>{const parts=fields.filter(([k])=>k!=='cxType'&&active(k,d)&&val(d,k)).map(([k,label,type])=>label+': '+(type==='date'?val(d,k).split('-').reverse().join('/'):val(d,k)));if(title==='Orientações e retorno'&&(d['c:cxGuides']||[]).length)parts.unshift('Orientações realizadas: '+d['c:cxGuides'].join('; '));if(parts.length)out.push(title+': '+parts.map(sentence).join(' '));});return out.join('\n\n');}
+ function issues(d){const a=[],add=(message,keys)=>a.push({message,keys,values:keys.map(k=>val(d,k)).filter(Boolean)});
+ if(d.cxComplaintState==='Sem queixas relatadas'&&val(d,'cxComplaint'))add('Ausência de queixas e queixa descrita: revise o contexto ou a seleção.',['cxComplaintState','cxComplaint']);
+ if(sampled(d)&&d.cxConsent==='Não deseja realizar neste momento')add('Coleta com amostra registrada e recusa: confira os momentos e a situação da coleta.',['cxStatus','cxConsent']);
+ if(d.cxStatus==='Realizada'&&d.cxConsent==='Solicitou interrupção')add('Confira se a coleta foi concluída antes da solicitação de interrupção ou ajuste sua situação.',['cxStatus','cxConsent']);
+ if(active('cxEvent',d)&&d.cxEvent==='Sem intercorrências observadas'&&val(d,'cxEventDetails'))add('Há descrição de intercorrência com seleção de ausência. Revise.',['cxEvent','cxEventDetails']);
+ if(d.cxExam==='Realizado'&&['Não visualizado','Ausente após histerectomia'].includes(d.cxCervix)&&val(d,'cxAspect'))add('Aspecto do colo preenchido sem colo visualizado. Confira os achados.',['cxCervix','cxAspect']);
+ if(sampled(d)&&d.cxType==='Citopatológico do colo do útero'&&d.cxCytoAreas==='Vaginal'&&d.cxSite==='Colo uterino')add('Local vaginal e colo uterino: confira a origem da amostra.',['cxCytoAreas','cxSite']);
+ if(sampled(d)&&d.cxType==='DNA-HPV oncogênico'&&d.cxMethod==='Autocoleta recebida'&&d.cxSite==='Colo uterino')add('Autocoleta com local cervical: confira o local efetivo registrado.',['cxMethod','cxSite']);
+ for(const k of ['cxDum','cxPreviousDate','cxDate','cxDispatchDate','cxReturnDate']){if(!active(k,d)||!val(d,k))continue;const dt=new Date(d[k]+'T12:00:00Z');if(isNaN(dt)||dt.toISOString().slice(0,10)!==d[k]||+d[k].slice(0,4)<1900)add('Confira a data informada.',[''+k]);if(d.recordDate&&k!=='cxReturnDate'&&k!=='cxDispatchDate'&&d[k]>d.recordDate)add('Data posterior ao atendimento: confira o registro.',['recordDate',k]);}
+ if(d.cxReturnDate&&d.recordDate&&d.cxReturnDate<d.recordDate)add('Retorno anterior ao atendimento.',['cxReturnDate','recordDate']);
+ if(sampled(d)&&d.cxDispatchDate&&d.cxDate&&d.cxDispatchDate<d.cxDate)add('Encaminhamento anterior à coleta.',['cxDispatchDate','cxDate']);
+ return a;}
+ function mount(){const f=document.querySelector('#clinical');const update=()=>{const d=Object.fromEntries(new FormData(f));f.querySelectorAll('[data-cx-field]').forEach(el=>{el.hidden=!active(el.dataset.cxField,d);});};f.addEventListener('change',update);update();}
+ return {form,compose,issues,mount};
+})();
+
 /* Puericultura: documentary fields only, no inferred examination or diagnosis. */
 const ChildCare = (() => {
   const screens=['Fenilcetonúria','Hipotireoidismo congênito','Doença falciforme / hemoglobinopatias','Fibrose cística','Hiperplasia adrenal congênita','Deficiência de biotinidase','Toxoplasmose IgM'];
@@ -222,6 +289,7 @@ const modules = [
   ["general", "Evolução"],
   ["renewal", "Renovação"],
   ["child", "Puericultura"],
+  ["cervical", "Citopatológico / DNA-HPV"],
   ["occupational", "Terapia Ocupacional"],
   ["has", "Hipertensão"],
   ["dm", "Diabetes"],
@@ -236,6 +304,7 @@ const titles = {
   occupational: "Terapia Ocupacional",
   renewal: "Renovação de medicamentos",
   child: "Puericultura",
+  cervical: "Citopatológico / DNA-HPV",
   diu: "DIU · avaliação e inserção",
   implante: "Implanon · solicitação",
   prenatal: "Pré-natal",
@@ -420,6 +489,7 @@ function login() {
   app.textContent = "Não foi possível carregar a autenticação. Recarregue a página.";
 }
 const iconPaths = {
+  cervical: "M9 3h6 M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3 M8 16h8",
   child: "M12 3a9 9 0 1 0 9 9 M12 3c4 0 6 2 6 4s-3 3-4 1 M8 11h.01 M16 11h.01 M8 15q4 4 8 0",
   occupational: "M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6 M5 12l7 2 7-2 M12 14v4 M12 18l-4 4 M12 18l4 4",
   arrow: "M7 17L17 7 M7 7h10v10",
@@ -582,6 +652,7 @@ function addLab(values = {}) {
 }
 function dashboard() {
   const cards = [
+    ["cervical", "", "Citopatológico / DNA-HPV", "Coleta, achados, amostra e retorno."],
     ["child", "", "Puericultura", "Crescimento, desenvolvimento, triagens e cuidado infantil."],
     ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["occupational", "◎", "Terapia Ocupacional", "Evoluções, perfil ocupacional e instrumentos de avaliação."],
@@ -624,7 +695,7 @@ function dashboard() {
 }
 function render() {
   if (!logged) return login();
-  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
+  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
@@ -640,6 +711,7 @@ function render() {
     if (page === "implante") Implante.mount();
     if (page === "diu") DIU.mount();
     if (page === "child") ChildCare.mount();
+    if (page === "cervical") Cervical.mount();
     if (page === "renewal") Renewal.mount();
     if (page === "occupational") Occupational.mount();
     Notes.mount();
@@ -744,6 +816,7 @@ function resolveConflicts(e) {
 }
 function compose(raw, p) {
   if (p === "child") return ChildCare.compose(Care.normalize(raw));
+  if (p === "cervical") return Cervical.compose(Care.normalize(raw));
   if (p === "occupational") return Occupational.compose(Care.normalize(raw));
   const d = Care.normalize(raw);
   Care.validate(d, p);

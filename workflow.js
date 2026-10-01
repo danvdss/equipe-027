@@ -4,11 +4,11 @@ const LiveReview = (() => {
   const q = s => document.querySelector(s);
   function entries() {
     return [...(q('#clinical')?.querySelectorAll('input,select,textarea') || [])]
-      .filter(x => !(page === "occupational" && (x.closest("[data-session][hidden]") || x.closest("section[hidden]"))) && x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
+      .filter(x => !(page === "occupational" && (x.closest("[data-session][hidden]") || x.closest("section[hidden]"))) && !(page === 'cervical' && x.closest('[data-cx-field][hidden]')) && x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
       .map(x => ({el:x,key:x.name.split(':').slice(0,2).join(':'),value:x.value.trim(),label:[...(x.closest('label')?.childNodes||[])].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ') || x.name}));
   }
   function inspect(d, p) {
-    const issues=p==='occupational'?Occupational.issues(d):p==='child'?ChildCare.issues(d):[];
+    const issues=p==='occupational'?Occupational.issues(d):p==='child'?ChildCare.issues(d):p==='cervical'?Cervical.issues(d):[];
     const add=(message,keys,values=[])=>issues.push({message,keys,values});
     const states=[...(d['c:state']||[]),...(d['c:evaluation']||[])];
     if(states.includes('Sem queixas no momento') && (d.complaint || states.some(v=>['Queixa principal','Refere queixas','Apresenta queixa'].includes(v))))

@@ -130,3 +130,14 @@ Aba independente com identificação, nascimento/pré-natal, triagens do pezinho
 - Presente/Ausente/Não avaliado são opções mutuamente exclusivas, sem padrão marcado. Fonte e observações por item; somente dados preenchidos entram na evolução. Nenhuma ausência produz diagnóstico ou classificação automática.
 - Habilidades adquiridas não têm desaparecimento esperado. Perda registrada gera alerta opcional e não bloqueia cópia. Idade corrigida é informada pelo profissional, não inferida.
 - Verificação: 43 testes aprovados e checagem sintática. Referências consultadas em 01/10/2026.
+
+### Citopatológico / DNA-HPV · 2026.10.01.3
+
+Aba de registro da coleta com tipo de exame, finalidade, história menstrual e exame anterior, concordância, inspeção/exame especular, situação da coleta, técnica, amostra, encaminhamento, intercorrências, orientações e retorno. Seleções inicialmente vazias; nenhuma normalidade, realização ou resultado é presumido. A coleta interrompida sem amostra preserva registro de intercorrências. Autocoleta recebida usa início próprio. Campos inativos não entram na evolução e permanecem no rascunho temporário. Alertas são opcionais e não bloqueiam cópia.
+
+Modelo autoral de evolução baseado na requisição do INCA e nas Linhas de Cuidado do Ministério da Saúde, não um texto nacional oficial. Diretrizes de DNA-HPV de 2025 orientam a distinção entre citologia e teste molecular. Sem algoritmo de elegibilidade, periodicidade ou decisão clínica; adequabilidade e resultado dependem do laboratório. Referências consultadas em 01/10/2026:
+- https://www.inca.gov.br/publicacoes/formularios/requisicao-de-exame-citopatologico-colo-do-utero
+- https://linhasdecuidado.saude.gov.br/portal/cancer-do-colo-do-utero/unidade-de-atencao-primaria/vigilancia-em-saude/tecnica-exame-citopatologico
+- https://www.gov.br/saude/pt-br/assuntos/pcdt/r/rastreamento-cancer-do-colo-do-utero/view
+
+47 testes em DOM simulado aprovados; checagem sintática aprovada. Inspeção visual autenticada não realizada nesta revisão.
