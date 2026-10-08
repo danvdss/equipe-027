@@ -141,3 +141,16 @@ Modelo autoral de evolução baseado na requisição do INCA e nas Linhas de Cui
 - https://www.gov.br/saude/pt-br/assuntos/pcdt/r/rastreamento-cancer-do-colo-do-utero/view
 
 47 testes em DOM simulado aprovados; checagem sintática aprovada. Inspeção visual autenticada não realizada nesta revisão.
+
+### Pré-natal: exames por trimestre · 2026.10.08.1
+
+Registros repetíveis no 1º, 2º e 3º trimestres, com situação, datas da coleta e laudo, fonte, resultados e conduta livre. Inclui hemograma, ABO/Rh, glicemia, VDRL com titulação, Coombs indireto, TOTG 75 g (jejum/1 h/2 h), EAS, urocultura com antibiograma, ultrassonografia, toxoplasmose, sorologias, HTLV, eletroforese de hemoglobina, cultura para estreptococo B e outro exame. Testes rápidos de sífilis, HIV, hepatite B e C identificados separadamente das sorologias e do Protege.
+
+Somente dados preenchidos entram na evolução automática; nenhum resultado vem marcado. O trimestre organiza o registro, sem prescrever calendário de exames. Ultrassons documentados aqui não alteram a fonte de datação da gestação. Alertas de datas e incoerências documentais são opcionais e não bloqueiam cópia; diferenças entre VDRL e teste treponêmico não são tratadas como contradição. Sem interpretação diagnóstica automática.
+
+Referências estruturais consultadas em 08/10/2026:
+- https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gravidez/exames-e-vacinas
+- https://www.gov.br/aids/pt-br/assuntos/transmissao-vertical
+- https://portaldeboaspraticas.iff.fiocruz.br/atencao-mulher/principais-questoes-sobre-exames-de-rotina-do-pre-natal/
+
+49 testes em DOM simulado aprovados, incluindo registros repetidos, três medidas do TOTG, restauração do rascunho e alertas opcionais. Checagem sintática aprovada. Inspeção visual autenticada não realizada nesta revisão.

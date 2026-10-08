@@ -1,3 +1,47 @@
+/* Repeated prenatal results by trimester. Documentary only; no automatic diagnosis. */
+const PrenatalExams=(()=>{
+ const reactive=['Não reagente','Reagente','Indeterminado','Inválido'];
+ const catalog={
+ hemogram:['Hemograma',[['hb','Hemoglobina (g/dL)'],['ht','Hematócrito (%)'],['leuc','Leucócitos (/mm³)'],['plat','Plaquetas (/mm³)'],['detail','Outros parâmetros e unidades']]],
+ blood:['Tipagem ABO / Rh',[['abo','Grupo ABO',['A','B','AB','O']],['rh','Fator Rh',['Positivo','Negativo','Indeterminado']]]],
+ glucose:['Glicemia de jejum',[['value','Glicemia (mg/dL)']]],
+ vdrl:['VDRL',[['result','Resultado',reactive],['titer','Titulação conforme laudo (ex.: 1:8)']]],
+ coombs:['Coombs indireto / pesquisa de anticorpos irregulares',[['result','Resultado',['Negativo','Positivo','Indeterminado']],['antibody','Anticorpo identificado / título conforme laudo']]],
+ totg:['TOTG 75 g',[['fast','Jejum (mg/dL)'],['one','Após 1 hora (mg/dL)'],['two','Após 2 horas (mg/dL)'],['conditions','Condições / interrupção / observações']]],
+ eas:['EAS / sumário de urina',[['density','Densidade'],['ph','pH'],['protein','Proteínas (resultado e unidade)'],['glucose','Glicose (resultado e unidade)'],['nitrite','Nitrito',['Negativo','Positivo']],['leuco','Leucócitos (valor e unidade)'],['red','Hemácias (valor e unidade)'],['bacteria','Bactérias / sedimento / outros achados']]],
+ culture:['Urocultura',[['result','Resultado',['Sem crescimento bacteriano','Com crescimento bacteriano','Flora mista / possível contaminação','Inconclusivo']],['organism','Microrganismo(s)'],['count','Contagem (UFC/mL)'],['antibiogram','Antibiograma conforme laudo']]],
+ usg:['Ultrassonografia',[['type','Tipo',['Obstétrica','Transvaginal','Morfológica do 1º trimestre','Morfológica do 2º trimestre','Obstétrica com Doppler','Outra']],['weeks','IG no laudo: semanas'],['days','IG no laudo: dias (0–6)'],['fetuses','Número de fetos'],['bcf','BCF (bpm)'],['weight','Peso fetal estimado (g)'],['percentile','Percentil e curva de referência'],['placenta','Placenta'],['fluid','Líquido amniótico / medida e unidade'],['findings','Biometria, Doppler, conclusão e demais achados']]],
+ trSyph:['Teste rápido para sífilis (treponêmico)',[['result','Resultado',reactive],['kit','Kit / lote / identificação, se registrado']]],
+ trHiv:['Teste rápido para HIV',[['result','Resultado',reactive],['stage','Etapa / teste 1 ou 2 / identificação do kit']]],
+ trB:['Teste rápido para hepatite B (HBsAg)',[['result','Resultado',reactive],['kit','Kit / lote / identificação, se registrado']]],
+ trC:['Teste rápido para hepatite C (anti-HCV)',[['result','Resultado',reactive],['kit','Kit / lote / identificação, se registrado']]],
+ toxo:['Toxoplasmose IgG / IgM',[['igg','IgG',reactive],['igm','IgM',reactive],['values','Valores, unidades e referência do laboratório'],['avidity','Avidez de IgG, quando realizada']]],
+ hiv:['HIV laboratorial',[['result','Resultado conforme laudo'],['method','Método / etapa do algoritmo']]],
+ hbv:['HBsAg laboratorial',[['result','Resultado',reactive]]],hcv:['Anti-HCV laboratorial',[['result','Resultado',reactive]]],
+ htlv:['HTLV I/II',[['result','Resultado',reactive]]],electro:['Eletroforese de hemoglobina',[['result','Resultado conforme laudo']]],
+ gbs:['Cultura para estreptococo do grupo B',[['result','Resultado',['Negativo','Positivo','Inconclusivo']],['site','Local da coleta']]],
+ other:['Outro exame',[['name','Nome do exame'],['result','Resultado, unidade e referência']]]
+ };
+ const value=(d,k)=>String(d[k]??'').trim();
+ function records(d){return [...new Set(Object.keys(d).map(k=>k.match(/^(pnLab_[123]_\d+)_/)?.[1]).filter(Boolean))].sort((a,b)=>+a.split('_')[1]-+b.split('_')[1]||+a.split('_')[2]-+b.split('_')[2]);}
+ function field(p,[key,label,opts]){return `<label>${esc(label)}${Array.isArray(opts)?`<select name="${p}_${key}"><option value="">Não informado</option>${opts.map(v=>`<option>${esc(v)}</option>`).join('')}</select>`:opts==='date'?`<input name="${p}_${key}" type="date">`:`<input name="${p}_${key}" autocomplete="off">`}</label>`;}
+ function row(p,kind){const c=catalog[kind];if(!c)return '';return `<fieldset class="medicine-row" data-pn-lab="${p}"><legend>${esc(c[0])}</legend><input type="hidden" name="${p}_kind" value="${kind}"><div class="fields two">${[['status','Situação',['Solicitado','Coletado / realizado, aguardando resultado','Resultado disponível','Não realizado']],['date','Data da coleta / realização','date'],['report','Data do laudo','date'],['source','Fonte',['Laudo apresentado','Registro da caderneta','Registro eletrônico','Teste realizado nesta consulta','Relato da gestante']],...c[1],['note','Observações / conduta registrada']].map(f=>field(p,f)).join('')}</div><button type="button" data-pn-remove>Remover este registro</button></fieldset>`;}
+ function form(){const d=drafts.prenatal||{};return section('Resultados de exames por trimestre',`<p class="privacy">Adicione o exame, selecione a situação e transcreva os resultados. Repita para exames em outras datas. Cada trimestre é uma organização do registro, não uma solicitação automática de todos os exames. Não repita aqui um mesmo resultado já transcrito no Protege.</p>${[1,2,3].map(t=>`<details class="compact-details" data-pn-trimester="${t}"><summary>${t}º trimestre · exames e testes rápidos</summary><div class="fields two"><label>Adicionar exame ao ${t}º trimestre<select data-pn-picker="${t}"><option value="">Selecione o exame</option>${Object.entries(catalog).map(([id,c])=>`<option value="${id}">${esc(c[0])}</option>`).join('')}</select></label><button type="button" data-pn-add="${t}">+ Adicionar exame</button></div><div data-pn-list="${t}">${records(d).filter(p=>p.split('_')[1]===String(t)).map(p=>row(p,d[p+'_kind'])).join('')}</div></details>`).join('')}<p class="privacy">VDRL e teste rápido treponêmico são registros distintos; resultados diferentes não são classificados automaticamente como incoerentes. O TOTG registra as três medidas sem presumir diagnóstico. A USG registrada aqui não altera a referência de datação escolhida acima.</p><details><summary>Referências e uso</summary><p class="privacy">Exames e repetição dependem da avaliação e do protocolo local. Resultados reagentes exigem avaliação profissional conforme o fluxo do teste; esta tela não conclui diagnósticos nem prescreve condutas.</p><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gravidez/exames-e-vacinas" target="_blank" rel="noopener noreferrer">Ministério da Saúde · exames do pré-natal ↗</a><br><a href="https://www.gov.br/aids/pt-br/assuntos/transmissao-vertical" target="_blank" rel="noopener noreferrer">Ministério da Saúde · testagem no pré-natal ↗</a></details>`);}
+ function compose(d){const by={};for(const p of records(d)){const c=catalog[d[p+'_kind']];if(!c)continue;const fields=[['status','Situação'],['date','Coleta / realização'],['report','Laudo'],['source','Fonte'],...c[1],['note','Observações / conduta']];const bits=fields.filter(([k])=>value(d,p+'_'+k)).map(([k,l])=>l+': '+(['date','report'].includes(k)?value(d,p+'_'+k).split('-').reverse().join('/'):value(d,p+'_'+k)));if(bits.length)(by[p.split('_')[1]]??=[]).push(c[0]+' — '+bits.join('; '));}return Object.entries(by).map(([t,rows])=>`Exames do ${t}º trimestre: `+rows.map(sentence).join(' ')).join('\n\n');}
+ function issues(d){const out=[];const add=(message,keys)=>out.push({message,keys,values:keys.map(k=>value(d,k)).filter(Boolean)});for(const p of records(d)){const kind=d[p+'_kind'],c=catalog[kind];if(!c)continue;const k=x=>p+'_'+x,results=c[1].filter(([key])=>!['name','kit','stage','method','site','type'].includes(key)&&value(d,k(key))).map(([key])=>k(key));
+ if(results.length&&['Solicitado','Coletado / realizado, aguardando resultado','Não realizado'].includes(d[k('status')]))add(c[0]+': resultado preenchido com situação pendente ou não realizada. Confira a situação e a data.',[k('status'),...results]);
+ if(results.length&&!d[k('status')])add(c[0]+': informe a situação do resultado para contextualizar o registro.',[k('status')]);
+ for(const key of ['date','report']){const s=value(d,k(key));if(!s)continue;const dt=new Date(s+'T12:00:00Z');if(isNaN(dt)||dt.toISOString().slice(0,10)!==s||+s.slice(0,4)<1900)add('Confira a data do exame.',[k(key)]);else if(d.visitDate&&s>d.visitDate)add('Exame ou laudo com data posterior à consulta. Confira o registro.',[k(key),'visitDate']);}
+ if(d[k('report')]&&d[k('date')]&&d[k('report')]<d[k('date')])add('Laudo anterior à coleta / realização.',[k('date'),k('report')]);
+ if(kind==='culture'&&d[k('result')]==='Sem crescimento bacteriano'&&value(d,k('organism')))add('Urocultura sem crescimento com microrganismo descrito. Revise.',[k('result'),k('organism')]);
+ if(kind==='vdrl'&&d[k('result')]==='Não reagente'&&value(d,k('titer')))add('VDRL não reagente com titulação registrada. Confira o laudo.',[k('result'),k('titer')]);
+ if(kind==='usg'&&value(d,k('days'))&&(!/^\d+$/.test(d[k('days')])||+d[k('days')]>6))add('Na idade gestacional da USG, informe dias entre 0 e 6.',[k('days')]);
+ }return out;}
+ function mount(){const f=document.querySelector('#clinical');f.addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-pn-add')){const t=b.dataset.pnAdd,picker=f.querySelector(`[data-pn-picker="${t}"]`),kind=picker.value;if(!catalog[kind]){picker.focus();return;}const list=f.querySelector(`[data-pn-list="${t}"]`),id=Math.max(0,...[...list.querySelectorAll('[data-pn-lab]')].map(el=>+el.dataset.pnLab.split('_')[2]))+1;list.insertAdjacentHTML('beforeend',row(`pnLab_${t}_${id}`,kind));picker.value='';Flow.changed();}
+ if(b.hasAttribute('data-pn-remove')){if(await Flow.dialog('Remover exame?','Este registro será removido do rascunho.',[['cancel','Cancelar'],['remove','Remover']])!=='remove')return;b.closest('[data-pn-lab]').remove();Flow.changed();}});}
+ return {form,mount,compose,issues};
+})();
+
 /* Pré-natal: calculations and text are local to the current session. */
 const Prenatal = (() => {
   const DAY = 86400000;
@@ -117,6 +161,7 @@ const Prenatal = (() => {
         )}</div><div data-if="complaintStatus:yes" class="section-extra">${text("pnComplaint", "Descreva as queixas")}</div>`,
       )}
       ${section("Exame físico", `<div class="fields">${input("au", "Altura uterina · cm", "text", 'inputmode="decimal"')}${select("presentation", "Apresentação fetal", ["Cefálica", "Pélvica", "Córmica", "Não definida", "Não avaliada"])}${input("bcf", "BCF · bpm", "text", 'inputmode="numeric"')}${input("pnPa", "PA · mmHg", "text", 'inputmode="decimal" placeholder="120/80"')}${input("pnWeight", "Peso · kg", "text", 'inputmode="decimal"')}</div><div class="section-extra">${chips("pnPhysical", ["Exame físico realizado"])}</div><details class="compact-details"><summary>Outros achados do exame físico</summary>${text("physicalOther", "Achados adicionais")}</details>`)}
+      ${PrenatalExams.form()}
       ${section("Exames e Protege", `<h3>Exames solicitados nesta consulta</h3>${chips("pnExams", ["1º trimestre", "2º trimestre", "3º trimestre"])}<details class="compact-details"><summary>Detalhar exames solicitados</summary>${text("pnExamOther", "Exames / observações")}</details><div class="protege-grid">${protege(1)}${protege(3)}</div><datalist id="protege-values"><option value="Não reagente"><option value="Reagente"><option value="Indeterminado"><option value="Não realizado"></datalist><p class="privacy"><a href="https://saude.se.gov.br/lacen-amplia-capacidade-diaria-de-testes-sorologicos-para-gestantes/" target="_blank" rel="noopener noreferrer">Referência dos exames do Protege · SES/SE</a></p>`)}
       ${section(
         "Medicamentos",
@@ -137,6 +182,7 @@ const Prenatal = (() => {
   }
   function mount() {
     const form = document.getElementById("clinical");
+    PrenatalExams.mount();
     function refresh() {
       const method = form.elements.igMethod.value;
       form.querySelectorAll("[data-ig]").forEach((el) => {
@@ -272,6 +318,8 @@ const Prenatal = (() => {
       }
       p.push(sentence(s));
     }
+    const examText = PrenatalExams.compose(d);
+    if (examText) p.push(examText);
     const renewed = [
       ...list(d, "pnRenew"),
       ...(present(d.renewOther) ? [d.renewOther] : []),

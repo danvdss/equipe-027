@@ -503,3 +503,17 @@ test('interrupted cervical attempt retains adverse events without claiming a sam
  const {run}=setup(t);const text=run("Cervical.compose({cxType:'DNA-HPV oncogênico',cxStatus:'Interrompida sem amostra',cxEvent:'Com intercorrências',cxEventDetails:'Dor durante tentativa',cxKit:'Não deve aparecer'})");assert.match(text,/Dor durante tentativa/);assert.doesNotMatch(text,/Não deve aparecer/);
  assert.match(run("Cervical.compose({cxType:'DNA-HPV oncogênico',cxStatus:'Realizada',cxMethod:'Autocoleta recebida'})"),/entrega de material obtido por autocoleta/);
 });
+
+test('prenatal trimester exams repeat, preserve drafts and compose only entered results',t=>{
+ const {run,set,w}=setup(t);run("navigate('prenatal')");
+ const add=(t,k)=>{w.document.querySelector(`[data-pn-picker="${t}"]`).value=k;w.document.querySelector(`[data-pn-add="${t}"]`).click();};
+ add(1,'vdrl');add(2,'totg');add(3,'vdrl');add(1,'trHiv');
+ set('pnLab_1_1_status','Resultado disponível');set('pnLab_1_1_result','Reagente');set('pnLab_1_1_titer','1:8');set('pnLab_2_1_fast','80');set('pnLab_2_1_one','130');set('pnLab_2_1_two','100');set('pnLab_3_1_titer','1:2');set('pnLab_1_2_result','Não reagente');run('LiveReview.update()');
+ const text=w.document.querySelector('#output').value;assert.match(text,/Exames do 1º trimestre/);assert.match(text,/1:8/);assert.match(text,/Após 2 horas \(mg\/dL\): 100/);assert.match(text,/Exames do 3º trimestre/);assert.match(text,/Teste rápido para HIV/);assert.doesNotMatch(text,/diabetes gestacional|diagnóstico de HIV/);
+ run("navigate('home');navigate('prenatal')");assert.equal(w.document.querySelector('[name=pnLab_1_1_titer]').value,'1:8');assert.equal(w.document.querySelectorAll('[data-pn-lab]').length,4);
+});
+test('prenatal exams flag documentary conflicts without blocking copying or inferring cross-test conflict',async t=>{
+ const {run,set,w}=setup(t);run("navigate('prenatal')");w.document.querySelector('[data-pn-picker="1"]').value='culture';w.document.querySelector('[data-pn-add="1"]').click();set('pnLab_1_1_status','Não realizado');set('pnLab_1_1_result','Sem crescimento bacteriano');set('pnLab_1_1_organism','Organismo do laudo');run('LiveReview.update()');assert.match(w.document.querySelector('#live-issues').textContent,/microrganismo/);await run('Flow.copyCurrent()');assert.match(w.copied,/Organismo do laudo/);
+ assert.equal(run("PrenatalExams.issues({pnLab_1_1_kind:'vdrl',pnLab_1_1_status:'Resultado disponível',pnLab_1_1_result:'Não reagente',pnLab_1_2_kind:'trSyph',pnLab_1_2_status:'Resultado disponível',pnLab_1_2_result:'Reagente'}).length"),0);
+ assert.equal(run("PrenatalExams.compose({pnLab_1_1_kind:'totg'})"),'');
+});
