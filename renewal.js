@@ -12,7 +12,7 @@ const Renewal = (() => {
   }
   function row(group,id) {
     const p=`${group}_${id}_`;
-    return `<fieldset class="medicine-row" data-med-group="${group}" data-med-id="${id}"><legend>${group==='req'?'Solicitação':'MUC'} · medicamento ${id}</legend><div class="fields two">${input(p+'name','Medicamento / tipo de insulina','list="renewal-drugs" placeholder="Selecione ou digite o nome"')}${select(p+'useType','Tipo de uso',['Contínuo','Não contínuo'])}${input(p+'strength','Concentração / apresentação','placeholder="Conforme receita ou embalagem"')}${select(p+'strengthUnit','Unidade da concentração',['mg','mcg','mg/mL','mcg/mL','UI/mL','%','g'])}${input(p+'dose','Quantidade','inputmode="decimal" placeholder="Quantidade prescrita"')}${select(p+'doseUnit','Unidade da quantidade',['mcg','mL','UI','comprimido(s)','cápsula(s)','gota(s)','dose(s)'])}${input(p+'frequency','Frequência','list="renewal-frequency" placeholder="Vezes ao dia ou intervalo"')}${input(p+'route','Via de administração','list="renewal-routes"')}${input(p+'schedule','Horários / esquema / observações','placeholder="Ex.: doses diferentes por horário, conforme receita"')}</div>${group==='req'?`<div class="fields two section-extra">${select(p+'result','Resultado da solicitação',['Renovado sem alteração','Renovado com alteração','Não renovado','Aguardando avaliação'])}<label>Nova prescrição / motivo / encaminhamento<textarea name="${p}newRegimen" rows="2" placeholder="Se houve alteração, transcreva o esquema completo renovado"></textarea></label></div>`:''}<button type="button" class="remove-medicine" aria-label="Remover ${group==='req'?'solicitação':'MUC'} medicamento ${id}">Remover medicamento</button></fieldset>`;
+    return `<fieldset class="medicine-row" data-med-group="${group}" data-med-id="${id}"><legend>${group==='req'?'Solicitação':'MUC'} · medicamento ${id}</legend><div class="fields two">${input(p+'name','Medicamento / tipo de insulina','list="renewal-drugs" placeholder="Selecione ou digite o nome"')}${select(p+'useType','Tipo de uso',['Contínuo','Não contínuo'])}${input(p+'strength','Concentração / apresentação','placeholder="Conforme receita ou embalagem"')}${select(p+'strengthUnit','Unidade da concentração',['mg','mcg','mg/mL','mcg/mL','UI/mL','%','g'])}${input(p+'dose','Quantidade','inputmode="decimal" placeholder="Quantidade prescrita"')}${select(p+'doseUnit','Unidade da quantidade',['mcg','mL','UI','comprimido(s)','cápsula(s)','gota(s)','dose(s)'])}${input(p+'frequency','Frequência','list="renewal-frequency" placeholder="Vezes ao dia ou intervalo"')}${input(p+'route','Via de administração','list="renewal-routes"')}${input(p+'schedule','Horários / esquema / observações','placeholder="Ex.: doses diferentes por horário, conforme receita"')}</div>${group==='req'?`<div class="fields two section-extra">${select(p+'result','Resultado da solicitação',['Renovado sem alteração','Renovado com alteração','Não renovado','Aguardando avaliação'])}<label>Nova prescrição / motivo / encaminhamento<textarea name="${p}newRegimen" rows="2" placeholder="Se houve alteração, transcreva o esquema completo renovado"></textarea></label></div>`:''}<button type="button" data-med-reuse="${group==='req'?'muc':'req'}">${group==='req'?'Copiar para MUC e conferir':'Solicitar renovação deste medicamento'}</button><button type="button" class="remove-medicine" aria-label="Remover ${group==='req'?'solicitação':'MUC'} medicamento ${id}">Remover medicamento</button></fieldset>`;
   }
   function groupForm(group,title) {
     const existing=ids(drafts.renewal||{},group);
@@ -24,6 +24,19 @@ const Renewal = (() => {
   function mount() {
     const f=document.querySelector('#clinical');
     function bind(el) {
+      el.querySelector('[data-med-reuse]').onclick=()=>{
+        const source=el.dataset.medGroup+'_'+el.dataset.medId+'_', targetGroup=el.querySelector('[data-med-reuse]').dataset.medReuse;
+        const values=Object.fromEntries(keys.filter(k=>!['result','newRegimen'].includes(k)).map(k=>[k,el.querySelector(`[name="${source+k}"]`)?.value||'']));
+        if(!values.name.trim())return toast('Informe o medicamento antes de copiar.');
+        const list=f.querySelector('#med-'+targetGroup), existing=[...list.children];
+        const duplicate=existing.find(row=>Object.entries(values).every(([k,v])=>row.querySelector(`[name="${targetGroup}_${row.dataset.medId}_${k}"]`)?.value===v));
+        let target=duplicate||existing.find(row=>![...row.querySelectorAll('input,select,textarea')].some(x=>x.value.trim()));
+        if(!target){const id=Math.max(0,...existing.map(x=>+x.dataset.medId))+1;list.insertAdjacentHTML('beforeend',row(targetGroup,id));target=list.lastElementChild;bind(target);}
+        if(!duplicate)for(const [k,v]of Object.entries(values))target.querySelector(`[name="${targetGroup}_${target.dataset.medId}_${k}"]`).value=v;
+        const section=target.closest('section');section.querySelector('.section-body')?.removeAttribute('hidden');section.querySelector('.section-toggle')?.setAttribute('aria-expanded','true');
+        target.querySelector('input').focus();target.scrollIntoView({block:'nearest'});Flow.changed();toast(duplicate?'Este medicamento já está registrado. Confira os dados.':'Dados copiados. Confira o esquema; nenhuma renovação foi confirmada.');
+      };
+
       el.querySelector('.remove-medicine').onclick=async()=>{
         const filled=[...el.querySelectorAll('input,select,textarea')].some(x=>x.value.trim());
         if(filled && await Flow.dialog('Remover medicamento?','Os campos deste medicamento serão removidos do registro atual.',[['cancel','Cancelar'],['remove','Remover']])!=='remove')return;
@@ -55,8 +68,9 @@ const Renewal = (() => {
     const regimen=timing ? [dose,frequency].filter(Boolean).join(' ') : [dose,frequency].filter(Boolean).join(', ');
     return [medicine,regimen,r.route?'via '+r.route.toLowerCase():'',r.schedule].filter(Boolean).join(', ');
   }
-  function compose(d) {
+  function compose(d, partial = false) {
     const req=rows(d,'req'),muc=rows(d,'muc');
+    if(!partial) {
     if(!req.length)Care.error('req_1_name','Informe ao menos um medicamento solicitado para renovação.');
     for(const r of [...req,...muc]) {
       if(!r.name)Care.error(r.prefix+'name','Informe o nome do medicamento nesta linha.');
@@ -70,9 +84,11 @@ const Renewal = (() => {
     }
     if(d.prescriptionDate && !req.some(r=>r.result.startsWith('Renovado')))Care.error('prescriptionDate','Registre quais medicamentos foram renovados antes de informar a data da prescrição renovada.');
     if(d.prescriptionDate && d.recordDate && d.prescriptionDate>d.recordDate)Care.error('prescriptionDate','A prescrição renovada não pode ter data posterior ao atendimento registrado.');
+    }
     const list = a => a.length < 2 ? (a[0] || '') : a.slice(0,-1).join(', ')+' e '+a[a.length-1];
     const requestedText=req.map(r=>describe(r)+(r.useType==='Contínuo'?' (de uso contínuo)':r.useType==='Não contínuo'?' (de uso não contínuo)':''));
-    const p=[sentence('Paciente comparece à unidade para solicitar renovação de receituário de '+(req.length===1?'medicamento: ':'medicamentos: ')+requestedText.join('; '))];
+    const p=['Paciente comparece à unidade para solicitar renovação de receituário.'];
+    if(req.length)p.push(sentence('Medicamentos solicitados: '+requestedText.join('; '))); 
     if(d.renewReason)p.push(sentence('Motivo informado: '+d.renewReason));
     if(muc.length)p.push(sentence('MUC: '+muc.map(describe).join('; ')));
     if(d.renewSource)p.push(sentence('Fonte das informações: '+d.renewSource.toLowerCase()));
@@ -80,15 +96,18 @@ const Renewal = (() => {
     if(d.renewAllergies)p.push(sentence('Alergias informadas: '+d.renewAllergies));
     if(d.renewOther)p.push(sentence(d.renewOther));
     const assessment=[];
+    if(d.medicalRequested==='Não')assessment.push('Avaliação médica não solicitada neste atendimento');
+    if(d.medicalDone==='Não'&&d.medicalRequested!=='Sim')assessment.push('Avaliação médica não realizada');
     if(d.medicalRequested==='Sim')assessment.push(d.renewDoctorTeam==='Médico da equipe'?'Solicitada avaliação do médico da equipe':d.renewDoctorTeam==='Médico de outra equipe por ausência do médico da equipe'?'Solicitada avaliação de médico de outra equipe devido à ausência do médico da equipe':'Solicitada avaliação médica');
     const renewed=req.filter(r=>r.result==='Renovado sem alteração');
     if(d.medicalDone==='Sim'&&!req.some(r=>r.result.startsWith('Renovado')))assessment.push('Avaliação médica realizada'+(d.renewPhysician?' por '+d.renewPhysician:''));
-    if(renewed.length)assessment.push('Após avaliação, '+(d.renewPhysician?'médico '+d.renewPhysician:'médico')+' renova '+list(renewed.map(r=>r.name))+', sem alteração do esquema informado');
+    if(renewed.length&&d.medicalDone==='Sim')assessment.push('Após avaliação, '+(d.renewPhysician?'médico '+d.renewPhysician:'médico')+' renova '+list(renewed.map(r=>req.filter(x=>x.name===r.name).length>1?describe(r):r.name))+', sem alteração do esquema informado');
+    if(renewed.length&&d.medicalDone!=='Sim')assessment.push('Renovação sem alteração registrada para '+list(renewed.map(r=>req.filter(x=>x.name===r.name).length>1?describe(r):r.name))+'. Realização da avaliação médica não confirmada neste registro');
     if(d.medicalRequested==='Sim'&&d.medicalDone==='Não')assessment.push('Avaliação médica ainda não realizada');
     if(d.renewAssessment)assessment.push('Registro da avaliação/conduta: '+d.renewAssessment);
     for(const r of req){
       if(r.result==='Renovado sem alteração'&&r.newRegimen)assessment.push(r.name+': '+r.newRegimen);
-      if(r.result==='Renovado com alteração')assessment.push('Após avaliação médica, renovada a prescrição de '+r.name+' com alteração: '+r.newRegimen);
+      if(r.result==='Renovado com alteração')assessment.push((d.medicalDone==='Sim'?'Após avaliação médica, renovada a prescrição de ':'Registrada renovação de ')+r.name+' com alteração: '+r.newRegimen);
       if(r.result==='Não renovado')assessment.push('Não realizada renovação de '+r.name+(r.newRegimen?': '+r.newRegimen:''));
       if(r.result==='Aguardando avaliação')assessment.push('Solicitação de '+r.name+' aguardando avaliação médica'+(r.newRegimen?': '+r.newRegimen:''));
     }

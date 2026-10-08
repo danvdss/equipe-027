@@ -1,6 +1,6 @@
 /* Shared data normalization and documentary checks. No eligibility decisions. */
 const Care = (() => {
-  const version = "2026.10.08.2";
+  const version = "2026.10.08.3";
   const numeric = [
     "fc",
     "fr",
@@ -199,6 +199,7 @@ const Care = (() => {
   function renewalText(d, names = []) {
     const parts = [];
     if (d.medicalRequested === "Sim") parts.push("Solicitada avaliação médica");
+    else if(d.medicalRequested === "Não") parts.push("Avaliação médica não solicitada neste atendimento");
     if (d.medicalDone === "Sim") parts.push("realizada avaliação médica");
     if (d.renewDone === "Sim") {
       const list = value(d, "renewedDetails") || names.join(", ");

@@ -162,3 +162,8 @@ Navegação com busca de módulos e favoritos (somente os identificadores dos m�
 Editor único expansível com retorno à posição do formulário, Escape para fechar, foco contido e fundo inativo. No celular, acesso pela barra inferior; no computador, largura ajustável nas opções do texto. Alertas opcionais mantidos com acesso ao campo correspondente. Exames de pré-natal têm busca e cartões recolhíveis com data, situação e resumo dos resultados, sem apagar os dados.
 
 Removidas 111 declarações CSS incondicionais sobrescritas por regras equivalentes posteriores. Autenticação e conteúdo clínico preservados. 52 testes passaram, incluindo navegação/favoritos, rascunhos, editor único, Escape e resumo de exames. Visualização local bloqueada pela política do navegador; sem homologação visual autenticada ou em aparelhos físicos nesta revisão.
+
+
+### Redação e preenchimento · 2026.10.08.3
+
+Aberturas neutras, narrativa por blocos, recuperação documental parcial sem descarte dos blocos válidos, comparação antes de substituir edição manual, exames compactos com fontes/datas, modelos de coleta sem confundir autocoleta, roteiros opcionais e reaproveitamento explícito entre solicitação e MUC. Alertas e cópia continuam opcionais. 60 testes aprovados; sete preenchimentos foram substituídos por uma ativação no cenário simulado de cópia de medicamentos, sem medição de tempo real. Exemplos, auditoria por módulo e limitações em [AUDITORIA-TEXTOS.md](AUDITORIA-TEXTOS.md).

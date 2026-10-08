@@ -4,7 +4,7 @@ const LiveReview = (() => {
   const q = s => document.querySelector(s);
   function entries() {
     return [...(q('#clinical')?.querySelectorAll('input,select,textarea') || [])]
-      .filter(x => !(page === "occupational" && (x.closest("[data-session][hidden]") || x.closest("section[hidden]"))) && !(page === 'cervical' && x.closest('[data-cx-field][hidden]')) && x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
+      .filter(x => !(page === "occupational" && (x.closest("[data-session][hidden]") || x.closest("section[hidden]"))) && !(page === 'cervical' && x.closest('[data-cx-field][hidden]')) && x.type!=='hidden' && x.name && !x.disabled && x.value.trim() && (!['checkbox','radio'].includes(x.type) || x.checked))
       .map(x => ({el:x,key:x.name.split(':').slice(0,2).join(':'),value:x.value.trim(),label:[...(x.closest('label')?.childNodes||[])].filter(n=>n.nodeType===3).map(n=>n.textContent.trim()).join(' ') || x.name}));
   }
   function inspect(d, p) {
@@ -66,7 +66,7 @@ const LiveReview = (() => {
     if(!form||!box)return {issues:[]};
     const d=Care.normalize(Flow.data()), rows=entries(), issues=inspect(d,page);
     let text='',failure;
-    try{text=compose(d,page);}catch(e){failure=e;}
+    try{text=compose(d,page);}catch(e){failure=e;try{text=compose(d,page,true);}catch{}}
     const meaningful=rows.some(r=>!['recordDate','recordSetting','visitDate','encounterSetting','encounterReason','mode','igMethod','usgDays'].includes(r.key));
     if(failure && meaningful && !issues.some(i=>i.message===failure.message))issues.push({message:failure.message,keys:failure.field?[failure.field]:[],values:[]});
     if(text)for(const issue of analyzeText(text)){
@@ -76,17 +76,19 @@ const LiveReview = (() => {
     const partial=!!failure;
     if (failure) {
       // Keep incomplete answers visible; do not invent a clinical conclusion.
-      text = meaningful ? rows.map(r => r.label + ': ' + r.value + '.').join('\n') : '';
+      if(!text) text = meaningful ? Narrative.fallback(rows) : ''; 
     }
+    if(failure&&!meaningful)text='';
     const manual=out.dataset.manual==='true';
     if(!manual) {
-      out.value=text;out.dataset.baseline=text;out.dataset.stale='false';
+      const top=out.scrollTop,left=out.scrollLeft,start=out.selectionStart,end=out.selectionEnd;
+      if(out.value!==text){out.value=text;out.setSelectionRange(Math.min(start,text.length),Math.min(end,text.length));out.scrollTop=top;out.scrollLeft=left;}out.dataset.baseline=text;out.dataset.stale='false';
     } else out.dataset.stale=String(text!==out.dataset.baseline);
     const manualIssues=manual?analyzeText(out.value):[];
     issues.push(...manualIssues);
     const terms=issues.flatMap(i=>i.values?.length?i.values:rows.filter(r=>i.keys.includes(r.key)).map(r=>r.value));
     box.innerHTML=painted(out.value,terms)+'\n';
-    box.scrollTop=out.scrollTop;
+    box.scrollTop=out.scrollTop;box.scrollLeft=out.scrollLeft;
     q('#editor-mode').textContent=manual?'Edição manual':'Automático';
     q('#live-heading').textContent=issues.length ? issues.length+' ponto(s) para revisar — opcional' : 'Nenhum conflito identificado';
     q('#review-details').hidden=!issues.length;
@@ -112,7 +114,8 @@ const LiveReview = (() => {
   async function resume(){
     const out=q('#output');
     if(out.dataset.manual==='true') {
-      const choice=await Flow.dialog('Retomar atualização automática?', 'Sua edição manual será substituída pelo texto dos campos. Uma cópia ficará no histórico desta sessão.', [['cancel','Manter minha edição'],['replace','Retomar automático']]);
+      const candidate=update().text;
+      const choice=await Flow.dialog('Retomar atualização automática?', 'Sua edição manual será substituída pelo texto dos campos. Uma cópia ficará no histórico desta sessão.', [['cancel','Manter minha edição'],['replace','Retomar automático']],[['Sua edição atual',out.value],['Texto atualizado dos campos',candidate]]);
       if(choice!=='replace')return;
       if(out.value.trim())saveHistory(out.value);
     }

@@ -1,10 +1,30 @@
+/* Narrative wording is independent of field labels; never infers a clinical answer. */
+const Narrative = (() => {
+  const labels={cxDum:'DUM',cxPreviousResult:'Exame anterior',cxFindings:'Achados ao exame',cxAfter:'Condições após a coleta',cxEventDetails:'Intercorrências e medidas adotadas',cxKit:'Dispositivo utilizado',cxDispatchDate:'Encaminhamento em',pcComplaint:'Queixa relatada',pcDevReport:'Desenvolvimento relatado',pcDevObserved:'Desenvolvimento observado',pcFeedDetails:'Alimentação: avaliação e relato registrados',pcSince:'Intercorrências relatadas',pcPregnancy:'História gestacional e perinatal',pcMeasure:'Método de medição',pregnancyBasis:'Fundamentação da avaliação de gestação',complicationDetails:'Intercorrências e medidas adotadas',otherHistory:'Outros antecedentes'};
+  function field(key,label,value,d={}) {
+    if(key==='cxStatus') {const type=d.cxType==='Citopatológico do colo do útero'?'citopatológico do colo do útero':d.cxType==='DNA-HPV oncogênico'?'DNA-HPV oncogênico':'';return value==='Realizada'&&type?(d.cxMethod==='Autocoleta recebida'?'Recebida amostra de autocoleta para ':'Realizada coleta para ')+type:'Situação da coleta: '+value.toLowerCase();}
+    const phrases={cxExam:{Realizado:'Realizado exame especular','Não realizado':'Exame especular não realizado'},cxDispatch:{'Encaminhada ao laboratório':'Amostra encaminhada ao laboratório','Aguardando transporte':'Amostra aguardando transporte','Não encaminhada':'Amostra não encaminhada'},cxConsent:{'Concorda com a coleta':'Paciente concorda com a coleta','Não deseja realizar neste momento':'Paciente não deseja realizar a coleta neste momento','Solicitou interrupção':'Paciente solicitou interrupção'},cxEvent:{'Sem intercorrências observadas':'Sem intercorrências observadas','Com intercorrências':'Registradas intercorrências'}};
+    return phrases[key]?.[value] || (labels[key]||label.replace(/\?\s*$/,'').replace(/\s*\(ex\.:.*\)$/i,''))+': '+value;
+  }
+  function fallback(rows) {
+    const groups=new Map();for(const r of rows){const section=r.el.closest('section,details');const title=section?.querySelector('h2,summary')?.childNodes[0]?.textContent?.trim()||'Registro';const values=groups.get(title)||[];values.push(field(r.key,r.label,r.value));groups.set(title,values);}
+    return [...groups].map(([title,rows])=>title+': '+rows.map(sentence).join(' ')).join('\n\n');
+  }
+  function mount(){
+    const guides={otIntervention:[['Atividade realizada','Atividade'],['Contexto e materiais','Contexto'],['Estratégia ou ajuda oferecida','Estratégia / ajuda']],otResponse:[['Tarefa observada','Tarefa'],['Resposta observada','Resposta'],['Ajuda necessária','Ajuda']],observations:[['Achado registrado','Achado'],['Fonte ou contexto','Fonte / contexto']],physicalOther:[['Região ou item examinado','Item examinado'],['Achados observados','Achados']],cxFindings:[['Estrutura examinada','Estrutura'],['Achados observados','Achados']],pcDevObserved:[['Atividade observada','Atividade'],['Desempenho observado','Desempenho'],['Contexto e apoio','Contexto / apoio']],complicationDetails:[['Intercorrência observada','Intercorrência'],['Medidas efetivamente adotadas','Medidas adotadas']]};
+    for(const [name,slots]of Object.entries(guides)){const target=document.querySelector(`#clinical [name="${name}"]`);if(!target)continue;const box=document.createElement('details');box.className='writing-aid';box.innerHTML='<summary>Preencher com roteiro</summary><p class="privacy">Complete somente o que foi registrado. O roteiro entra no campo após clicar em Acrescentar.</p><div class="fields two">'+slots.map(([label],i)=>`<label>${esc(label)}<input data-writing-slot="${i}" autocomplete="off"></label>`).join('')+'</div><button type="button">Acrescentar ao campo</button>';target.closest('label').after(box);
+      box.querySelector('button').onclick=()=>{const text=slots.map(([,label],i)=>{const value=box.querySelector(`[data-writing-slot="${i}"]`).value.trim();return value?sentence(label+': '+value):'';}).filter(Boolean).join(' ');if(!text)return;target.value=[target.value.trim(),text].filter(Boolean).join('\n');box.querySelectorAll('input').forEach(x=>x.value='');box.open=false;target.dispatchEvent(new Event('input',{bubbles:true}));target.focus();};
+    }
+  }
+  return {field,fallback,mount};
+})();
 /* Shared documentation language; no inferred findings or treatment. */
 const Notes = (() => {
   const defaults = {
-    general: "consulta de enfermagem",
-    has: "consulta de enfermagem para acompanhamento da hipertensão arterial",
-    dm: "consulta de enfermagem para acompanhamento do diabetes",
-    both: "consulta de enfermagem para acompanhamento da hipertensão arterial e do diabetes",
+    general: "consulta",
+    has: "consulta para acompanhamento da hipertensão arterial",
+    dm: "consulta para acompanhamento do diabetes",
+    both: "consulta para acompanhamento da hipertensão arterial e do diabetes",
     prenatal: "consulta de pré-natal",
   };
   const reasons = {
@@ -17,7 +37,7 @@ const Notes = (() => {
   function form(p) {
     return section(
       "Motivo do atendimento",
-      `<div class="fields two"><label>Atendimento<select name="encounterSetting"><option value="unit">Na unidade</option><option value="home">No domicílio</option><option value="bed">À beira do leito</option><option value="neutral">Sem especificar o local</option></select></label><label>Motivo principal<select name="encounterReason"><option value="default">${esc(defaults[p].charAt(0).toUpperCase() + defaults[p].slice(1))}</option>${Object.entries(
+      `<div class="fields two"><label>Atendimento<select name="encounterSetting"><option value="neutral">Sem especificar o local</option><option value="unit">Na unidade</option><option value="home">No domicílio</option><option value="bed">À beira do leito</option></select></label><label>Motivo principal<select name="encounterReason"><option value="default">${esc(defaults[p].charAt(0).toUpperCase() + defaults[p].slice(1))}</option>${Object.entries(
         reasons,
       )
         .map(
@@ -40,7 +60,7 @@ const Notes = (() => {
     if (!reason) throw Error("Informe o motivo do atendimento.");
     reason = reason.replace(/[.\s]+$/, "");
     const subject = p === "prenatal" ? "Gestante" : "Paciente";
-    const setting = d.encounterSetting || "unit";
+    const setting = d.encounterSetting || "neutral";
     const start = {
       unit: subject + " comparece à unidade para ",
       home: subject + " recebe atendimento no domicílio para ",
@@ -51,6 +71,7 @@ const Notes = (() => {
         " para ",
     }[setting];
     if (!start) throw Error("Confira o local do atendimento.");
+    if(setting === "neutral" && reason.startsWith("consulta")) return subject+" em "+reason+".";
     return start + reason + ".";
   }
   function mount() {
@@ -75,7 +96,7 @@ const Notes = (() => {
     form.addEventListener("change", refresh);
     refresh();
   }
-  function compose(d, p) {
+  function compose(d, p, partial = false) {
     const values = (k) => unique(d["c:" + k] ?? []),
       has = (k) => String(d[k] ?? "").trim() !== "";
     const parts = [];
@@ -86,21 +107,21 @@ const Notes = (() => {
       states.includes("Queixa principal") ||
       ev.some((v) => ["Refere queixas", "Apresenta queixa"].includes(v));
     const noComplaints =
-      states.includes("Sem queixas no momento") && !complaints;
+      states.includes("Sem queixas no momento");
     states = states.filter(
       (v) => !["Queixa principal", "Sem queixas no momento"].includes(v),
     );
     if (
-      states.includes("Bom estado geral") &&
+      !partial && states.includes("Bom estado geral") &&
       states.includes("Regular estado geral")
     )
       throw Error("Selecione apenas um estado geral.");
-    if (states.includes("Deambulando") && states.includes("Restrito ao leito"))
+    if (!partial && states.includes("Deambulando") && states.includes("Restrito ao leito"))
       throw Error("Confira a mobilidade: deambulando ou restrito ao leito.");
     if (has("complaint"))
-      parts.push(sentence("Refere como queixa principal: " + d.complaint));
+      parts.push(sentence("Refere " + d.complaint));
     else if (complaints) parts.push("Refere queixas no momento.");
-    else if (noComplaints) parts.push("Sem queixas no momento.");
+    if (noComplaints) parts.push("Sem queixas no momento.");
     if (has("adherence"))
       parts.push(
         "Adesão ao tratamento informada como " +
@@ -182,6 +203,7 @@ const Notes = (() => {
     }
     if (ev.length) parts.push(sentence(join(ev.map((v) => v.toLowerCase()))));
     if (has("observations")) parts.push(sentence(d.observations));
+    const clinicalEnd = parts.length;
     const acts = values("actions"),
       all = unique([...acts, ...values("returns")]);
     if (acts.includes("Medicação administrada"))
@@ -248,12 +270,12 @@ const Notes = (() => {
       parts.push("Orientada reavaliação.");
     if (!d.followStatus && all.includes("Retorno orientado")) parts.push("Orientado retorno.");
     if (all.includes("Acompanhamento mantido"))
-      parts.push("Mantido acompanhamento de enfermagem.");
+      parts.push("Mantido acompanhamento com a equipe.");
     if (!parts.length)
       throw Error(
         "Preencha ou selecione ao menos uma informação do atendimento.",
       );
-    return [opening(d, p), ...unique(parts)].join(" ");
+    return [opening(d, p), parts.slice(0,clinicalEnd).join(" "), parts.length>clinicalEnd?"Conduta: "+parts.slice(clinicalEnd).join(" "):""].filter(Boolean).join("\n\n");
   }
   return { form, opening, mount, compose };
 })();

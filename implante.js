@@ -196,14 +196,14 @@ const Implante = (() => {
         "Revise o agendamento e a decisão / consentimento registrados.",
       );
   }
-  function compose(d) {
-    validate(d);
+  function compose(d, partial = false) {
+    if(!partial) validate(d);
     const groups = [];
     const push = (a) => {
       if (a.length) groups.push(a.map(finish).join(" "));
     };
     const item = (a, k, label) => {
-      if (v(d, k)) a.push(label + ": " + v(d, k));
+      if (v(d, k)) a.push(Narrative.field(k,label,v(d,k),d));
     };
     const date = (a, k, label) => {
       if (v(d, k)) a.push(label + ": " + fmt(d[k]));

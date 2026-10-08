@@ -48,7 +48,7 @@ const Cervical = (()=>{
  function form(){return `<div class="workspace"><form id="clinical">${groups.map(([title,fields],i)=>section(title,`<div class="fields two">${fields.map(field).join('')}</div>${i===4?'<p class="privacy">Selecione apenas orientações realizadas.</p>'+chips('cxGuides',guidance):''}`)).join('')}${section('Como o texto é gerado',`<p class="privacy">O início será “Paciente comparece à unidade para coleta de material para exame citopatológico do colo do útero” ou “... para teste de DNA-HPV oncogênico”, conforme a escolha. A realização só é afirmada quando registrada. Campos inativos ficam preservados no rascunho, mas não entram no texto.</p><p class="privacy">Modelo documental elaborado a partir de referências oficiais, não transcrição de uma evolução padronizada nacional. A adequabilidade da amostra e o resultado pertencem ao laudo laboratorial. O protocolo local e as instruções do kit orientam a coleta. Não há definição automática de elegibilidade, periodicidade ou encaminhamento.</p><p class="privacy"><a href="https://www.inca.gov.br/publicacoes/formularios/requisicao-de-exame-citopatologico-colo-do-utero" target="_blank" rel="noopener noreferrer">INCA · requisição citopatológica ↗</a><br><a href="https://linhasdecuidado.saude.gov.br/portal/cancer-do-colo-do-utero/unidade-de-atencao-primaria/vigilancia-em-saude/tecnica-exame-citopatologico" target="_blank" rel="noopener noreferrer">Ministério da Saúde · registro da coleta e acompanhamento ↗</a><br><a href="https://www.gov.br/saude/pt-br/assuntos/pcdt/r/rastreamento-cancer-do-colo-do-utero/view" target="_blank" rel="noopener noreferrer">Diretrizes brasileiras · DNA-HPV (2025) ↗</a></p>`)}</form>${outputPanel()}</div>`;}
  function compose(d){if(!Object.keys(d).some(k=>(k.startsWith('cx')||k==='c:cxGuides')&&(Array.isArray(d[k])?d[k].length:val(d,k))))return '';
  const intro=d.cxType==='DNA-HPV oncogênico'&&d.cxMethod==='Autocoleta recebida'&&sampled(d)?'Paciente comparece à unidade para entrega de material obtido por autocoleta para teste de DNA-HPV oncogênico.':d.cxType==='Citopatológico do colo do útero'?'Paciente comparece à unidade para coleta de material para exame citopatológico do colo do útero.':d.cxType==='DNA-HPV oncogênico'?'Paciente comparece à unidade para coleta de material para teste de DNA-HPV oncogênico.':'Paciente comparece à unidade para atendimento relacionado à coleta de exame do colo do útero.';
- const out=[intro];groups.forEach(([title,fields])=>{const parts=fields.filter(([k])=>k!=='cxType'&&active(k,d)&&val(d,k)).map(([k,label,type])=>label+': '+(type==='date'?val(d,k).split('-').reverse().join('/'):val(d,k)));if(title==='Orientações e retorno'&&(d['c:cxGuides']||[]).length)parts.unshift('Orientações realizadas: '+d['c:cxGuides'].join('; '));if(parts.length)out.push(title+': '+parts.map(sentence).join(' '));});return out.join('\n\n');}
+ const out=[intro];groups.forEach(([title,fields])=>{const parts=fields.filter(([k])=>k!=='cxType'&&active(k,d)&&val(d,k)).map(([k,label,type])=>Narrative.field(k,label,type==='date'?val(d,k).split('-').reverse().join('/'):val(d,k),d));if(title==='Orientações e retorno'&&(d['c:cxGuides']||[]).length)parts.unshift('Orientações realizadas: '+d['c:cxGuides'].join('; '));if(parts.length)out.push(title+': '+parts.map(sentence).join(' '));});return out.join('\n\n');}
  function issues(d){const a=[],add=(message,keys)=>a.push({message,keys,values:keys.map(k=>val(d,k)).filter(Boolean)});
  if(d.cxComplaintState==='Sem queixas relatadas'&&val(d,'cxComplaint'))add('Ausência de queixas e queixa descrita: revise o contexto ou a seleção.',['cxComplaintState','cxComplaint']);
  if(sampled(d)&&d.cxConsent==='Não deseja realizar neste momento')add('Coleta com amostra registrada e recusa: confira os momentos e a situação da coleta.',['cxStatus','cxConsent']);
@@ -135,9 +135,9 @@ const ChildCare = (() => {
     if(d.pcFeeding==='Aleitamento materno exclusivo'&&v(d,'pcFood'))add('Aleitamento exclusivo com outros alimentos ou líquidos descritos: confira o relato.',['pcFeeding','pcFood']);
     return a.concat(motorIssues(d));
   }
-  function compose(d){if(!Object.keys(d).some(k=>k.startsWith('pc')&&v(d,k)))return '';const out=['Paciente comparece à unidade para consulta de puericultura'+(d.pcReason?' — '+d.pcReason.toLowerCase():'')+'.'];
+  function compose(d){if(!Object.keys(d).some(k=>k.startsWith('pc')&&v(d,k)))return '';const out=['Paciente comparece à unidade para consulta de puericultura'+(d.pcReason?' — '+d.pcReason:'')+'.'];
     const block=(title,items)=>{const parts=items.filter(Boolean);if(parts.length)out.push(title+': '+parts.map(sentence).join(' '));};
-    const f=(k,label)=>v(d,k)?label+': '+v(d,k):'';
+    const f=(k,label)=>v(d,k)?Narrative.field(k,label,v(d,k),d):'';
     const dt=(k,label)=>v(d,k)?label+': '+fmt(d[k]):'';
     const m=(k,label,unit)=>v(d,k)?label+': '+v(d,k)+' '+unit:'';
     block('Identificação',[f('pcName','Nome'),dt('pcBirth','Nascimento'),f('pcBirthTime','Horário'),age(d)?'Idade calculada: '+age(d):f('pcAgeReported','Idade informada'),f('pcSex','Sexo'),f('pcResponsible','Responsável'),f('pcRelationship','Vínculo'),dt('recordDate','Atendimento'),f('pcProfessional','Profissional')]);
@@ -242,7 +242,8 @@ const Occupational = (() => {
       }
     }
     const performed=P.filter(x=>/^(Intervenções registradas|Procedimento realizado|Finalidade|Estratégia \/ ajuda|Duração):/.test(x)), planned=P.filter(x=>!performed.includes(x));
-    const blocks=d.otFormat==='SOAP'?[opening,...[['S',S],['O',O],['A',A],['P',P]].filter(([,x])=>x.length).map(([l,x])=>l+': '+x.join(' '))]:[opening,...S,...performed,...O,...A,...planned];
+    const response=O.filter(x=>/^(Resposta observada|Intercorrências registradas):/.test(x)), observed=O.filter(x=>!response.includes(x));
+    const blocks=d.otFormat==='SOAP'?[opening,...[['S',S],['O',O],['A',A],['P',P]].filter(([,x])=>x.length).map(([l,x])=>l+': '+x.join(' '))]:[opening,...[['Relato',S],['Atividade e avaliação',observed],['Intervenção',performed],['Resposta à intervenção',response],['Análise profissional',A],['Plano',planned]].filter(([,x])=>x.length).map(([l,x])=>l+': '+x.join(' '))];
     if(d.otProfessional||d.otCrefito)blocks.push(sentence(['Profissional: '+(d.otProfessional||'não informado'),d.otCrefito?'CREFITO '+d.otCrefito:''].filter(Boolean).join(' — ')));
     if(d.recordDate)blocks.push(sentence('Atendimento em '+date(d.recordDate)));
     return blocks.join('\n\n');
@@ -717,6 +718,7 @@ function render() {
     if (page === "occupational") Occupational.mount();
     Notes.mount();
     Flow.mount();
+    Narrative.mount();
     $("#clinical").onsubmit = (e) => e.preventDefault();
     $("#generate").onclick = generate;
     $("#regenerate").onclick = () => LiveReview.resume();
@@ -815,25 +817,25 @@ function resolveConflicts(e) {
     }
   }
 }
-function compose(raw, p) {
+function compose(raw, p, partial = false) {
   if (p === "child") return ChildCare.compose(Care.normalize(raw));
   if (p === "cervical") return Cervical.compose(Care.normalize(raw));
   if (p === "occupational") return Occupational.compose(Care.normalize(raw));
   const d = Care.normalize(raw);
-  Care.validate(d, p);
-  return Care.decorate(composeBody(d, p), d, p);
+  if(!partial) Care.validate(d, p);
+  return Care.decorate(composeBody(d, p, partial), d, p);
 }
-function composeBody(d, p) {
-  if (p === "renewal") return Renewal.compose(d);
-  if (p === "diu") return DIU.compose(d);
-  if (p === "implante") return Implante.compose(d);
-  if (p === "prenatal") return Prenatal.compose(d);
+function composeBody(d, p, partial = false) {
+  if (p === "renewal") return Renewal.compose(d, partial);
+  if (p === "diu") return DIU.compose(d, partial);
+  if (p === "implante") return Implante.compose(d, partial);
+  if (p === "prenatal") return Prenatal.compose(d, partial);
   const vals = (k) => d["c:" + k] ?? [];
   const has = (k) => String(d[k] ?? "").trim() !== "";
   const parts = [];
   if (p === "lab") {
-    if (!has("date")) throw Error("Informe a data dos exames.");
-    const date = d.date.split("-").reverse().join("/");
+    if (!partial && !has("date")) throw Error("Informe a data dos exames.");
+    const date = d.date ? d.date.split("-").reverse().join("/") : "data não informada";
     const order = [
       "Hb",
       "Ht",
@@ -888,15 +890,15 @@ function composeBody(d, p) {
           v = "extraValue:" + id,
           u = "extraUnit:" + id;
         if (has(k) !== has(v) || (has(u) && !has(k)))
-          throw Error("Complete o nome e o valor dos exames adicionais.");
+          { if(!partial) throw Error("Complete o nome e o valor dos exames adicionais."); items.push([d[k]||"Exame sem nome informado",d[v]||"resultado não informado",d[u]].filter(Boolean).join(": ")); return; }
         if (has(k) && has(v))
           items.push(d[k] + " " + Care.labValue(d[v], has(u) ? d[u] : ""));
       });
-    items.push(...LabDetails.compose(d));
+    items.push(...LabDetails.compose(d,partial));
     if (!items.length) throw Error("Preencha ao menos um resultado.");
     return `LAB (${date}): ${items.join(" | ")}.`;
   }
-  return Notes.compose(d, p);
+  return Notes.compose(d, p, partial);
 }
 async function generate() {
   return Flow.generate();

@@ -571,8 +571,8 @@ const DIU = (() => {
       throw Error("Descreva as intercorrências e as medidas adotadas.");
     return d;
   }
-  function compose(raw) {
-    const d = validate(raw),
+  function compose(raw, partial = false) {
+    const d = partial ? clean(raw) : validate(raw),
       paragraphs = [];
     const date = (v) => v.split("-").reverse().join("/");
     const sentence = (s) => s.replace(/[.\s]+$/, "") + ".";
@@ -658,7 +658,7 @@ const DIU = (() => {
             Recusado: "Paciente recusou toque bimanual",
           },
         };
-        parts.push(narrative[x.key]?.[v] || label.replace(/\?\s*$/, "") + ": " + v);
+        parts.push(narrative[x.key]?.[v] || Narrative.field(x.key,label,v,d));
       }
       if (i === groups.length - 1) {
         const gs = (d["c:diuGuides"] || [])

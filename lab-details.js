@@ -41,11 +41,11 @@ const LabDetails = (() => {
   function form() {
     return `<section class="panel"><h2>Parasitológico de fezes · EPF</h2><p class="privacy">Transcreva os achados exatamente como constam no laudo. Campos vazios não entram no texto.</p><div class="fields two">${select("epfStatus", "Resultado do EPF", ["Não encontrados na amostra examinada", "Achados presentes", "Inconclusivo"])}${field("epfDate", "Data da coleta do EPF (se diferente)", "", "date")}${field("epfMethod", "Método informado no laudo")}${field("epfSamples", "Amostra(s) examinada(s)", "Ex.: 1ª amostra ou 3 amostras")}</div><h3 class="section-extra">Protozoários · selecione apenas achados descritos</h3><div class="fields two">${organisms.map(([k, l]) => select("epf_" + k, l, ["Presente conforme laudo", "Cistos", "Trofozoítos", "Cistos e trofozoítos"])).join("")}</div><div class="section-extra"><label>Outros organismos / helmintos / formas / quantidade<textarea name="epfOther" rows="2" placeholder="Inclua outros achados e a nomenclatura usada pelo laboratório"></textarea></label><label>Observações do laudo<textarea name="epfNotes" rows="2"></textarea></label></div><p class="privacy">Preserve a identificação do laudo; não substitua “E. histolytica/dispar” por uma espécie isolada. A seleção registra um achado, sem atribuir diagnóstico ou tratamento.</p></section><section class="panel"><h2>Sumário de urina · EAS</h2><p class="privacy">Registre somente os itens disponíveis, mantendo valores e unidades do laboratório. Não há resultados normais presumidos.</p><div class="fields two">${field("urineDate", "Data da coleta da urina (se diferente)", "", "date")}${field("urineMethod", "Método / amostra informados no laudo")}${urineFields.map(([k, l, options]) => `<label>${esc(l)}<input name="urine_${k}" autocomplete="off" ${options.length ? `list="urine-options-${k}"` : ""} ${["density", "ph"].includes(k) ? 'inputmode="decimal"' : ""} placeholder="${["leukocytes", "rbc"].includes(k) ? "Ex.: 5–10/campo ou 10.000/mL" : "Conforme laudo"}">${options.length ? `<datalist id="urine-options-${k}">${options.map((v) => `<option value="${esc(v)}"></option>`).join("")}</datalist>` : ""}</label>`).join("")}</div><label class="section-extra">Outros achados / observações do sumário<textarea name="urineNotes" rows="2"></textarea></label></section>`;
   }
-  function compose(d) {
+  function compose(d, partial = false) {
     const items = [];
     const found = organisms.filter(([k]) => val(d, "epf_" + k));
     if (
-      d.epfStatus === "Não encontrados na amostra examinada" &&
+      !partial && d.epfStatus === "Não encontrados na amostra examinada" &&
       (found.length || val(d, "epfOther"))
     )
       Care.error(
@@ -53,7 +53,7 @@ const LabDetails = (() => {
         "O EPF registra resultado negativo e achados presentes. Confira o laudo.",
       );
     if (
-      d.epfStatus === "Achados presentes" &&
+      !partial && d.epfStatus === "Achados presentes" &&
       !found.length &&
       !val(d, "epfOther")
     )
@@ -66,7 +66,7 @@ const LabDetails = (() => {
       ["epfNotes", "Observações"],
     ])
       if (val(d, k)) epf.push(l + ": " + d[k]);
-    if (epf.length) {
+    if (epf.length || (partial && ["epfDate","epfMethod","epfSamples"].some(k=>val(d,k)))) {
       const meta = [];
       if (d.epfDate && d.epfDate !== d.date)
         meta.push("coleta " + d.epfDate.split("-").reverse().join("/"));
@@ -78,7 +78,7 @@ const LabDetails = (() => {
           ": " +
           epf.join("; "),
       );
-    } else if (["epfDate", "epfMethod", "epfSamples"].some((k) => val(d, k)))
+    } else if (!partial && ["epfDate", "epfMethod", "epfSamples"].some((k) => val(d, k)))
       Care.error("epfStatus", "Preencha o resultado ou algum achado do EPF.");
     const urine = urineFields
       .filter(([k]) => val(d, "urine_" + k))
@@ -87,7 +87,7 @@ const LabDetails = (() => {
           l.replace(" (valor e unidade)", "") + ": " + d["urine_" + k],
       );
     if (val(d, "urineNotes")) urine.push("Observações: " + d.urineNotes);
-    if (urine.length) {
+    if (urine.length || (partial && ["urineDate","urineMethod"].some(k=>val(d,k)))) {
       const meta = [];
       if (d.urineDate && d.urineDate !== d.date)
         meta.push("coleta " + d.urineDate.split("-").reverse().join("/"));

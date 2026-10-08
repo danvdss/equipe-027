@@ -331,7 +331,7 @@ test('renewal keeps request, MUC and medical decision separate without defaults'
   assert.equal(w.document.querySelector('[name=req_1_strength]').value,'0.5');
   assert.equal(w.document.querySelector('[name=muc_1_name]').value,'Sinvastatina');
   let result=run("collect();compose(drafts.renewal,'renewal')");
-  assert.match(result,/solicitar renovação de receituário de medicamento: Clonazepam 0.5 mg/);
+  assert.match(result,/Medicamentos solicitados: Clonazepam 0.5 mg/);
   assert.match(result,/MUC: Sinvastatina/);
   assert.doesNotMatch(result,/Após avaliação médica|aguardando avaliação médica|renovada a prescrição/);
   set('medicalRequested','Sim');set('medicalDone','Sim');
@@ -435,7 +435,7 @@ test('renewal follows MUC and Conduta template with explicit use and physician t
   const {run}=setup(t);
   const d={req_1_name:'Medicamento A',req_1_useType:'Contínuo',muc_1_name:'Medicamento B',medicalRequested:'Sim',renewDoctorTeam:'Médico de outra equipe por ausência do médico da equipe','c:renewGuides':['Uso conforme prescrição médica']};
   const text=run('Renewal.compose('+JSON.stringify(d)+')');
-  assert.match(text,/Paciente comparece à unidade para solicitar renovação de receituário de medicamento: Medicamento A \(de uso contínuo\)/);
+  assert.match(text,/Medicamentos solicitados: Medicamento A \(de uso contínuo\)/);
   assert.match(text,/MUC: Medicamento B/);
   assert.match(text,/Conduta: Solicitada avaliação de médico de outra equipe devido à ausência do médico da equipe/);
   assert.match(text,/Realizadas orientações sobre uso conforme prescrição médica/);
@@ -485,7 +485,7 @@ test('motor loss alert is nonblocking and never inserts a diagnosis',async t=>{
 test('cervical collection starts blank and distinguishes sample collection from results',t=>{
  const {run,set,w}=setup(t);run("navigate('cervical')");run('LiveReview.update()');assert.equal(w.document.querySelector('#output').value,'');
  set('cxType','DNA-HPV oncogênico');set('cxStatus','Realizada');set('cxMethod','Coleta pelo profissional');set('cxResultState','Aguardando resultado');run('LiveReview.update()');
- const text=w.document.querySelector('#output').value;assert.match(text,/para teste de DNA-HPV oncogênico/);assert.match(text,/Situação da coleta: Realizada/);assert.match(text,/Aguardando resultado/);assert.doesNotMatch(text,/Sem intercorrências|Sem alterações|negativo|Concorda/);
+ const text=w.document.querySelector('#output').value;assert.match(text,/para teste de DNA-HPV oncogênico/);assert.match(text,/Realizada coleta para DNA-HPV oncogênico/);assert.match(text,/Aguardando resultado/);assert.doesNotMatch(text,/Sem intercorrências|Sem alterações|negativo|Concorda/);
  set('cxKit','Kit informado');run("navigate('home');navigate('cervical')");assert.equal(w.document.querySelector('[name=cxKit]').value,'Kit informado');
 });
 test('cervical inactive examination and technique fields never leak into narrative',t=>{
@@ -538,3 +538,29 @@ test("prenatal exam search and folded summary preserve results", (t)=>{
  set('pnLab_1_1_status','Resultado disponível');set('pnLab_1_1_result','Não reagente');const row=w.document.querySelector('.exam-record');row.open=false;run('LiveReview.update()');
  assert.match(row.querySelector('[data-exam-summary]').textContent,/Não reagente/);assert.match(w.document.querySelector('#output').value,/Não reagente/);
 });
+
+test('partial narrative preserves clinical blocks and contradictory choices without global fallback',t=>{
+ const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Dor há três dias');set('spo','140');set('observations','Acompanhante relata dificuldade para dormir');const result=run('LiveReview.update()');
+ const text=w.document.querySelector('#output').value;assert.match(text,/Refere Dor há três dias/);assert.match(text,/SpO₂ 140%/);assert.match(text,/Acompanhante relata/);assert.doesNotMatch(text,/recordDate|encounterReason|consulta de enfermagem/);assert.ok(result.issues.length);
+ const absent=[...w.document.querySelectorAll('input[type=checkbox]')].find(x=>x.value==='Sem queixas no momento');absent.checked=true;run('LiveReview.update()');assert.equal(absent.checked,true);assert.match(w.document.querySelector('#output').value,/Sem queixas no momento/);assert.match(w.document.querySelector('#output').value,/Dor há três dias/);
+});
+test('MUC reuse copies seven documented fields in one explicit activation and no decision',t=>{
+ const {w,run,set}=setup(t);run("navigate('renewal')");const values={name:'Sertralina',strength:'50',strengthUnit:'mg',dose:'1',doseUnit:'comprimido(s)',frequency:'À noite',route:'Oral'};
+ for(const[k,v]of Object.entries(values))set('req_1_'+k,v);set('req_1_result','Aguardando avaliação');
+ assert.equal(w.document.querySelector('[name=muc_1_name]').value,'');w.document.querySelector('[data-med-reuse=muc]').click();for(const[k,v]of Object.entries(values))assert.equal(w.document.querySelector('[name=muc_1_'+k+']').value,v);
+ w.document.querySelector('[data-med-reuse=req]').click();assert.equal(w.document.querySelectorAll('[data-med-group=req]').length,1);assert.equal(w.document.querySelector('[name=req_1_result]').value,'Aguardando avaliação');assert.equal(w.document.querySelector('[name=medicalDone]').value,'');
+});
+test('manual replacement provides comparison and retains original until explicit approval',async t=>{
+ const {w,run,set,answer}=setup(t);run("navigate('general')");set('complaint','Primeiro relato');run('LiveReview.update()');const out=w.document.querySelector('#output');out.value='Minha edição';out.dispatchEvent(new w.Event('input',{bubbles:true}));set('complaint','Relato atualizado');const pending=run('LiveReview.resume()');
+ const fields=w.document.querySelectorAll('dialog[open] textarea');assert.equal(fields.length,2);assert.equal(fields[0].value,'Minha edição');assert.match(fields[1].value,/Relato atualizado/);answer('Manter minha edição');await pending;assert.equal(out.value,'Minha edição');
+});
+test('writing guides stay out of narrative until explicit insertion and preserve existing text',t=>{
+ const {w,run,set}=setup(t);run("navigate('general')");set('observations','Texto anterior');const box=w.document.querySelector('.writing-aid');box.querySelector('input').value='Achado fictício';run('LiveReview.update()');assert.doesNotMatch(w.document.querySelector('#output').value,/Achado fictício/);box.querySelector('button').click();run('LiveReview.update()');assert.match(w.document.querySelector('#output').value,/Texto anterior/);assert.match(w.document.querySelector('#output').value,/Achado fictício/);
+});
+test('prenatal invalid dating retains exams and explicit complaint with no calculated IG',t=>{
+ const {run}=setup(t);const text=run(`compose({igMethod:'dum',dum:'2026-10-20',visitDate:'2026-10-08',complaintStatus:'none',pnComplaint:'Náuseas',pnLab_1_1_kind:'vdrl',pnLab_1_1_result:'Não reagente'},'prenatal',true)`);assert.match(text,/Referência de datação a conferir/);assert.match(text,/Náuseas/);assert.match(text,/sem queixas/);assert.match(text,/VDRL/);assert.doesNotMatch(text,/Idade gestacional de/);
+});
+
+test('received self-collected sample never implies collection by the professional',t=>{const {run}=setup(t);const text=run(`compose({cxType:'DNA-HPV oncogênico',cxMethod:'Autocoleta recebida',cxStatus:'Realizada'},'cervical')`);assert.match(text,/Recebida amostra de autocoleta/);assert.doesNotMatch(text,/Realizada coleta para/);});
+test('blank renewal has no invented encounter and unconfirmed assessment is not inferred',t=>{const {w,run,set}=setup(t);run("navigate('renewal')");run('LiveReview.update()');assert.equal(w.document.querySelector('#output').value,'');set('req_1_name','Sertralina');set('req_1_result','Renovado sem alteração');run('LiveReview.update()');const text=w.document.querySelector('#output').value;assert.match(text,/Realização da avaliação médica não confirmada/);assert.doesNotMatch(text,/Após avaliação/);});
+test('duplicate laboratory and Protege result is advisory and preserves both records',t=>{const{run}=setup(t);const d={protege1Status:'available',protege1Date:'2026-09-01',protege1Result4:'Não reagente',pnLab_1_1_kind:'hbv',pnLab_1_1_date:'2026-09-01',pnLab_1_1_result:'Não reagente'};assert.match(run(`PrenatalExams.issues(${JSON.stringify(d)})`).map(x=>x.message).join(' '),/mesmo resultado/);assert.match(run(`PrenatalExams.compose(${JSON.stringify(d)})`),/HBsAg/);});

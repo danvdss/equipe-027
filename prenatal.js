@@ -27,8 +27,18 @@ const PrenatalExams=(()=>{
  function field(p,[key,label,opts]){return `<label>${esc(label)}${Array.isArray(opts)?`<select name="${p}_${key}"><option value="">Não informado</option>${opts.map(v=>`<option>${esc(v)}</option>`).join('')}</select>`:opts==='date'?`<input name="${p}_${key}" type="date">`:`<input name="${p}_${key}" autocomplete="off">`}</label>`;}
  function row(p,kind){const c=catalog[kind];if(!c)return '';return `<details class="exam-record" open><summary><span>${esc(c[0])}</span><small data-exam-summary>Registro em preenchimento</small><span class="exam-edit">Editar / recolher</span></summary><fieldset class="medicine-row" data-pn-lab="${p}"><legend>${esc(c[0])}</legend><input type="hidden" name="${p}_kind" value="${kind}"><div class="fields two">${[['status','Situação',['Solicitado','Coletado / realizado, aguardando resultado','Resultado disponível','Não realizado']],['date','Data da coleta / realização','date'],['report','Data do laudo','date'],['source','Fonte',['Laudo apresentado','Registro da caderneta','Registro eletrônico','Teste realizado nesta consulta','Relato da gestante']],...c[1],['note','Observações / conduta registrada']].map(f=>field(p,f)).join('')}</div><button type="button" data-pn-remove>Remover este registro</button></fieldset></details>`;}
  function form(){const d=drafts.prenatal||{};return section('Resultados de exames por trimestre',`<p class="privacy">Adicione o exame, selecione a situação e transcreva os resultados. Repita para exames em outras datas. Cada trimestre é uma organização do registro, não uma solicitação automática de todos os exames. Não repita aqui um mesmo resultado já transcrito no Protege.</p>${[1,2,3].map(t=>`<details class="compact-details" data-pn-trimester="${t}"><summary>${t}º trimestre · exames e testes rápidos</summary><div class="exam-picker"><label>Buscar exame<input type="search" data-pn-search="${t}" placeholder="Ex.: VDRL, urina, HIV"></label><label>Adicionar exame ao ${t}º trimestre<select data-pn-picker="${t}"><option value="">Selecione o exame</option>${Object.entries(catalog).map(([id,c])=>`<option value="${id}">${esc(c[0])}</option>`).join('')}</select></label><button type="button" data-pn-add="${t}">+ Adicionar exame</button></div><div data-pn-list="${t}">${records(d).filter(p=>p.split('_')[1]===String(t)).map(p=>row(p,d[p+'_kind'])).join('')}</div></details>`).join('')}<p class="privacy">VDRL e teste rápido treponêmico são registros distintos; resultados diferentes não são classificados automaticamente como incoerentes. O TOTG registra as três medidas sem presumir diagnóstico. A USG registrada aqui não altera a referência de datação escolhida acima.</p><details><summary>Referências e uso</summary><p class="privacy">Exames e repetição dependem da avaliação e do protocolo local. Resultados reagentes exigem avaliação profissional conforme o fluxo do teste; esta tela não conclui diagnósticos nem prescreve condutas.</p><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/g/gravidez/exames-e-vacinas" target="_blank" rel="noopener noreferrer">Ministério da Saúde · exames do pré-natal ↗</a><br><a href="https://www.gov.br/aids/pt-br/assuntos/transmissao-vertical" target="_blank" rel="noopener noreferrer">Ministério da Saúde · testagem no pré-natal ↗</a></details>`);}
- function compose(d){const by={};for(const p of records(d)){const c=catalog[d[p+'_kind']];if(!c)continue;const fields=[['status','Situação'],['date','Coleta / realização'],['report','Laudo'],['source','Fonte'],...c[1],['note','Observações / conduta']];const bits=fields.filter(([k])=>value(d,p+'_'+k)).map(([k,l])=>l+': '+(['date','report'].includes(k)?value(d,p+'_'+k).split('-').reverse().join('/'):value(d,p+'_'+k)));if(bits.length)(by[p.split('_')[1]]??=[]).push(c[0]+' — '+bits.join('; '));}return Object.entries(by).map(([t,rows])=>`Exames do ${t}º trimestre: `+rows.map(sentence).join(' ')).join('\n\n');}
- function issues(d){const out=[];const add=(message,keys)=>out.push({message,keys,values:keys.map(k=>value(d,k)).filter(Boolean)});for(const p of records(d)){const kind=d[p+'_kind'],c=catalog[kind];if(!c)continue;const k=x=>p+'_'+x,results=c[1].filter(([key])=>!['name','kit','stage','method','site','type'].includes(key)&&value(d,k(key))).map(([key])=>k(key));
+ function compose(d){const by={};for(const p of records(d)){const c=catalog[d[p+'_kind']];if(!c)continue;const status=value(d,p+'_status'),date=value(d,p+'_date'),report=value(d,p+'_report'),source=value(d,p+'_source');
+ const bits=c[1].filter(([k])=>value(d,p+'_'+k)).map(([k,l])=>(k==='result'?'':l+': ')+value(d,p+'_'+k));
+ if(!bits.length&&!status&&!date&&!report&&!source&&!value(d,p+'_note'))continue;
+ const context=[date?'coleta / realização em '+date.split('-').reverse().join('/'):'',report?'laudo em '+report.split('-').reverse().join('/'):'',source?'fonte: '+source.toLowerCase():''].filter(Boolean);
+ let text=c[0]+(context.length?' ('+context.join('; ')+')':'');
+ if(status&&!(status==='Resultado disponível'&&bits.length))bits.unshift(status.toLowerCase());
+ if(value(d,p+'_note'))bits.push('Observações / conduta: '+value(d,p+'_note'));
+ text+=(bits.length?': '+bits.join('; '):'');(by[p.split('_')[1]]??=[]).push(text);
+ }return Object.entries(by).map(([t,rows])=>`Exames do ${t}º trimestre: `+rows.map(sentence).join(' ')).join('\n\n');}
+ function issues(d){const out=[];const add=(message,keys)=>out.push({message,keys,values:keys.map(k=>value(d,k)).filter(Boolean)});for(const p of records(d)){const kind=d[p+'_kind'],c=catalog[kind];if(!c)continue;const trimester=p.split('_')[1],index={hbv:4,hcv:5,htlv:6}[kind],protege='protege'+trimester;
+ if(index!==undefined&&d[protege+'Status']==='available'&&value(d,p+'_date')&&d[p+'_date']===d[protege+'Date']&&value(d,p+'_result')&&value(d,p+'_result').toLowerCase()===value(d,protege+'Result'+index).toLowerCase())add(c[0]+': mesmo resultado e data também registrados no Protege. Confira se é a mesma coleta antes de remover a repetição.',[p+'_result',protege+'Result'+index]);
+ const k=x=>p+'_'+x,results=c[1].filter(([key])=>!['name','kit','stage','method','site','type'].includes(key)&&value(d,k(key))).map(([key])=>k(key));
  if(results.length&&['Solicitado','Coletado / realizado, aguardando resultado','Não realizado'].includes(d[k('status')]))add(c[0]+': resultado preenchido com situação pendente ou não realizada. Confira a situação e a data.',[k('status'),...results]);
  if(results.length&&!d[k('status')])add(c[0]+': informe a situação do resultado para contextualizar o registro.',[k('status')]);
  for(const key of ['date','report']){const s=value(d,k(key));if(!s)continue;const dt=new Date(s+'T12:00:00Z');if(isNaN(dt)||dt.toISOString().slice(0,10)!==s||+s.slice(0,4)<1900)add('Confira a data do exame.',[k(key)]);else if(d.visitDate&&s>d.visitDate)add('Exame ou laudo com data posterior à consulta. Confira o registro.',[k(key),'visitDate']);}
@@ -240,9 +250,11 @@ const Prenatal = (() => {
       " conforme orientação médica."
     );
   }
-  function compose(d) {
+  function compose(d, partial = false) {
     const p = [];
-    const a = age(d);
+    let a;
+    try { a=age(d); } catch(e) { if(!partial)throw e;p.push('Referência de datação a conferir: '+[['dum','DUM'],['usgDate','Data da USG'],['usgWeeks','Semanas na USG'],['usgDays','Dias na USG']].filter(([k])=>present(d[k])).map(([k,l])=>l+': '+d[k]).join('; ')+'.'); }
+
     if (a) {
       let reference =
         a.method === "dum"
@@ -254,7 +266,7 @@ const Prenatal = (() => {
     }
     if (d.complaintStatus === "none")
       p.push("Gestante sem queixas no momento.");
-    if (d.complaintStatus === "yes")
+    if (d.complaintStatus === "yes" || present(d.pnComplaint))
       p.push(
         present(d.pnComplaint)
           ? sentence("Gestante refere: " + d.pnComplaint)
@@ -295,11 +307,11 @@ const Prenatal = (() => {
         pending: "coletado, aguardando resultados",
         available: "resultados disponíveis",
       };
-      if (!states[status]) throw Error("Confira a situação do Protege.");
+      if (!partial && !states[status]) throw Error("Confira a situação do Protege.");
       const date = d[prefix + "Date"];
       let dateText = "";
       if (
-        present(date) &&
+        !partial && present(date) &&
         ["collected", "pending", "available"].includes(status)
       ) {
         const day = dateDay(date, "data da coleta do Protege");
@@ -310,7 +322,8 @@ const Prenatal = (() => {
           throw Error("A coleta do Protege não pode ser posterior à consulta.");
         dateText = " (coleta em " + fmt(date) + ")";
       }
-      let s = `Protege do ${n}º trimestre: ${states[status]}${dateText}`;
+      if(partial&&present(date)) dateText=" (coleta em "+fmt(date)+")";
+      let s = `Protege do ${n}º trimestre: ${states[status]||status}${dateText}`;
       if (status === "available") {
         const results = assays.flatMap((name, i) =>
           present(d[prefix + "Result" + i])
@@ -356,9 +369,9 @@ const Prenatal = (() => {
       );
     if (present(d.pnOther)) p.push(sentence(d.pnOther));
     if (d.returnStatus === "scheduled") {
-      if (present(d.returnTime) && !present(d.returnDate))
+      if (!partial && present(d.returnTime) && !present(d.returnDate))
         throw Error("Informe a data da próxima consulta junto ao horário.");
-      if (present(d.returnDate)) {
+      if (!partial && present(d.returnDate)) {
         const date = dateDay(d.returnDate, "data de retorno");
         if (
           present(d.visitDate) &&
@@ -384,7 +397,7 @@ const Prenatal = (() => {
       );
     if (list(d, "pnProcedures").includes("Acompanhamento pré-natal mantido"))
       p.push("Mantido acompanhamento pré-natal.");
-    return [Notes.opening(d, "prenatal"), ...unique(p)].join(" ");
+    return [Notes.opening(d, "prenatal"), ...p].join("\n\n");
   }
   return { form, mount, compose, age, renewal };
 })();
