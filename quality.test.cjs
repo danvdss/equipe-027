@@ -110,7 +110,7 @@ test("one editor preserves manual text and copies without mandatory dialogs", as
   run("navigate('general')");set('complaint','Queixa inicial');run('LiveReview.update()');
   const out=w.document.querySelector('#output');out.value+=' Edição manual';out.dispatchEvent(new w.Event('input',{bubbles:true}));
   set('complaint','Queixa revisada');await run('Flow.copyCurrent()');
-  assert.match(w.copied,/Edição manual/);assert.equal(w.document.querySelector('dialog'),null);
+  assert.match(w.copied,/Edição manual/);assert.equal(w.document.querySelector('dialog[open]'),null);
   const cancel=run('LiveReview.resume()');answer('Manter minha edição');await cancel;
   assert.match(out.value,/Edição manual/);
   const resume=run('LiveReview.resume()');answer('Retomar automático');await resume;
@@ -516,4 +516,25 @@ test('prenatal exams flag documentary conflicts without blocking copying or infe
  const {run,set,w}=setup(t);run("navigate('prenatal')");w.document.querySelector('[data-pn-picker="1"]').value='culture';w.document.querySelector('[data-pn-add="1"]').click();set('pnLab_1_1_status','Não realizado');set('pnLab_1_1_result','Sem crescimento bacteriano');set('pnLab_1_1_organism','Organismo do laudo');run('LiveReview.update()');assert.match(w.document.querySelector('#live-issues').textContent,/microrganismo/);await run('Flow.copyCurrent()');assert.match(w.copied,/Organismo do laudo/);
  assert.equal(run("PrenatalExams.issues({pnLab_1_1_kind:'vdrl',pnLab_1_1_status:'Resultado disponível',pnLab_1_1_result:'Não reagente',pnLab_1_2_kind:'trSyph',pnLab_1_2_status:'Resultado disponível',pnLab_1_2_result:'Reagente'}).length"),0);
  assert.equal(run("PrenatalExams.compose({pnLab_1_1_kind:'totg'})"),'');
+});
+
+test("module search and favorites navigate without losing clinical draft", (t)=>{
+ const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Rascunho preservado');
+ w.document.querySelector('#module-menu').click();const search=w.document.querySelector('#module-search');search.value='pré';search.dispatchEvent(new w.Event('input',{bubbles:true}));
+ assert.ok(w.document.querySelector('[data-module=prenatal]'));assert.equal(w.document.querySelector('[data-module=renewal]'),null);
+ w.document.querySelector('[data-favorite=prenatal]').click();assert.match(w.localStorage.getItem('equipe027.ui.favorites'),/prenatal/);
+ w.document.querySelector('[data-module=prenatal]').click();run("navigate('general')");assert.equal(w.document.querySelector('[name=complaint]').value,'Rascunho preservado');
+});
+test("expanded editor keeps one text, closes with Escape and restores form access", (t)=>{
+ const {w,run,set}=setup(t);run("navigate('general')");set('complaint','Registro de teste');run('LiveReview.update()');
+ const out=w.document.querySelector('#output'),before=out.value;w.document.querySelector('#mobile-review').click();
+ assert.equal(w.document.querySelector('.workspace').dataset.view,'text');assert.equal(w.document.querySelector('#clinical').inert,true);
+ assert.equal(w.document.querySelectorAll('#output').length,1);assert.equal(out.value,before);
+ out.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert.equal(w.document.querySelector('.workspace').dataset.view,'form');assert.equal(w.document.querySelector('#clinical').inert,false);assert.equal(w.document.body.style.overflow,'');
+});
+test("prenatal exam search and folded summary preserve results", (t)=>{
+ const {w,run,set}=setup(t);run("navigate('prenatal')");const search=w.document.querySelector('[data-pn-search="1"]');search.value='VDRL';search.dispatchEvent(new w.Event('input',{bubbles:true}));
+ const picker=w.document.querySelector('[data-pn-picker="1"]');assert.equal(picker.options.length,2);picker.value='vdrl';w.document.querySelector('[data-pn-add="1"]').click();
+ set('pnLab_1_1_status','Resultado disponível');set('pnLab_1_1_result','Não reagente');const row=w.document.querySelector('.exam-record');row.open=false;run('LiveReview.update()');
+ assert.match(row.querySelector('[data-exam-summary]').textContent,/Não reagente/);assert.match(w.document.querySelector('#output').value,/Não reagente/);
 });

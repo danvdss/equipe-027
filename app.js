@@ -551,7 +551,7 @@ function section(title, content) {
   return `<section class="panel"><h2>${title}</h2>${content}</section>`;
 }
 function outputPanel() {
-  return `<aside class="result"><section class="panel editor-panel"><div class="row-title"><h2>${page === "lab" ? "Registro dos exames" : "Evolução"}</h2><span class="tag" id="editor-mode">Automático</span></div><p class="privacy">Preencha e acompanhe aqui. Você pode editar o texto e copiar a qualquer momento.</p><label for="output" class="muted">Texto do atendimento</label><div class="editor-stack"><div id="live-preview" aria-hidden="true"></div><textarea id="output" placeholder="Comece a preencher o atendimento…" spellcheck="true" aria-describedby="output-status"></textarea></div><div class="actions"><button class="primary" id="copy">Copiar texto</button><button id="generate">Guardar no histórico</button></div><details class="editor-options"><summary>Opções do texto</summary><div class="actions"><button id="edit">Editar texto</button><button id="regenerate">Retomar automático</button><button id="clear">Limpar módulo</button></div></details><p id="live-status" role="status" aria-live="polite"></p><details id="review-details"><summary id="live-heading">Pontos para revisar</summary><p class="privacy">Alertas são sugestões, não comprovação de informação falsa. Não impedem copiar ou continuar.</p><div id="live-issues"></div></details></section><p class="privacy">Rascunho temporário: recarregar ou fechar apaga o preenchimento.</p></aside>`;
+  return `<aside class="result"><section class="panel editor-panel"><div class="row-title"><h2>${page === "lab" ? "Registro dos exames" : "Evolução"}</h2><span class="tag" id="editor-mode">Automático</span></div><button type="button" id="expand-editor" aria-expanded="false">Expandir evolução</button><label for="output" class="muted">Texto do atendimento</label><div class="editor-stack"><div id="live-preview" aria-hidden="true"></div><textarea id="output" placeholder="Comece a preencher o atendimento…" spellcheck="true" aria-describedby="output-status"></textarea></div><div class="actions"><button class="primary" id="copy">Copiar evolução</button><button id="generate">Guardar no histórico</button></div><details class="editor-options"><summary>Opções do texto</summary><div class="actions"><button id="edit">Editar texto</button><button id="regenerate">Retomar automático</button></div><div class="danger-actions"><button id="clear">Limpar módulo</button></div></details><p id="live-status" role="status" aria-live="polite"></p><details id="review-details"><summary id="live-heading">Pontos para revisar</summary><p class="privacy">Alertas são sugestões, não comprovação de informação falsa. Não impedem copiar ou continuar.</p><div id="live-issues"></div></details></section><p class="privacy">Rascunho temporário: recarregar ou fechar apaga o preenchimento.</p></aside>`;
 }
 function clinical() {
   const g = page === "general",
@@ -691,9 +691,10 @@ function dashboard() {
       "Modelo de Lagarto/SE, impressão e exportação PNG.",
     ],
   ];
-  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Qual registro<br>vamos preparar?</h1><p>Selecione um módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
+  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
 }
 function render() {
+  document.body.style.overflow='';
   if (!logged) return login();
   app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
   syncReceituario();
@@ -966,24 +967,26 @@ function destroyReceituario() {
   document.body.classList.remove("rx-open");
 }
 
+function favoriteModules() {
+  try { const v=JSON.parse(localStorage.getItem('equipe027.ui.favorites')||'[]'); return Array.isArray(v)?v.filter(id=>modules.some(([m])=>m===id)):[]; } catch { return []; }
+}
 function mountMobileNavigation() {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) return;
-  const wrap = document.createElement("div");
-  wrap.className = "mobile-nav";
-  const label = document.createElement("label");
-  label.htmlFor = "mobile-module";
-  label.textContent = "Módulo";
-  const select = document.createElement("select");
-  select.id = "mobile-module";
-  [...modules, ["history", "Histórico da sessão"]].forEach(([id, title]) => {
-    const option = document.createElement("option");
-    option.value = id;
-    option.textContent = title;
-    option.selected = page === id;
-    select.append(option);
-  });
-  select.onchange = () => navigate(select.value);
-  wrap.append(label, select);
-  nav.after(wrap);
+  const nav=document.querySelector('.main-nav'); if(!nav)return;
+  const wrap=document.createElement('div');wrap.className='mobile-nav';
+  wrap.innerHTML=`<button type="button" id="module-menu" aria-haspopup="dialog">${uiIcon('home')} Módulos</button><span>${esc(titles[page]||'Início')}</span>`;nav.after(wrap);
+  const dialog=document.createElement('dialog');dialog.className='module-dialog';dialog.setAttribute('aria-labelledby','module-title');
+  dialog.innerHTML='<div class="row-title"><h2 id="module-title">Módulos de atendimento</h2><button type="button" data-close>Fechar</button></div><label>Buscar módulo<input type="search" id="module-search" placeholder="Ex.: Pré-natal, renovação"></label><p class="privacy">Use a estrela para organizar seus favoritos neste dispositivo.</p><div class="module-list"></div>';
+  app.append(dialog);
+  let favorites=favoriteModules();
+  function list(){const term=dialog.querySelector('input').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();const all=[...modules,['history','Histórico da sessão']].filter(([id,t])=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(term));all.sort((a,b)=>Number(favorites.includes(b[0]))-Number(favorites.includes(a[0])));
+    const target=dialog.querySelector('.module-list');target.innerHTML=all.length?all.map(([id,t])=>`<div class="module-choice"><button type="button" data-module="${id}" ${id===page?'aria-current="page"':''}>${uiIcon(id)}<span>${esc(t)}</span></button>${id!=='home'&&id!=='history'?`<button type="button" class="favorite-toggle" data-favorite="${id}" aria-label="Favoritar ${esc(t)}" aria-pressed="${favorites.includes(id)}">${favorites.includes(id)?'★':'☆'}</button>`:''}</div>`).join(''):'<p class="privacy">Nenhum módulo encontrado.</p>';
+    target.querySelectorAll('[data-module]').forEach(b=>b.onclick=()=>{dialog.close();navigate(b.dataset.module);});
+    target.querySelectorAll('[data-favorite]').forEach(b=>b.onclick=()=>{const id=b.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];try{localStorage.setItem('equipe027.ui.favorites',JSON.stringify(favorites));}catch{}list();refreshFavorites();dialog.querySelector(`[data-favorite="${id}"]`)?.focus();});
+  }
+  const open=()=>{list();dialog.showModal();dialog.querySelector('input').focus();};
+  wrap.querySelector('button').onclick=open;
+  const desktop=document.createElement('button');desktop.type='button';desktop.className='module-search-button';desktop.textContent='Buscar módulos / favoritos';desktop.onclick=open;nav.prepend(desktop);
+  dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('input').oninput=list;
+  function refreshFavorites(){let bar=document.querySelector('.favorite-modules');if(page!=='home')return;if(!bar){bar=document.createElement('section');bar.className='favorite-modules';document.querySelector('.cards')?.before(bar);}bar.innerHTML='<div class="row-title"><h2>Seus favoritos</h2><button type="button" data-organize>Organizar</button></div><div class="chips">'+(favorites.length?favorites.map(id=>`<button type="button" data-fav-nav="${id}">${uiIcon(id)} ${esc(modules.find(([m])=>m===id)?.[1]||id)}</button>`).join(''):'<p class="privacy">Marque os módulos que você mais usa para acessá-los aqui.</p>')+'</div>';bar.querySelector('[data-organize]').onclick=open;bar.querySelectorAll('[data-fav-nav]').forEach(b=>b.onclick=()=>navigate(b.dataset.favNav));}
+  refreshFavorites();
 }

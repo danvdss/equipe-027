@@ -98,13 +98,13 @@ const LiveReview = (() => {
       for(const key of issue.keys){
         const fields=[...form.elements].filter(x=>x.name===key||x.name.startsWith(key+':'));
         fields.filter(x=>!issue.values.length||issue.values.includes(x.value)).forEach(x=>x.closest('label')?.classList.add('live-conflict'));
-        if(fields.length){const b=document.createElement('button');b.type='button';b.textContent='Revisar '+(rows.find(r=>r.key===key)?.label||fields[0].closest('label')?.childNodes[0]?.textContent||key);b.onclick=()=>focusField(key);item.append(b);}
+        if(fields.length){const b=document.createElement('button');b.type='button';b.textContent='Ir ao campo: '+(rows.find(r=>r.key===key)?.label||fields[0].closest('label')?.childNodes[0]?.textContent||key);b.onclick=()=>focusField(key);item.append(b);}
       }
       const candidates=rows.filter(r=>issue.keys.includes(r.key)&&r.el.type==='checkbox'&&(!issue.values.length||issue.values.includes(r.value)));
       for(const r of candidates){const b=document.createElement('button');b.type='button';b.textContent='Desmarcar “'+r.value+'”';b.onclick=()=>{r.el.checked=false;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();};item.append(b);}
       q('#live-issues').append(item);
     }
-    q('#live-status').textContent=manual ? (out.dataset.stale==='true'?'Formulário alterado. Sua edição foi preservada; use Retomar automático se desejar.':'Sua edição está preservada.') : partial?'Texto parcial: confira os campos indicados. Você pode continuar e copiar.':'Atualizado automaticamente. Revise antes de copiar.';
+    q('#live-status').textContent=manual ? (out.dataset.stale==='true'?'Formulário alterado. Sua edição foi preservada; use Retomar automático se desejar.':'Sua edição está preservada.') : partial?'Texto parcial: confira os campos indicados. Você pode continuar e copiar.':'Atualizado · revise antes de copiar.';
     Flow.updateStatus();
     return {issues,manualIssues,text,partial};
   }
@@ -215,7 +215,7 @@ const Flow = (() => {
   function updateStatus() {
     const s = q("#output-status");
     if (s)
-      s.textContent = q("#output").value.length + " caracteres · " + (q("#output").dataset.manual === "true" ? "edição manual preservada" : "atualização automática");
+      s.textContent = q("#output").value.length + " caracteres";
   }
   function showError(e) {
     clearError();
@@ -347,14 +347,19 @@ const Flow = (() => {
       ?.setAttribute("aria-expanded", "true");
   }
   function view(v) {
-    const work = q(".workspace");
-    if (!work) return;
-    work.dataset.view = v;
-    q("#view-form")?.setAttribute("aria-pressed", String(v === "form"));
-    q("#view-text")?.setAttribute("aria-pressed", String(v === "text"));
-    (v === "text" ? q(".result") : q("#clinical"))?.scrollIntoView({
-      block: "start",
-    });
+    const work=q('.workspace');if(!work)return;
+    const opening=v==='text';
+    document.body.style.overflow=opening?'hidden':'';
+    const panel=q('.result');if(opening){panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','Evolução do atendimento');}else{panel.removeAttribute('role');panel.removeAttribute('aria-modal');panel.removeAttribute('aria-label');}
+    work.querySelectorAll(':scope > :not(.result)').forEach(el=>el.inert=opening);
+    document.querySelectorAll('.top,.main-nav,.mobile-nav,.mobile-actions,.heading').forEach(el=>el.inert=opening);
+    if(opening&&work.dataset.view!=='text')work.dataset.returnScroll=String(window.scrollY);
+    work.dataset.view=v;
+    q('#view-form')?.setAttribute('aria-pressed',String(!opening));
+    q('#view-text')?.setAttribute('aria-pressed',String(opening));
+    const b=q('#expand-editor');if(b){b.textContent=opening?'Voltar ao formulário':'Expandir evolução';b.setAttribute('aria-expanded',String(opening));}
+    if(opening)q('#output')?.focus({preventScroll:true});
+    else { window.scrollTo(0,Number(work.dataset.returnScroll||0));(window.innerWidth<900?q('#mobile-review'):q('#expand-editor'))?.focus({preventScroll:true}); }
   }
   function addFields() {
     const form = q("#clinical");
@@ -478,7 +483,7 @@ const Flow = (() => {
         count.className = "section-count";
         b.append(count);
         title.replaceChildren(b);
-        const collapsed = (["diu", "implante"].includes(page) && i > 2) || (page === "occupational" && i > 3);
+        const collapsed = i > 1;
         body.hidden = collapsed;
         b.setAttribute("aria-expanded", String(!collapsed));
         b.onclick = () => {
@@ -572,10 +577,14 @@ const Flow = (() => {
     initial = snapshot();
     const bar = document.createElement("div");
     bar.className = "mobile-actions";
-    bar.innerHTML = '<button type="button" class="primary" id="mobile-generate">Copiar texto</button><button type="button" id="mobile-review">Ver evolução</button>';
+    bar.innerHTML = '<button type="button" class="primary" id="mobile-generate">Copiar evolução</button><button type="button" id="mobile-review">Ver evolução</button>';
     q('.workspace').after(bar);
     q('#mobile-generate').onclick = copyCurrent;
     q("#mobile-review").onclick = () => view("text");
+    q('#expand-editor').onclick=()=>view(q('.workspace').dataset.view==='text'?'form':'text');
+    q('.workspace').addEventListener('keydown',e=>{if(e.key==='Tab'&&q('.workspace').dataset.view==='text'){const nodes=[...q('.result').querySelectorAll('button,textarea,input,select,summary,a[href]')].filter(x=>!x.disabled&&x.getClientRects().length);const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}if(e.key==='Escape'&&q('.workspace').dataset.view==='text'){e.preventDefault();view('form');}});
+    const width=document.createElement('label');width.className='editor-width';width.innerHTML='Largura da evolução<input type="range" min="32" max="55" value="40" step="1" aria-label="Largura da evolução">';
+    q('.editor-options').append(width);width.querySelector('input').oninput=e=>q('.workspace').style.setProperty('--editor-width',e.target.value+'%');
     form.addEventListener("keydown", async (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
@@ -612,7 +621,7 @@ const Flow = (() => {
           ...section.querySelectorAll("input,textarea,select"),
         ].filter(
           (x) =>
-            !x.disabled &&
+            !x.disabled && x.type !== "hidden" && !!x.name &&
             (x.type === "checkbox" || x.type === "radio"
               ? x.checked
               : !!x.value),

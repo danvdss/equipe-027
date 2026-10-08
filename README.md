@@ -154,3 +154,11 @@ Referências estruturais consultadas em 08/10/2026:
 - https://portaldeboaspraticas.iff.fiocruz.br/atencao-mulher/principais-questoes-sobre-exames-de-rotina-do-pre-natal/
 
 49 testes em DOM simulado aprovados, incluindo registros repetidos, três medidas do TOTG, restauração do rascunho e alertas opcionais. Checagem sintática aprovada. Inspeção visual autenticada não realizada nesta revisão.
+
+### Design e praticidade · 2026.10.08.2
+
+Navegação com busca de módulos e favoritos (somente os identificadores dos módulos persistem neste dispositivo). Página inicial compacta; paleta grafite/verde-água com superfícies, ícones e botões padronizados. Formulários começam com as duas primeiras seções abertas; demais seções podem ser expandidas e mostram contagem de campos preenchidos. Limpeza separada das ações de copiar e editar.
+
+Editor único expansível com retorno à posição do formulário, Escape para fechar, foco contido e fundo inativo. No celular, acesso pela barra inferior; no computador, largura ajustável nas opções do texto. Alertas opcionais mantidos com acesso ao campo correspondente. Exames de pré-natal têm busca e cartões recolhíveis com data, situação e resumo dos resultados, sem apagar os dados.
+
+Removidas 111 declarações CSS incondicionais sobrescritas por regras equivalentes posteriores. Autenticação e conteúdo clínico preservados. 52 testes passaram, incluindo navegação/favoritos, rascunhos, editor único, Escape e resumo de exames. Visualização local bloqueada pela política do navegador; sem homologação visual autenticada ou em aparelhos físicos nesta revisão.
