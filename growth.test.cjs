@@ -57,6 +57,11 @@ test('point outside chart scale is marked rather than silently clipped',t=>{
 });
 test('widget updates without focus changes, expands all four charts and preserves form/narrative',async t=>{
  const {run,w,set}=setup(t);const doc=w.document;
+ assert.ok(doc.querySelector('#growth-dock').classList.contains('growth-collapsed'));
+ assert.equal(doc.querySelector('[data-minimize]').getAttribute('aria-expanded'),'false');
+ doc.querySelector('[data-minimize]').click();
+ assert.ok(!doc.querySelector('#growth-dock').classList.contains('growth-collapsed'));
+ assert.equal(doc.querySelector('[data-minimize]').getAttribute('aria-expanded'),'true');
  for(const [k,v] of Object.entries({...sample,pcWeight:'8.2'}))set(k,v);
  const weight=set('pcWeight','8.4');weight.focus();weight.dispatchEvent(new w.Event('input',{bubbles:true}));
  assert.equal(doc.activeElement,weight);assert.match(doc.querySelector('[data-mini]').textContent,/8,4/);
