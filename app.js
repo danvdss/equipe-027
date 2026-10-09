@@ -719,6 +719,7 @@ function render() {
     Notes.mount();
     Flow.mount();
     Narrative.mount();
+    if (page === "child" && typeof GrowthCharts !== "undefined") GrowthCharts.mount();
     $("#clinical").onsubmit = (e) => e.preventDefault();
     $("#generate").onclick = generate;
     $("#regenerate").onclick = () => LiveReview.resume();

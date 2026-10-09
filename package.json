@@ -3,8 +3,8 @@
   "private": true,
   "version": "2026.9.24",
   "scripts": {
-    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs",
-    "check": "node --check app.js && node --check workflow.js && node --check care.js && node --check diu.js && node --check rx-workflow.js && node --check lab-details.js && node --check shortcuts.js && node --check auth.js && node --check renewal.js"
+    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs",
+    "check": "node --check app.js && node --check workflow.js && node --check care.js && node --check diu.js && node --check rx-workflow.js && node --check lab-details.js && node --check shortcuts.js && node --check auth.js && node --check renewal.js && node --check growth.js && node --check growth-data.js"
   },
   "devDependencies": {
     "jsdom": "26.1.0"

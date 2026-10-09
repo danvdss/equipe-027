@@ -1,0 +1,164 @@
+[
+  {
+    "table": "bmi0_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/body-mass-index-for-age/bmi-girls-0-2-zscores.pdf?sfvrsn=115e44ad_12",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "7935542f34fb1e9e8df453841a6c27c21688570e1469d30ee6d77e095eca786f"
+  },
+  {
+    "table": "bmi0_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/body-mass-index-for-age/bmi-boys-0-2-zscores.pdf?sfvrsn=b111df76_14",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "4ce700bd21e32561e6da94d90b7ac00150ff1e212cf25703dafc52396adaca97"
+  },
+  {
+    "table": "bmi2_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/body-mass-index-for-age/bmi-girls-2-5-zscores.pdf?sfvrsn=c5a8723f_14",
+    "months": [
+      24,
+      60
+    ],
+    "sha256_extracted_rows": "8c1549aaad247d3d23cb38e5ca22aaf312b7f6c8b5791c3ea0a10c765cb07d5f"
+  },
+  {
+    "table": "bmi2_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/body-mass-index-for-age/bmi-boys-2-5-zscores.pdf?sfvrsn=beb7d30a_15",
+    "months": [
+      24,
+      60
+    ],
+    "sha256_extracted_rows": "c7a9f00a529df3ca89d13cb1a7b15cd6f5ec48791ec07936cc84ecfa066717fb"
+  },
+  {
+    "table": "bmi5_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/bmi-for-age-%285-19-years%29/bmifa-girls-5-19years-z.pdf?sfvrsn=8f7e5b11_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "f185a60ba8921552b34550c91bc57e20e5259684b7d71a2b000014e329b8ac31"
+  },
+  {
+    "table": "bmi5_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/bmi-for-age-%285-19-years%29/bmifa-boys-5-19years-z.pdf?sfvrsn=b74e5f9a_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "35997c9490b61f047b65057c1736d7eff76b211e8d91f25075761b89d0f4e3a0"
+  },
+  {
+    "table": "head_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/hcfa_girls_0_5_zscores.pdf?sfvrsn=85107050_9",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "694a8e8e660a48a4e74cc5fa1211bc26f1366ec4c92b2193525d1e3e5a81045d"
+  },
+  {
+    "table": "head_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/hcfa_boys_0_5_zscores.pdf?sfvrsn=701b4c5f_9",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "262f241f11cbd0f967ecd032f014379ee1f23e48d13ae1a0d95da27e86995485"
+  },
+  {
+    "table": "height5_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-%285-19-years%29/sft-hfa-girls-z-5-19years.pdf?sfvrsn=65c549dc_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "feca06cc6eb30db7fbc5122bf892f2c000a06ee1842e2385e29e112a930f4422"
+  },
+  {
+    "table": "height5_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-%285-19-years%29/sft-hfa-boys-z-5-19years.pdf?sfvrsn=133da6b6_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "c92b75c1d3a9977b1b095bfd53f172e7a0d3ccaec5bc65d41f112c180bda1cfb"
+  },
+  {
+    "table": "height_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/hfa_girls_2_5_zscores.pdf?sfvrsn=9d3a6c08_9",
+    "months": [
+      24,
+      60
+    ],
+    "sha256_extracted_rows": "e4ee0f1b3e67cabffec237717a8e5786eec71a2a9b1d828d6d6d3862e96367a6"
+  },
+  {
+    "table": "height_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/hfa_boys_2_5_zscoresba2ba0820f064f4abf5915abac01e894.pdf?sfvrsn=4d77e340_9",
+    "months": [
+      24,
+      60
+    ],
+    "sha256_extracted_rows": "04fdad91a0e9832811171c654eaeb88a84d2f428dc0fb7a7031452954abc1d3b"
+  },
+  {
+    "table": "length_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/lfa_girls_0_2_zscores.pdf?sfvrsn=af7d2671_11",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "8a02f46bc7ee1035fa04330cd0fc3624f2605b14cb806902ab83581cc8521680"
+  },
+  {
+    "table": "length_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/lfa_boys_0_2_zscores.pdf?sfvrsn=cc17e50a_14",
+    "months": [
+      0,
+      24
+    ],
+    "sha256_extracted_rows": "eddb6d24f2ed92a5c93e082c8b0ae2763f2a345e6c7f791cfd016fe9c4a4dbba"
+  },
+  {
+    "table": "weight5_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/weight-for-age-%285-10-years%29/wfa-girls-5-10years-z.pdf?sfvrsn=8cf964bc_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "7bb87938d487489a707ecd8c818c052722a48b439491b941c0c7cf626fbd26ec"
+  },
+  {
+    "table": "weight5_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/weight-for-age-%285-10-years%29/wfa-boys-5-10years-z.pdf?sfvrsn=c05c0743_4",
+    "months": [
+      61,
+      120
+    ],
+    "sha256_extracted_rows": "38e7c1c34421fdcb60523dbc7c9b4fc9c6267d22be17ae7ba9b7b6fa1a70afe9"
+  },
+  {
+    "table": "weight_f",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/weight-for-age/wfa-girls-0-5-zscores.pdf?sfvrsn=810222cc_11",
+    "months": [
+      0,
+      60
+    ],
+    "sha256_extracted_rows": "90000b6b6dd516153bd5f6bb8f238e5f5f1b2b1d102ae5266475e2c36bc77307"
+  },
+  {
+    "table": "weight_m",
+    "url": "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/weight-for-age/wfa-boys-0-5-zscores.pdf?sfvrsn=be07c977_11",
+    "months": [
+      0,
+      60
+    ],
+    "sha256_extracted_rows": "6695b438a5f600751f0648e025a437d54d509094dc5f65e19dc90517f5c456d9"
+  }
+]

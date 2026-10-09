@@ -167,3 +167,7 @@ Removidas 111 declarações CSS incondicionais sobrescritas por regras equivalen
 ### Redação e preenchimento · 2026.10.08.3
 
 Aberturas neutras, narrativa por blocos, recuperação documental parcial sem descarte dos blocos válidos, comparação antes de substituir edição manual, exames compactos com fontes/datas, modelos de coleta sem confundir autocoleta, roteiros opcionais e reaproveitamento explícito entre solicitação e MUC. Alertas e cópia continuam opcionais. 60 testes aprovados; sete preenchimentos foram substituídos por uma ativação no cenário simulado de cópia de medicamentos, sem medição de tempo real. Exemplos, auditoria por módulo e limitações em [AUDITORIA-TEXTOS.md](AUDITORIA-TEXTOS.md).
+
+### Gráficos de crescimento · 2026.10.09.1
+
+Painel compacto na puericultura com atualização local em tempo real e expansão dos gráficos de peso, comprimento/altura, IMC e perímetro cefálico por idade e sexo. Referência assistencial do Ministério da Saúde e tabelas numéricas oficiais da OMS. Sem diagnóstico, conversão automática de medidas ou confirmação de preenchimento da caderneta. Fontes, metodologia e limites em [CRESCIMENTO.md](CRESCIMENTO.md).
