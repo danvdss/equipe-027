@@ -1,6 +1,8 @@
 # EQUIPE 027
 
-Ferramenta estática para gerar evoluções de enfermagem, registros LAB e preencher o receituário de Lagarto/SE.
+**Versão atual: 2026.10.12.** Editor único, revisão opcional e gráficos inicialmente minimizados. Consulte [REVISAO-2026-10.md](REVISAO-2026-10.md) para mudanças, testes e limites. As seções datadas abaixo registram o histórico e podem descrever comportamentos substituídos.
+
+Ferramenta estática para apoiar registros clínicos multiprofissionais, registros LAB e preencher o receituário de Lagarto/SE.
 
 ## Recursos
 - Evolução geral, hipertensão, diabetes, HAS + DM e pré-natal.
@@ -171,3 +173,4 @@ Aberturas neutras, narrativa por blocos, recuperação documental parcial sem de
 ### Gráficos de crescimento · 2026.10.09.1
 
 Painel compacto na puericultura com atualização local em tempo real e expansão dos gráficos de peso, comprimento/altura, IMC e perímetro cefálico por idade e sexo. Referência assistencial do Ministério da Saúde e tabelas numéricas oficiais da OMS. Sem diagnóstico, conversão automática de medidas ou confirmação de preenchimento da caderneta. Fontes, metodologia e limites em [CRESCIMENTO.md](CRESCIMENTO.md).
+

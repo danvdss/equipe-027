@@ -1,6 +1,8 @@
 /* Clinical data never leaves this browser. This panel is a visual aid, not a diagnosis. */
 const GrowthCharts = (() => {
   const MS = 'https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-da-crianca/caderneta';
+  // WHO Anthro 3.2.2, sections 3.2.1 / 3.2.3. Integer days are authoritative.
+  const DAYS_PER_MONTH=30.4375, STANDING_FROM_DAY=731;
   const WHO = 'https://www.who.int/tools/child-growth-standards/standards/';
   const types = {weight:['Peso','kg','pcWeight','weight-for-age'],length:['Comprimento / altura','cm','pcLength','length-height-for-age'],bmi:['IMC','kg/m²',null,'body-mass-index-for-age-bmi-for-age'],head:['Perímetro cefálico','cm','pcHead','head-circumference-for-age']};
   const colors = ['#c4a3e9','#ff919f','#eac47c','#5cd8bd','#eac47c','#ff919f','#c4a3e9'];
@@ -10,7 +12,7 @@ const GrowthCharts = (() => {
   function date(s){if(!/^\d{4}-\d{2}-\d{2}$/.test(s||''))return null;const d=new Date(s+'T00:00:00Z');return Number.isFinite(+d)&&d.toISOString().slice(0,10)===s?d:null;}
   function model(d){
     const birth=date(d.pcBirth),visit=date(d.recordDate),days=birth&&visit?Math.round((visit-birth)/86400000):null;
-    const months=days!=null&&days>=0?days/30.4375:null;
+    const months=days!=null&&days>=0?days/DAYS_PER_MONTH:null;
     const sex=d.pcSex==='Feminino'?'f':d.pcSex==='Masculino'?'m':null;
     const weight=number(d.pcWeight),length=number(d.pcLength),head=number(d.pcHead);
     const values={weight,length,head,bmi:weight&&length?weight/(length/100)**2:null};
@@ -18,10 +20,10 @@ const GrowthCharts = (() => {
     if(!sex)reason='Informe o sexo registrado para selecionar a referência.';
     else if(months==null)reason='Preencha datas válidas de nascimento e atendimento, nessa ordem.';
     else if(months>120)reason='Este painel abrange peso, altura e IMC até 10 anos.';
-    const preterm=number(d.pcGestWeeks)!=null&&number(d.pcGestWeeks)<37&&months!=null&&months<24;
-    const method=days!=null&&days<731?'Comprimento deitado':'Estatura em pé';
+    const preterm=number(d.pcGestWeeks)!=null&&number(d.pcGestWeeks)<37&&days!=null&&days<STANDING_FROM_DAY;
+    const method=days!=null&&days<STANDING_FROM_DAY?'Comprimento deitado':'Estatura em pé';
     const methodIssue=d.pcMeasure===method?'':!d.pcMeasure?'Informe a forma de medição para posicionar comprimento/altura e IMC.':`A referência desta idade utiliza ${method.toLowerCase()}. Confira a medição; nenhuma conversão foi aplicada.`;
-    const range=months!=null&&months>=24?[24,60]:[0,24];
+    const range=days!=null&&days>=STANDING_FROM_DAY?[24,60]:[0,24];
     if(months!=null&&months>60)range.splice(0,2,60,120);
     return {d,sex,days,months,values,reason,preterm,methodIssue,range};
   }
@@ -67,12 +69,13 @@ const GrowthCharts = (() => {
     return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${escape(types[type][0]+' por idade. '+(caption||issue))}"><text x="${left}" y="11">${unit}</text>${lines}<text x="${W/2}" y="${H-2}" text-anchor="middle">Idade cronológica (meses)</text></svg>${!small&&caption?`<p class="growth-value">${escape(caption)}</p>`:''}`;
   }
   function card(m,type,small=false){return `<article class="growth-card"><div class="growth-chart-title"><strong>${types[type][0]}</strong><span>${fmt(m.values[type])} ${types[type][1]}</span></div>${svg(m,type,small)}${!small&&pointIssue(m,type)?`<p class="growth-notice">${escape(pointIssue(m,type))}</p>`:''}</article>`;}
+  function table(m){return `<table><caption>Medidas deste atendimento · ${m.days==null?'idade não informada':m.days+' dias'}</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th><th scope="col">Visualização</th></tr></thead><tbody>${Object.entries(types).map(([k,v])=>`<tr><th scope="row">${escape(v[0])}</th><td>${fmt(m.values[k])} ${v[1]}</td><td>${escape(pointIssue(m,k)||'Ponto da aferição atual; sem classificação automática.')}</td></tr>`).join('')}</tbody></table>`;}
   function mount(){
     const form=document.querySelector('#clinical');if(!form||!form.querySelector('[name="pcWeight"]'))return;
     const dock=document.createElement('aside');dock.id='growth-dock';dock.classList.add('growth-collapsed');dock.setAttribute('aria-label','Gráficos de crescimento');
     dock.innerHTML=`<div class="growth-toolbar"><strong><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3v17h17M7 15l4-5 4 2 6-7"/></svg>Crescimento</strong><button type="button" data-minimize aria-label="Mostrar gráfico" aria-expanded="false">+</button><button type="button" data-expand aria-haspopup="dialog">Expandir ↗</button></div><div class="growth-mini-body"><label class="sr-only" for="growth-kind">Gráfico exibido</label><select id="growth-kind">${Object.entries(types).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('')}</select><div data-mini></div><p class="growth-mini-status" aria-live="polite"></p></div>`;
     const dialog=document.createElement('dialog');dialog.className='growth-dialog';dialog.setAttribute('aria-labelledby','growth-title');
-    dialog.innerHTML=`<div class="growth-dialog-heading"><div><span class="eyebrow">PUERICULTURA · ACOMPANHAMENTO</span><h2 id="growth-title">Gráficos de crescimento</h2></div><button type="button" data-close aria-label="Fechar gráficos de crescimento">Fechar</button></div><p data-context></p><div class="growth-legend"><span>● Medida do atendimento</span><span>Linhas: escores-z −3, −2, −1, 0, +1, +2, +3</span></div><div class="growth-charts"></div><p class="privacy">Um ponto representa esta aferição, não uma tendência de crescimento. A visualização não altera a evolução nem confirma o registro na caderneta.</p><details><summary>Fontes e critérios do gráfico</summary><p>Referência assistencial: <a href="${MS}" target="_blank" rel="noopener noreferrer">Caderneta da Criança · Ministério da Saúde</a>. Curvas redesenhadas a partir das tabelas numéricas da OMS adotadas na Caderneta; não são imagens do Ministério.</p><p>OMS 2006 (0–5 anos) e referência OMS 2007 (5–10 anos). Perímetro cefálico exibido até 24 meses. Linhas ligam os valores mensais publicados, com arredondamento de uma casa decimal; não calculam escore-z individual nem diagnóstico. Idade em meses = dias / 30,4375. Comprimento e IMC mudam de referência aos 731 dias; não há conversão automática da forma de medição.</p><p>Prematuridade antes dos 2 anos requer referência e idade apropriadas: o painel exibe as curvas, mas suspende o ponto. Não infere idade corrigida. As medidas continuam disponíveis no formulário.</p><ul>${Object.entries(types).map(([k,v])=>`<li><a target="_blank" rel="noopener noreferrer" href="${WHO+v[3]}">${v[0]} · tabelas OMS</a></li>`).join('')}<li><a target="_blank" rel="noopener noreferrer" href="https://www.who.int/tools/growth-reference-data-for-5to19-years/indicators">Referência OMS após os 5 anos</a></li></ul></details>`;
+    dialog.innerHTML=`<div class="growth-dialog-heading"><div><span class="eyebrow">PUERICULTURA · ACOMPANHAMENTO</span><h2 id="growth-title">Gráficos de crescimento</h2></div><button type="button" data-close aria-label="Fechar gráficos de crescimento">Fechar</button></div><p data-context></p><div class="growth-legend"><span>● Medida do atendimento</span><span>Linhas: escores-z −3, −2, −1, 0, +1, +2, +3</span></div><div class="growth-charts"></div><details class="growth-table"><summary>Ver medidas em tabela</summary><div data-growth-table></div></details><p class="privacy">Um ponto representa esta aferição, não uma tendência de crescimento. A visualização não altera a evolução nem confirma o registro na caderneta.</p><details><summary>Fontes e critérios do gráfico</summary><p>Referência assistencial: <a href="${MS}" target="_blank" rel="noopener noreferrer">Caderneta da Criança · Ministério da Saúde</a>. Curvas redesenhadas a partir das tabelas numéricas da OMS adotadas na Caderneta; não são imagens do Ministério.</p><p>OMS 2006 (0–5 anos) e referência OMS 2007 (5–10 anos). Perímetro cefálico exibido até 24 meses. Linhas ligam os valores mensais publicados, com arredondamento de uma casa decimal; não calculam escore-z individual nem diagnóstico. Idade da referência em meses = dias / 30,4375; pode diferir dos meses completos no calendário. Comprimento e IMC mudam de referência aos 731 dias; não há conversão automática da forma de medição.</p><p>Prematuridade antes dos 2 anos requer referência e idade apropriadas: o painel exibe as curvas, mas suspende o ponto. Não infere idade corrigida. As medidas continuam disponíveis no formulário.</p><ul>${Object.entries(types).map(([k,v])=>`<li><a target="_blank" rel="noopener noreferrer" href="${WHO+v[3]}">${v[0]} · tabelas OMS</a></li>`).join('')}<li><a target="_blank" rel="noopener noreferrer" href="https://www.who.int/tools/growth-reference-data-for-5to19-years/indicators">Referência OMS após os 5 anos</a></li></ul></details>`;
     document.querySelector('#app').append(dock,dialog);
     let selected='weight';
     function update(){
@@ -81,8 +84,8 @@ const GrowthCharts = (() => {
       dock.querySelector('[data-mini]').innerHTML=card(m,selected,true);
       const issue=pointIssue(m,selected);
       dock.querySelector('.growth-mini-status').textContent=issue||`${m.sex==='f'?'Meninas':'Meninos'} · ${fmt(m.months)} meses · MS / OMS`;
-      dialog.querySelector('[data-context]').textContent=m.reason||`${m.sex==='f'?'Referência para meninas':'Referência para meninos'} · ${fmt(m.months)} meses de idade cronológica · atendimento em ${m.d.recordDate.split('-').reverse().join('/')}`;
-      if(dialog.open)dialog.querySelector('.growth-charts').innerHTML=Object.keys(types).map(k=>card(m,k)).join('');
+      dialog.querySelector('[data-context]').textContent=m.reason||`${m.sex==='f'?'Referência para meninas':'Referência para meninos'} · ${m.days} dias (${fmt(m.months)} meses na referência) de idade cronológica · atendimento em ${m.d.recordDate.split('-').reverse().join('/')}`;
+      if(dialog.open){dialog.querySelector('.growth-charts').innerHTML=Object.keys(types).map(k=>card(m,k)).join('');dialog.querySelector('[data-growth-table]').innerHTML=table(m);}
     }
     dock.querySelector('select').onchange=e=>{selected=e.target.value;update();};
     dock.querySelector('[data-minimize]').onclick=e=>{const collapsed=dock.classList.toggle('growth-collapsed');e.currentTarget.textContent=collapsed?'+':'−';e.currentTarget.setAttribute('aria-expanded',String(!collapsed));e.currentTarget.setAttribute('aria-label',collapsed?'Mostrar gráfico':'Recolher gráfico');};
@@ -94,5 +97,6 @@ const GrowthCharts = (() => {
     form.addEventListener('input',onField);form.addEventListener('change',onField);
     update();
   }
-  return {model,rows,pointIssue,svg,mount};
+  return {model,rows,pointIssue,svg,table,mount};
 })();
+

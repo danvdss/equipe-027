@@ -258,7 +258,7 @@ const Notes = (() => {
     if (guides.includes("alimentação saudável"))
       guides = guides.filter((v) => v !== "alimentação");
     if (guides.length)
-      parts.push("Orientações realizadas: " + join(guides) + ".");
+      parts.push("Orientado: " + join(guides) + ".");
     else if (acts.includes("Orientações realizadas"))
       parts.push("Realizadas orientações.");
     if (has("otherActions")) parts.push(sentence(d.otherActions));
@@ -279,3 +279,4 @@ const Notes = (() => {
   }
   return { form, opening, mount, compose };
 })();
+

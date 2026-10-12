@@ -87,3 +87,12 @@ test('widget lifecycle follows module drafts, reset and logout without persisten
  run('logged=false;login()');assert.equal(w.document.querySelector('#growth-dock'),null);
  assert.equal(w.localStorage.getItem('growth'),null);
 });
+
+test('WHO boundary uses exact integer days consistently in leap and non-leap periods',t=>{
+ const {run}=setup(t);for(const birth of ['2022-03-01','2023-03-01','2024-02-29'])for(const days of [729,730,731,732,1826,1827,3652,3653]){
+ const visit=new Date(Date.parse(birth+'T00:00:00Z')+days*86400000).toISOString().slice(0,10);
+ const m=run(`GrowthCharts.model(${JSON.stringify({...sample,pcBirth:birth,recordDate:visit,pcMeasure:days<731?'Comprimento deitado':'Estatura em pé'})})`);
+ assert.equal(m.days,days);assert.equal(m.methodIssue,'');assert.equal(m.range[0],days<731?0:days/30.4375>60?60:24);assert.equal(!!m.reason,days/30.4375>120);
+ }
+});
+test('accessible table retains blank measurements without inventing a result',t=>{const{run}=setup(t);const html=run(`GrowthCharts.table(GrowthCharts.model(${JSON.stringify({...sample,pcHead:''})}))`);assert.match(html,/<caption>/);assert.match(html,/scope="row"/);assert.match(html,/— cm/);assert.doesNotMatch(html,/normalidade|eutrofia|NaN/);});

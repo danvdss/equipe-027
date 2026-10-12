@@ -44,15 +44,21 @@ const LiveReview = (() => {
     field.focus();field.scrollIntoView({block:'center'});
   }
   function analyzeText(text) {
-    // Conservative lexical checks, always presented as possible conflicts.
+    // Conservative checks within a single context. No semantic/clinical validation claim.
     const issues=[];
-    for(const [a,b] of [[/\bsem queixas(?: no momento)?/i,/\b(?:refere|apresenta) (?:como queixa principal|queixas?|dor\b)[^.!?\n]*/i],[/\bafebril\b/i,/\bfebril\b/i]]){
-      const left=text.match(a),right=text.match(b);
-      if(left&&right && !/(?:não|nega)\s*$/i.test(text.slice(Math.max(0,right.index-12),right.index)))issues.push({message:'Possível incoerência no texto: “'+left[0]+'” e “'+right[0]+'”. Confira o contexto e ajuste manualmente.',keys:[],values:[left[0],right[0]]});
+    const contextual=/(?:ontem|anterior|antes|após|depois|durante|hoje|familiar|responsável|acompanhante|documento|laudo|relatad[oa]|observad[oa])|\d{1,2}[/:-]\d{1,2}/i;
+    for(const part of text.matchAll(/[^\n]+/g)){
+      const sentence=part[0];
+      if(contextual.test(sentence))continue;
+      for(const [a,b] of [[/\bsem queixas(?: no momento)?/i,/\b(?:refere|apresenta) (?:como queixa principal|queixas?|dor\b)[^;,.!?\n]*/i],[/\bafebril\b/i,/\bfebril\b/i]]){
+        const left=sentence.match(a),right=sentence.match(b);
+        if(left&&right&&!/(?:não|nega|negou|sem)\s*(?:(?:estar|ser)\s*)?$/i.test(sentence.slice(Math.max(0,right.index-15),right.index)))issues.push({message:'Possível incoerência no mesmo trecho: “'+left[0]+'” e “'+right[0]+'”. Confira o contexto.',keys:[],values:[left[0],right[0]],ranges:[{start:part.index+left.index,end:part.index+left.index+left[0].length},{start:part.index+right.index,end:part.index+right.index+right[0].length}]});
+      }
     }
     return issues;
   }
-  function painted(text,terms) {
+  function painted(text,terms,ranges=[]) {
+    if(ranges.length){let html="",start=0;for(const r of ranges.sort((a,b)=>a.start-b.start)){if(r.start<start)continue;html+=esc(text.slice(start,r.start))+'<mark class="incoherent">'+esc(text.slice(r.start,r.end))+'</mark>';start=r.end;}return html+esc(text.slice(start));}
     const clean=[...new Set(terms.filter(Boolean))].sort((a,b)=>b.length-a.length);
     if(!clean.length)return esc(text);
     const re=new RegExp(clean.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'gi');
@@ -86,11 +92,12 @@ const LiveReview = (() => {
     } else out.dataset.stale=String(text!==out.dataset.baseline);
     const manualIssues=manual?analyzeText(out.value):[];
     issues.push(...manualIssues);
+    const seen=new Set();for(let i=issues.length-1;i>=0;i--){const id=issues[i].message+'|'+issues[i].keys.join('|');if(seen.has(id))issues.splice(i,1);else seen.add(id);}
     const terms=issues.flatMap(i=>i.values?.length?i.values:rows.filter(r=>i.keys.includes(r.key)).map(r=>r.value));
-    box.innerHTML=painted(out.value,terms)+'\n';
+    box.innerHTML=painted(out.value,manual?[]:terms,manualIssues.flatMap(i=>i.ranges||[]))+'\n';
     box.scrollTop=out.scrollTop;box.scrollLeft=out.scrollLeft;
     q('#editor-mode').textContent=manual?'Edição manual':'Automático';
-    q('#live-heading').textContent=issues.length ? issues.length+' ponto(s) para revisar — opcional' : 'Nenhum conflito identificado';
+    q('#live-heading').textContent=issues.length ? issues.length+' ponto(s) para revisar — opcional' : 'Nenhum conflito identificado pelas regras disponíveis';
     q('#review-details').hidden=!issues.length;
     q('#live-issues').replaceChildren();
     form.querySelectorAll('.live-conflict').forEach(el=>el.classList.remove('live-conflict'));
@@ -103,14 +110,14 @@ const LiveReview = (() => {
         if(fields.length){const b=document.createElement('button');b.type='button';b.textContent='Ir ao campo: '+(rows.find(r=>r.key===key)?.label||fields[0].closest('label')?.childNodes[0]?.textContent||key);b.onclick=()=>focusField(key);item.append(b);}
       }
       const candidates=rows.filter(r=>issue.keys.includes(r.key)&&r.el.type==='checkbox'&&(!issue.values.length||issue.values.includes(r.value)));
-      for(const r of candidates){const b=document.createElement('button');b.type='button';b.textContent='Desmarcar “'+r.value+'”';b.onclick=()=>{r.el.checked=false;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();};item.append(b);}
+      for(const r of candidates){const b=document.createElement('button');b.type='button';b.textContent='Desmarcar “'+r.value+'”';b.onclick=()=>{r.el.checked=false;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();const undo=document.createElement('button');undo.type='button';undo.textContent='Desfazer: '+r.value;undo.onclick=()=>{if(r.el.isConnected){r.el.checked=true;r.el.dispatchEvent(new Event('change',{bubbles:true}));update();}undo.remove();};q('#live-status').after(undo);};item.append(b);}
       q('#live-issues').append(item);
     }
     q('#live-status').textContent=manual ? (out.dataset.stale==='true'?'Formulário alterado. Sua edição foi preservada; use Retomar automático se desejar.':'Sua edição está preservada.') : partial?'Texto parcial: confira os campos indicados. Você pode continuar e copiar.':'Atualizado · revise antes de copiar.';
     Flow.updateStatus();
     return {issues,manualIssues,text,partial};
   }
-  function schedule(){const form=q('#clinical');clearTimeout(timer);timer=setTimeout(()=>{if(q('#clinical')===form)update();},180);}
+  function schedule(e){if(e?.isComposing||q('#output')?.dataset.composing==='true')return;const form=q('#clinical');clearTimeout(timer);timer=setTimeout(()=>{if(q('#clinical')===form)update();},120);}
   async function resume(){
     const out=q('#output');
     if(out.dataset.manual==='true') {
@@ -121,13 +128,38 @@ const LiveReview = (() => {
     }
     out.dataset.manual='false';update();collect();
   }
+  async function mergeBlocks(){
+    const out=q('#output');if(out.dataset.manual!=='true'){toast('O texto já acompanha os campos automaticamente.');return;}
+    const original=out.value, candidate=update().text;
+    const current=original.split(/\n\s*\n/).filter(Boolean), blocks=candidate.split(/\n\s*\n/).filter(Boolean);
+    if(!blocks.length){toast('Preencha os campos para comparar os trechos.');return;}
+    const dialog=document.createElement('dialog');dialog.className='review-dialog block-review';dialog.setAttribute('aria-labelledby','block-review-title');
+    dialog.innerHTML='<h2 id="block-review-title">Atualizar trechos da evolução</h2><p>Escolha o destino de cada trecho dos campos. Nada vem selecionado. O restante da sua edição será preservado.</p><div class="current-blocks"></div><div class="candidate-blocks"></div><p class="block-error" role="status"></p><div class="actions"><button type="button" data-cancel>Cancelar</button><button type="button" class="primary" data-apply>Aplicar seleção</button></div>';
+    const summary=document.createElement('details');summary.innerHTML='<summary>Conferir parágrafos atuais</summary>';current.forEach((text,i)=>{const p=document.createElement('p');p.textContent=(i+1)+'. '+text;summary.append(p);});dialog.querySelector('.current-blocks').append(summary);
+    blocks.forEach((text,i)=>{const row=document.createElement('section');row.className='block-choice';const p=document.createElement('p');p.textContent=text;const label=document.createElement('label');label.textContent='Destino do trecho '+(i+1);const sel=document.createElement('select');sel.dataset.block=String(i);sel.add(new Option('Manter sem aplicar',''));sel.add(new Option('Acrescentar ao final','append'));current.forEach((text,n)=>sel.add(new Option('Substituir parágrafo '+(n+1)+': '+text.slice(0,70),String(n))));label.append(sel);row.append(p,label);dialog.querySelector('.candidate-blocks').append(row);});
+    const close=()=>dialog.close();dialog.querySelector('[data-cancel]').onclick=close;
+    dialog.querySelector('[data-apply]').onclick=()=>{
+      if(!out.isConnected||out.value!==original||update().text!==candidate){dialog.querySelector('.block-error').textContent='O texto ou formulário mudou. Feche e abra a comparação novamente.';return;}
+      const selected=[...dialog.querySelectorAll('[data-block]')].filter(x=>x.value);if(!selected.length){dialog.querySelector('.block-error').textContent='Escolha ao menos um destino.';return;}
+      const targets=selected.filter(x=>x.value!=='append').map(x=>x.value);if(new Set(targets).size!==targets.length){dialog.querySelector('.block-error').textContent='Escolha apenas um trecho para substituir cada parágrafo.';return;}
+      const result=current.slice();selected.forEach(x=>{if(x.value==='append')result.push(blocks[+x.dataset.block]);else result[+x.value]=blocks[+x.dataset.block];});
+      saveHistory(original);out.value=result.join('\n\n');out.dataset.baseline=candidate;out.dataset.manual='true';update();collect();close();toast('Trechos aplicados. A versão anterior está no histórico da sessão.');
+    };
+    dialog.addEventListener('close',()=>{dialog.remove();out.focus({preventScroll:true});},{once:true});document.body.append(dialog);dialog.showModal();
+  }
   function mount(){
     const out=q('#output');
     out.addEventListener('input',schedule);
+    out.addEventListener('compositionstart',()=>{out.dataset.composing='true';clearTimeout(timer);});
+    out.addEventListener('compositionend',()=>{delete out.dataset.composing;schedule();});
+    const tools=document.createElement('div');tools.className='editor-tools';
+    const merge=document.createElement('button');merge.type='button';merge.textContent='Atualizar trechos';merge.onclick=mergeBlocks;
+    const plain=document.createElement('button');plain.type='button';plain.textContent='Texto sem realce';plain.setAttribute('aria-pressed','false');plain.onclick=()=>{const active=out.closest('.editor-stack').classList.toggle('plain-editor');plain.setAttribute('aria-pressed',String(active));plain.textContent=active?'Ativar realce':'Texto sem realce';};
+    tools.append(merge,plain);q('#live-status').after(tools);
     out.addEventListener('scroll',()=>{q('#live-preview').scrollTop=out.scrollTop;q('#live-preview').scrollLeft=out.scrollLeft;});
     update();
   }
-  return {mount,update,schedule,inspect,analyzeText,resume};
+  return {mount,update,schedule,inspect,analyzeText,resume,mergeBlocks};
 })();
 const Flow = (() => {
   let undo = null,
@@ -439,6 +471,7 @@ const Flow = (() => {
     const form = q("#clinical");
     if (!form) return;
     initial = snapshot();
+    form.insertAdjacentHTML("beforeend",Care.referencePanel(page));
     const output = q("#output");
     output.dataset.manual = drafts[page]?.manual ? "true" : "false";
     output.dataset.baseline = drafts[page]?.baseline || output.value;
@@ -715,3 +748,4 @@ window.addEventListener("message", (e) => {
   )
     Flow.setRxDirty(e.data.dirty === true);
 });
+

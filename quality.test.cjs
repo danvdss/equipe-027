@@ -319,7 +319,7 @@ test("login fails closed without the authentication provider and includes server
   assert.ok(w.document.querySelector('script[src*="supabase.min.js"]'));
 });
 
-test('renewal keeps request, MUC and medical decision separate without defaults', t => {
+test('renewal keeps request, MUC and medical decision separate without defaults', async t => {
   const {run,w,set}=setup(t);
   run("navigate('renewal')");
   assert.equal(w.document.querySelector('[name=medicalDone]').value,'');
@@ -336,6 +336,7 @@ test('renewal keeps request, MUC and medical decision separate without defaults'
   assert.doesNotMatch(result,/Após avaliação médica|aguardando avaliação médica|renovada a prescrição/);
   set('medicalRequested','Sim');set('medicalDone','Sim');
   w.document.querySelector('#renew-all').click();
+  [...w.document.querySelectorAll('dialog button')].find(b=>b.textContent==='Confirmar estes medicamentos').click();await wait();
   result=run("collect();compose(drafts.renewal,'renewal')");
   assert.match(result,/Após avaliação, médico renova Clonazepam/);
   assert.doesNotMatch(result,/renovada a prescrição de Sinvastatina/);
@@ -564,3 +565,27 @@ test('prenatal invalid dating retains exams and explicit complaint with no calcu
 test('received self-collected sample never implies collection by the professional',t=>{const {run}=setup(t);const text=run(`compose({cxType:'DNA-HPV oncogênico',cxMethod:'Autocoleta recebida',cxStatus:'Realizada'},'cervical')`);assert.match(text,/Recebida amostra de autocoleta/);assert.doesNotMatch(text,/Realizada coleta para/);});
 test('blank renewal has no invented encounter and unconfirmed assessment is not inferred',t=>{const {w,run,set}=setup(t);run("navigate('renewal')");run('LiveReview.update()');assert.equal(w.document.querySelector('#output').value,'');set('req_1_name','Sertralina');set('req_1_result','Renovado sem alteração');run('LiveReview.update()');const text=w.document.querySelector('#output').value;assert.match(text,/Realização da avaliação médica não confirmada/);assert.doesNotMatch(text,/Após avaliação/);});
 test('duplicate laboratory and Protege result is advisory and preserves both records',t=>{const{run}=setup(t);const d={protege1Status:'available',protege1Date:'2026-09-01',protege1Result4:'Não reagente',pnLab_1_1_kind:'hbv',pnLab_1_1_date:'2026-09-01',pnLab_1_1_result:'Não reagente'};assert.match(run(`PrenatalExams.issues(${JSON.stringify(d)})`).map(x=>x.message).join(' '),/mesmo resultado/);assert.match(run(`PrenatalExams.compose(${JSON.stringify(d)})`),/HBsAg/);});
+
+test('contextual free text avoids temporal and informant false conflicts',t=>{
+ const {run}=setup(t);
+ for(const text of ['Febril ontem, afebril hoje.','Responsável relata sem queixas. Refere dor segundo a equipe.','Sem queixas. Não refere dor.','Afebril; nega estar febril.'])assert.equal(run(`LiveReview.analyzeText(${JSON.stringify(text)}).length`),0);
+ assert.equal(run("LiveReview.analyzeText('Afebril e febril.').length"),1);
+});
+test('selective merge preserves untouched manual paragraphs and exact copy',async t=>{
+ const {run,w,set}=setup(t);run("navigate('general')");set('complaint','dor inicial');run('LiveReview.update()');
+ const out=w.document.querySelector('#output');out.value='Abertura manual.\n\nRelato manual.\n\nPlano manual preservado.';out.dispatchEvent(new w.Event('input',{bubbles:true}));
+ set('complaint','dor revisada');await run('LiveReview.mergeBlocks()');
+ const select=[...w.document.querySelectorAll('[data-block]')].find(e=>e.closest('section').textContent.includes('dor revisada'));assert.ok(select);assert.equal(select.value,'');select.value='1';w.document.querySelector('[data-apply]').click();
+ assert.match(out.value,/Abertura manual/);assert.match(out.value,/dor revisada/);assert.match(out.value,/Plano manual preservado/);assert.doesNotMatch(out.value,/Relato manual/);assert.equal(out.dataset.manual,'true');
+ await run('Flow.copyCurrent()');assert.equal(w.copied,out.value);assert.ok(run("history.some(x=>x.text.includes('Relato manual.'))"));
+});
+test('merge rejects duplicated targets and never applies on cancel',async t=>{
+ const {run,w,set}=setup(t);run("navigate('general')");set('complaint','dor');run('LiveReview.update()');const out=w.document.querySelector('#output');out.value='Manual único';out.dispatchEvent(new w.Event('input',{bubbles:true}));
+ await run('LiveReview.mergeBlocks()');const selects=[...w.document.querySelectorAll('[data-block]')];assert.ok(selects.length>=2);selects[0].value='0';selects[1].value='0';w.document.querySelector('[data-apply]').click();assert.match(w.document.querySelector('.block-error').textContent,/apenas um/);assert.equal(out.value,'Manual único');w.document.querySelector('[data-cancel]').click();assert.equal(out.value,'Manual único');
+});
+test('IME composition and plain editor preserve manual content',async t=>{
+ const {run,w,set}=setup(t);run("navigate('general')");set('complaint','dor');run('LiveReview.update()');const out=w.document.querySelector('#output');out.dispatchEvent(new w.Event('compositionstart'));out.value='Digitação em andamento';out.dispatchEvent(new w.InputEvent('input',{bubbles:true,isComposing:true}));await new Promise(r=>setTimeout(r,150));assert.equal(out.value,'Digitação em andamento');out.dispatchEvent(new w.Event('compositionend'));await new Promise(r=>setTimeout(r,150));assert.equal(out.value,'Digitação em andamento');[...w.document.querySelectorAll('.editor-tools button')].find(x=>x.textContent==='Texto sem realce').click();assert.ok(out.closest('.editor-stack').classList.contains('plain-editor'));
+});
+test('bulk renewal preserves existing decisions and cancel changes nothing',async t=>{
+ const {run,w,set,answer}=setup(t);run("navigate('renewal')");set('req_1_name','Sertralina');set('req_1_result','Não renovado');w.document.querySelector('[data-med-add=req][data-drug="Sinvastatina"]').click();set('medicalRequested','Sim');set('medicalDone','Sim');w.document.querySelector('#renew-all').click();answer('Cancelar');await wait();assert.equal(w.document.querySelector('[name=req_2_result]').value,'');w.document.querySelector('#renew-all').click();answer('Confirmar estes medicamentos');await wait();assert.equal(w.document.querySelector('[name=req_1_result]').value,'Não renovado');assert.equal(w.document.querySelector('[name=req_2_result]').value,'Renovado sem alteração');
+});

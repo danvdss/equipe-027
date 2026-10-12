@@ -1,6 +1,6 @@
 /* Shared data normalization and documentary checks. No eligibility decisions. */
 const Care = (() => {
-  const version = "2026.10.09.2";
+  const version = "2026.10.12";
   const numeric = [
     "fc",
     "fr",
@@ -256,8 +256,20 @@ const Care = (() => {
       tail.push("Profissional responsável: " + d.recordProfessional + ".");
     return [result, ...tail.map(sentence), ...start].join("\n\n");
   }
+  const references = [
+    {id:'growth',modules:['child'],title:'Crescimento · OMS / Caderneta da Criança',edition:'OMS 2006/2007; manual Anthro 3.2.2 (2011)',url:'https://www.who.int/tools/child-growth-standards/software',checked:'12/10/2026',rule:'Idade exata em dias; estatura a partir de 731 dias. Curvas mensais, sem escore-z individual.',tests:'growth.test.cjs',review:'Conferência técnica; homologação assistencial local pendente'},
+    {id:'mchat',modules:['occupational'],title:'M-CHAT-R/F · registro de resultado externo',edition:'Português brasileiro: arquivo oficial publicado em 2018; algoritmo oficial consultado em 2026',url:'https://www.mchatscreen.com/mchat-rf/scoring/',checked:'12/10/2026',rule:'16–30 meses, aplicação completa e referência confirmada; sem questionário digital ou diagnóstico.',tests:'occupational.test.cjs',review:'Conferência técnica; homologação assistencial local pendente'},
+    {id:'hpv',modules:['cervical'],title:'INCA · rastreamento organizado com DNA-HPV',edition:'Diretrizes brasileiras, 2025',url:'https://ninho.inca.gov.br/jspui/handle/123456789/17858',checked:'12/10/2026',rule:'Referência para consulta. O módulo registra coleta; não determina elegibilidade, periodicidade ou encaminhamento.',tests:'quality.test.cjs (documentação)',review:'Implantação e fluxo municipal não verificados'},
+    {id:'documentary',modules:['general','has','dm','both','prenatal','diu','implante','renewal','lab'],title:'Registro documental do atendimento',edition:'Modelo da equipe, revisão 2026.10',url:'',checked:'12/10/2026',rule:'Organização de informações preenchidas. Não é protocolo de prescrição, diagnóstico ou elegibilidade.',tests:'quality.test.cjs',review:'Validação assistencial e protocolos locais pendentes'}
+  ];
+  function referencePanel(module){
+    const items=references.filter(r=>r.modules.includes(module));if(!items.length)return '';
+    return '<details class="protocol-reference"><summary>Referências e limites deste módulo</summary><p>As referências apoiam a conferência; não confirmam condutas nem substituem a avaliação profissional.</p><ul>'+items.map(r=>'<li><strong>'+r.title+'</strong><br>'+r.edition+'<br>'+r.rule+'<br><small>Conferência: '+r.checked+'. '+r.review+'.</small>'+(r.url?' <a href="'+r.url+'" target="_blank" rel="noopener noreferrer">Consultar fonte ↗</a>':'')+'</li>').join('')+'</ul></details>';
+  }
   return {
     version,
+    references,
+    referencePanel,
     value,
     normalize,
     validate,
@@ -270,3 +282,4 @@ const Care = (() => {
     decorate,
   };
 })();
+

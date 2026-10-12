@@ -1,4 +1,4 @@
-# Gráficos de crescimento · 2026.10.09.1
+# Gráficos de crescimento · 2026.10.12
 
 Painel da puericultura no canto inferior direito, com escolha de indicador, recolhimento e expansão dos quatro gráficos. Atualização local imediata ao mudar nascimento, data do atendimento, sexo registrado, peso, comprimento/altura, forma de medição, perímetro cefálico ou idade gestacional ao nascer. Não move o foco nem altera a evolução.
 
@@ -35,3 +35,10 @@ A página de altura 5–19 anos apresentou links de tabela de escores-z direcion
 Sete testes específicos verificam integridade/intervalos das tabelas, sentinelas numéricas por sexo, idade/datas inválidas, IMC e medidas parciais, tipo de medição, transição aos 2 anos, prematuridade, limite etário, valores fora da escala, atualização sem mudança de foco, expansão, recolhimento, cópia idêntica ao editor, navegação, restauração e limpeza do módulo. A suíte completa inclui os testes anteriores de autenticação e redação.
 
 A interface tem regras responsivas para celular/tablet, diálogo nativo com Escape e retorno de foco, rótulos acessíveis e botão para recolher a miniatura. A visualização autenticada em aparelhos físicos ainda requer conferência local. O painel é apoio visual e não substitui a avaliação profissional da trajetória de crescimento nem a caderneta oficial.
+
+
+## Revisão 12/10/2026
+
+Painel inicia minimizado. Incluída tabela acessível das medidas e ampliados os controles. A idade numérica continua em dias / 30,4375, com postura e faixa inicial usando a mesma constante de 731 dias, conforme manual WHO Anthro 3.2.2, seções 3.2.1/3.2.3. A suspeita anterior de divergência aos 2 anos não se reproduz com dias inteiros: months >= 24 já equivalia a days >= 731. Não foi substituída por aniversário de calendário. Novos testes cobrem períodos bissextos e fronteiras de 2, 5 e 10 anos. Sem novos percentis, escores individuais ou histórico longitudinal.
+
+Manual conferido: https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/software/anthro-pc-manual-v322.pdf?sfvrsn=c4e76522_2
