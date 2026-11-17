@@ -1,7 +1,7 @@
 {
   "name": "equipe-027",
   "private": true,
-  "version": "2026.10.12",
+  "version": "2026.11.16",
   "scripts": {
     "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs",
     "check": "node check.cjs",
