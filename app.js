@@ -453,6 +453,96 @@ const labs = [
   ["Eletrólitos", ["Na", "K", "Ca", "Mg", "Cl"]],
   ["Tireoide", ["TSH", "T4L", "T3"]],
 ];
+const expandedLabs = [
+  [
+    "Metabolismo do ferro",
+    [
+      "Ferritina",
+      "Transferrina",
+      "Ferro sérico",
+      "Capacidade total de ligação do ferro (TIBC)",
+      "Capacidade latente de ligação do ferro (UIBC)",
+      "Saturação da transferrina"
+    ]
+  ],
+  [
+    "Vitaminas e nutrição",
+    [
+      "Vitamina B12",
+      "Vitamina D (25-OH)",
+      "Folato",
+      "Vitamina B1",
+      "Vitamina B6",
+      "Zinco"
+    ]
+  ],
+  [
+    "Curva glicêmica (TOTG)",
+    [
+      "TOTG 0 min",
+      "TOTG 30 min",
+      "TOTG 60 min",
+      "TOTG 90 min",
+      "TOTG 120 min",
+      "TOTG 180 min"
+    ]
+  ],
+  [
+    "Metabolismo glicídico",
+    [
+      "Insulina basal",
+      "Insulina 120 min",
+      "Peptídeo C",
+      "Frutosamina"
+    ]
+  ],
+  [
+    "Inflamação e coagulação",
+    [
+      "PCR",
+      "PCR ultrassensível",
+      "VHS",
+      "TP/INR",
+      "TTPa",
+      "Fibrinogênio",
+      "D-dímero"
+    ]
+  ],
+  [
+    "Outros hormônios",
+    [
+      "T4 total",
+      "T3 livre",
+      "Anti-TPO",
+      "Anti-Tg",
+      "PTH",
+      "Cortisol",
+      "Prolactina",
+      "FSH",
+      "LH",
+      "Estradiol",
+      "Progesterona",
+      "Testosterona total",
+      "Testosterona livre"
+    ]
+  ],
+  [
+    "Outros exames bioquímicos",
+    [
+      "Ácido úrico",
+      "Fósforo",
+      "Proteínas totais",
+      "Globulinas",
+      "Amilase",
+      "Lipase",
+      "CK/CPK",
+      "LDH",
+      "Microalbuminúria",
+      "Relação albumina/creatinina urinária"
+    ]
+  ]
+];
+labs.push(...expandedLabs);
 const percent = new Set([
   "Ht",
   "Neutro",
@@ -462,6 +552,7 @@ const percent = new Set([
   "Baso",
   "HbA1c",
   "RDW",
+  "Saturação da transferrina",
 ]);
 const esc = (s) =>
   String(s ?? "").replace(
@@ -878,6 +969,7 @@ function composeBody(d, p, partial = false) {
       "T4L",
       "T3",
     ];
+    order.push(...expandedLabs.flatMap(([, fields]) => fields));
     const items = order
       .filter((k) => has("lab:" + k))
       .map(
