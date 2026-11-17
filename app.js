@@ -720,7 +720,7 @@ function clinical() {
   return `<div class="workspace"><form id="clinical" autocomplete="off">${body}</form>${outputPanel()}</div>`;
 }
 function labForm() {
-  return `<div class="workspace"><form id="clinical" autocomplete="off">${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}</form>${outputPanel()}</div>`;
+  return `<div class="workspace"><form id="clinical" autocomplete="off">${section("Motivo da avaliação", `<label>Motivo da avaliação<select name="labReason"><option value="Rotina">Rotina</option><option value="Outro motivo">Outro motivo</option></select></label>${field("labOtherReason", "Descreva outro motivo (se aplicável)", "Informe o motivo da avaliação")}`)}${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}${section("Conduta", `<label>Conduta realizada / orientações<textarea name="labConduct" rows="4" placeholder="Registre apenas as condutas efetivamente realizadas"></textarea></label>`)}</form>${outputPanel()}</div>`;
 }
 function addLab(values = {}) {
   const id = extraCount++;
@@ -989,7 +989,13 @@ function composeBody(d, p, partial = false) {
       });
     items.push(...LabDetails.compose(d,partial));
     if (!items.length) throw Error("Preencha ao menos um resultado.");
-    return `LAB (${date}): ${items.join(" | ")}.`;
+    const reason = String(d.labReason || "Rotina").trim();
+    const otherReason = String(d.labOtherReason || "").trim();
+    const introduction = reason === "Outro motivo"
+      ? `Paciente comparece à unidade para solicitar avaliação de exames${otherReason ? `. Motivo: ${otherReason}` : " por outro motivo não especificado"}.`
+      : "Paciente comparece à unidade para solicitar avaliação de exames de rotina.";
+    const conduct = String(d.labConduct || "").trim();
+    return `${introduction}\nLAB (${date}): ${items.join(" | ")}.${conduct ? `\nConduta: ${conduct}` : ""}`;
   }
   return Notes.compose(d, p, partial);
 }
