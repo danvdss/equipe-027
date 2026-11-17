@@ -653,9 +653,9 @@ function addLab(values = {}) {
 }
 function dashboard() {
   const cards = [
+    ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["cervical", "", "Citopatológico / DNA-HPV", "Coleta, achados, amostra e retorno."],
     ["child", "", "Puericultura", "Crescimento, desenvolvimento, triagens e cuidado infantil."],
-    ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["occupational", "◎", "Terapia Ocupacional", "Evoluções, perfil ocupacional e instrumentos de avaliação."],
     ["renewal", "℞", "Renovação", "Solicitação, avaliação médica, medicamentos renovados e MUC."],
     ["has", "♡", "Hipertensão", "Acompanhamento da pressão arterial."],
@@ -692,7 +692,7 @@ function dashboard() {
       "Modelo de Lagarto/SE, impressão e exportação PNG.",
     ],
   ];
-  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
+  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="tile-art" aria-hidden="true"><i></i><i></i><i></i></span><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
 }
 function render() {
   document.body.style.overflow='';
