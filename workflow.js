@@ -356,19 +356,19 @@ const Flow = (() => {
       )) !== "yes"
     )
       return;
-    window.dispatchEvent(new Event("equipe027:new-encounter"));
+    if (logout && typeof Access !== "undefined") {
+      await Access.signOut();
+      return;
+    }
+    reset();
     drafts = {};
     history = [];
     extraCount = 0;
-    undo = null;
-    rxDirty = false;
-    initial = "";
     destroyReceituario();
     page = "home";
     if (logout) {
       logged = false;
-      if (typeof Access !== "undefined") await Access.signOut();
-      else login();
+      login();
     } else render();
   }
   function reveal(el) {
@@ -699,6 +699,12 @@ const Flow = (() => {
     rxDirty = value;
   }
   function reset() {
+    window.dispatchEvent(new Event("equipe027:new-encounter"));
+    for (const review of document.querySelectorAll("body > dialog.review-dialog")) {
+      if (review.open) review.close("cancel");
+      review.remove();
+    }
+    document.body.style.overflow = "";
     undo = null;
     rxDirty = false;
     initial = "";

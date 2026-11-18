@@ -59,3 +59,9 @@ test('expired callback never opens password form or workspace',async t=>{
 test('logout erases clinical drafts even when remote revocation fails',async t=>{
  const s=await setup(t,{signOut:async()=>({error:{status:500}})});s.run('logged=true;drafts={general:{value:"synthetic"}};history=["synthetic"]');await s.run('Access.signOut()');assert.equal(s.run('logged'),false);assert.equal(s.run('history.length'),0);assert.equal(s.run('Object.keys(drafts).length'),0);assert.match(s.w.document.querySelector('#error').textContent,/feche esta aba/);
 });
+
+test('callback tokens are removed even when the SDK fails during initialization', async t => {
+ const s=await setup(t,{getSession:async()=>{throw new Error('offline');}},'#type=recovery&access_token=synthetic&refresh_token=synthetic');
+ assert.equal(s.w.location.hash,'');
+ assert.equal(s.run('logged'),false);
+});

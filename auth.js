@@ -105,7 +105,6 @@ const Access = (() => {
         if (event === "SIGNED_OUT" && logged) { clearWork(); screen("login", "Sua sessão foi encerrada."); }
       });
       const {data, error} = await client.auth.getSession();
-      if (callback.has("access_token") || hasCallbackError) window.history.replaceState(null, "", location.pathname + location.search);
       if (error || hasCallbackError) throw error || new Error("Link inválido");
       if (data.session && setupMode) {
         const {data: verified, error: invalid} = await client.auth.getUser();
@@ -114,6 +113,10 @@ const Access = (() => {
       } else screen("login");
     } catch {
       screen("login", "Não foi possível validar o acesso. Se você abriu um convite, solicite um novo link; caso contrário, tente entrar novamente.");
+    } finally {
+      if (callback.has("access_token") || callback.has("refresh_token") || hasCallbackError) {
+        window.history.replaceState(null, "", location.pathname + location.search);
+      }
     }
   }
   return {start, screen, signOut};

@@ -677,3 +677,21 @@ test("switching modules preserves inactive exam fields without mixing the record
   set("labMode", "solicitacao");
   assert.equal(w.document.querySelector('[name="labRequestedExams"]').value, "Exame de teste");
 });
+
+test("session reset clears complementary drafts and cancels open clinical reviews", async t => {
+  const { w, run } = setup(t);
+  run(fs.readFileSync("enhancements.js", "utf8"));
+  run("navigate('general')");
+  await wait();
+  const field = w.document.querySelector("#e027-anamnesis textarea");
+  field.value = "Dado fictício da sessão anterior";
+  field.dispatchEvent(new w.Event("input", { bubbles: true }));
+  assert.ok(w.Equipe027HasExtraDraft());
+  const review = run('Flow.dialog("Revisão", "Teste", [["cancel","Cancelar"]], [["Texto","Dado fictício"]])');
+  w.document.body.style.overflow = "hidden";
+  run("Flow.reset()");
+  assert.equal(await review, "cancel");
+  assert.equal(w.document.querySelector("body > dialog.review-dialog"), null);
+  assert.equal(w.Equipe027HasExtraDraft(), false);
+  assert.equal(w.document.body.style.overflow, "");
+});
