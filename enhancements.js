@@ -57,7 +57,7 @@ function addExam(list,values={}){
  kind.dataset.e027="exam-kind";kind.value=values.kind||"USG";
  const date=field("Data","date",values.date||"","exam-date");
  const report=field("Achados do laudo","textarea",values.report||"","exam-report");
- const remove=node("button","Remover");remove.type="button";remove.onclick=()=>{row.remove();save()};
+ const remove=node("button","Remover");remove.type="button";remove.onclick=()=>{row.remove();if(typeof row.dispatchEvent==="function")list.dispatchEvent(new Event("change",{bubbles:true}))};
  const insert=node("button","Inserir no editor");insert.type="button";insert.onclick=()=>{
   const finding=report.querySelector("textarea").value.trim();
   if(!finding){alert("Informe os achados documentados no laudo.");return}
@@ -72,11 +72,14 @@ function mountLab(form){
  panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. Para funcao renal, perfil lipidico e hemograma, os limites iniciam em branco e precisam ser transcritos do laudo.","muted"));
  const units=field("Confirmo que as unidades informadas no laudo correspondem as unidades indicadas abaixo","checkbox",undefined,"units");panel.append(units);
  const fasting=field("Jejum confirmado (para glicemia)","checkbox",undefined,"fasting");panel.append(fasting);
+ const filterLabel=node("label","Filtrar exames ");
+ const filter=node("select");[["all","Todos"],["filled","Com resultado"],["alerts","Fora do intervalo"],["unchecked","Nao classificaveis"]].forEach(([value,label])=>{const opt=node("option",label);opt.value=value;filter.append(opt)});filterLabel.append(filter);panel.append(filterLabel);
+ const summary=node("p");summary.setAttribute("role","status");panel.append(summary);
  const table=node("div");panel.append(table);
  const results=node("div");results.setAttribute("role","status");results.setAttribute("aria-live","polite");panel.append(results);
  panel.append(node("h2","Exames complementares"),node("p","Registre USG, ECG e outros exames; os achados so entram na evolucao quando inseridos.","muted"));
  const exams=node("div");panel.append(exams);
- const add=node("button","+ Adicionar exame complementar");add.type="button";add.onclick=()=>{addExam(exams);save()};panel.append(add);
+ const add=node("button","+ Adicionar exame complementar");add.type="button";add.onclick=()=>{addExam(exams);persist();refresh()};panel.append(add);
  form.querySelector("#extras").closest("section")?.insertAdjacentElement("afterend",panel);
  const stored=memory.lab||{};
  for(const [key,ref] of Object.entries(definitions)){
@@ -91,20 +94,34 @@ function mountLab(form){
  fasting.querySelector("input").checked=!!stored.fasting;units.querySelector("input").checked=!!stored.units;
  (stored.exams||[]).forEach(x=>addExam(exams,x));
  function refresh(){
-  results.replaceChildren();let count=0;
+  results.replaceChildren();
+  const entries=[];
   for(const row of table.children){
    const key=row.dataset.key,ref=definitions[key];
    const input=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+key);
-   if(!input?.value.trim())continue;
    const [low,high]=row.querySelectorAll("input");
-   const state=!units.querySelector("input").checked||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
-   const message=state==="low"?"Abaixo do intervalo informado":state==="high"?"Acima do intervalo informado":state==="within"?"Dentro do intervalo informado":"Nao classificavel: confirme jejum, limites e unidade";
-   results.append(node("p",(state==="high"||state==="low"?"ALERTA: ":"")+ref.label+" — "+input.value+" (unidade esperada: "+ref.unit+"): "+message+"."));
-   count++;
+   const filled=!!input?.value.trim();
+   const state=!filled?"empty":!units.querySelector("input").checked||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
+   entries.push({row,key,ref,input,filled,state});
   }
-  if(!count)results.append(node("p","Informe os resultados nos campos LAB para avaliar as faixas preenchidas.","muted"));
+  const count={filled:0,alerts:0,unchecked:0};
+  for(const item of entries){
+   const {row,ref,input,filled,state}=item;
+   if(filled)count.filled++;
+   if(state==="low"||state==="high")count.alerts++;
+   if(state==="unverified")count.unchecked++;
+   const selected=filter.value;
+   row.hidden=selected==="filled"?!filled:selected==="alerts"?!["low","high"].includes(state):selected==="unchecked"?state!=="unverified":false;
+   if(!filled||row.hidden)continue;
+   const message=state==="low"?"Abaixo do intervalo informado":state==="high"?"Acima do intervalo informado":state==="within"?"Dentro do intervalo informado":"Nao classificavel: confirme jejum, limites e unidade";
+   const itemLine=node("p",(state==="high"||state==="low"?"ALERTA: ":"")+ref.label+": "+input.value+" ("+ref.unit+"): "+message+".");
+   itemLine.dataset.state=state;
+   results.append(itemLine);
+  }
+  summary.textContent=count.filled+" resultado(s) preenchido(s) | "+count.alerts+" alerta(s) | "+count.unchecked+" sem classificacao.";
+  if(!results.children.length)results.append(node("p",count.filled?"Nenhum resultado corresponde ao filtro selecionado.":"Preencha os resultados nos campos LAB para avaliar as faixas informadas.","muted"));
  }
- function persist(){
+ filter.addEventListener("change",refresh); function persist(){
   const values={units:units.querySelector("input").checked,fasting:fasting.querySelector("input").checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
   for(const row of table.children){const [lo,hi]=row.querySelectorAll("input");values[row.dataset.key+"-low"]=lo.value;values[row.dataset.key+"-high"]=hi.value}
   memory.lab=values;

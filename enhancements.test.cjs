@@ -44,3 +44,22 @@ test("renal, lipid and CBC ranges require lab-provided thresholds",()=>{
  }
  assert.equal(assess("120","",""),"unverified");
 });
+test("lab interface filters findings and keeps complementary exam rows",()=>{
+ const {JSDOM}=require("jsdom");
+ const dom=new JSDOM('<!doctype html><html><body><div id="app"><form id="clinical"><section><div id="extras"></div></section><input name="lab:K" value="5,8"><input name="lab:Cr" value="1,5"></form><textarea id="output"></textarea></div></body></html>',{runScripts:"outside-only"});
+ dom.window.eval(source);
+ dom.window.document.dispatchEvent(new dom.window.Event("DOMContentLoaded"));
+ const doc=dom.window.document;
+ const panel=doc.querySelector("#e027-lab");
+ assert.ok(panel,"lab panel mounts");
+ const check=panel.querySelector('[data-e027="units"]');check.checked=true;
+ check.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ const summary=panel.querySelector('[role="status"]');
+ assert.ok(summary.textContent.includes("1 alerta"));
+ const filter=panel.querySelector("select");
+ filter.value="alerts";filter.dispatchEvent(new dom.window.Event("change"));
+ assert.equal([...panel.querySelectorAll(".e027-range")].filter(x=>!x.hidden).length,1);
+ panel.querySelector("button").click();
+ assert.equal(panel.querySelectorAll(".e027-exam").length,1);
+ dom.window.close();
+});
