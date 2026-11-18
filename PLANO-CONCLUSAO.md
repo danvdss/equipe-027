@@ -5,7 +5,7 @@ Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equi
 ## Etapa 1 — Base, acesso e registros
 - [x] Navegação, autenticação, rascunhos apenas em memória e limpeza por novo atendimento.
 - [x] Anamnese complementar por módulo e inserção explícita no editor.
-- [x] Testes automatizados de regressão.
+- [x] Testes automatizados de regressão, inclusive navegação HAS/DM, separação de rascunhos e limpeza no novo atendimento.
 - [ ] Homologar o fluxo com profissionais da unidade e testar autenticação em ambiente publicado.
 - [ ] Testar login, saída e perda de conexão em dispositivos reais.
 

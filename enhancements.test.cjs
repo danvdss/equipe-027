@@ -63,3 +63,41 @@ test("lab interface filters findings and keeps complementary exam rows",()=>{
  assert.equal(panel.querySelectorAll(".e027-exam").length,1);
  dom.window.close();
 });
+test("chronic modules preserve separate drafts and clear on new encounter",()=>{
+ const {JSDOM}=require("jsdom");
+ const dom=new JSDOM('<!doctype html><html><body><div id="app"><nav class="main-nav"><button data-nav="has" aria-current="page">HAS</button></nav><form id="clinical"></form><textarea id="output"></textarea></div></body></html>',{runScripts:"outside-only"});
+ const {document:doc,Event}=dom.window;
+ dom.window.eval(source);doc.dispatchEvent(new Event("DOMContentLoaded"));
+ const panel=()=>doc.querySelector("#e027-anamnesis");
+ assert.ok(panel().querySelector('[data-e027="adherence"]'));
+ const complaint=panel().querySelector('[data-e027="complaint"]');
+ complaint.value="Queixa ficticia HAS";complaint.dispatchEvent(new Event("input",{bubbles:true}));
+ panel().querySelector("button").click();
+ assert.match(doc.querySelector("#output").value,/Queixa ficticia HAS/);
+ const nav=doc.querySelector(".main-nav");
+ nav.innerHTML='<button data-nav="dm" aria-current="page">DM</button>';
+ doc.querySelector("#clinical").replaceWith(doc.createElement("form"));
+ doc.querySelector("form").id="clinical";
+ dom.window.MutationObserver;
+ doc.querySelector("#app").append(doc.createElement("span"));
+ return new Promise(resolve=>setTimeout(resolve,0)).then(()=>{
+  assert.equal(panel().querySelector('[data-e027="complaint"]').value,"");
+  panel().querySelector('[data-e027="complaint"]').value="Queixa ficticia DM";
+  panel().querySelector('[data-e027="complaint"]').dispatchEvent(new Event("input",{bubbles:true}));
+  nav.innerHTML='<button data-nav="has" aria-current="page">HAS</button>';
+  doc.querySelector("#clinical").replaceWith(doc.createElement("form"));
+  doc.querySelector("form").id="clinical";
+  doc.querySelector("#app").append(doc.createElement("span"));
+  return new Promise(resolve=>setTimeout(resolve,0));
+ }).then(()=>{
+  assert.equal(panel().querySelector('[data-e027="complaint"]').value,"Queixa ficticia HAS");
+  dom.window.dispatchEvent(new Event("equipe027:new-encounter"));
+  doc.querySelector("#clinical").replaceWith(doc.createElement("form"));
+  doc.querySelector("form").id="clinical";
+  doc.querySelector("#app").append(doc.createElement("span"));
+  return new Promise(resolve=>setTimeout(resolve,0));
+ }).then(()=>{
+  assert.equal(panel().querySelector('[data-e027="complaint"]').value,"");
+  dom.window.close();
+ });
+});
