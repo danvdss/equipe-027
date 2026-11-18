@@ -79,3 +79,16 @@ input::placeholder,textarea::placeholder{color:#a1a1aa}
 
 .view-switch{background:#141416}.view-switch button[aria-pressed="true"],.form-shortcuts button.selected{background:#303650;color:#dee5ff;border-color:#7784b5}
 .growth-dialog{background:#1c1c1e;border-color:var(--line)}
+
+/* Correção de contraste dos cartões contextuais de exames no tema escuro. */
+#e027-lab .e027-range{background:#24262d;color:#f4f6fa;border:1px solid #515766}
+#e027-lab .e027-range strong,#e027-lab .e027-range label,#e027-lab .e027-range .e027-state{color:#f4f6fa}
+#e027-lab .e027-range p.muted{color:#c3c9d4}
+#e027-lab .e027-range a{color:#a9cbff;text-decoration:underline;text-underline-offset:3px}
+#e027-lab .e027-range input[type="text"]{background:#11151d;color:#f7f9fc;border:1px solid #69758a}
+#e027-lab .e027-range input[type="text"]:focus-visible{outline:3px solid #9fc5ff;outline-offset:2px}
+#e027-lab .e027-range input[type="checkbox"]{accent-color:#a9cbff}
+#e027-lab .e027-range[data-state="high"],#e027-lab .e027-range[data-state="low"]{border-color:#ffb18b}
+#e027-lab .e027-range[data-state="within"]{border-color:#8cdbb2}
+#e027-lab .e027-range .e027-track{background:linear-gradient(90deg,#ad5c50 0 20%,#477d63 20% 80%,#ad5c50 80% 100%)}
+#e027-lab .e027-range .e027-marker{background:#f7f9fc;box-shadow:0 0 0 2px #11151d}
