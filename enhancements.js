@@ -6,7 +6,16 @@ const definitions = {
   Glic:{label:"Glicemia de jejum",unit:"mg/dL",low:70,high:99,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Only applicable when fasting is confirmed. The lower limit is operational, not a diagnostic criterion."},
   HbA1c:{label:"Hemoglobina glicada",unit:"%",low:0,high:5.6,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Screening classification is not an individualized treatment target."},
   Na:{label:"Sodio",unit:"mmol/L",low:135,high:145,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/sodium-blood-test/",note:"Typical interval only; prioritize the reporting laboratory."},
-  K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."}
+  K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."},
+  Cr:{label:"Creatinina",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Nefrologia",url:"https://sbn.org.br/",note:"Limites dependem do metodo, sexo, idade e massa muscular. Transcreva o intervalo do laudo."},
+  "TFG/eTFG":{label:"Taxa de filtracao glomerular estimada",unit:"mL/min/1,73m2",low:null,high:null,source:"KDIGO",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/",note:"Interpretacao requer contexto clinico, idade, persistencia e albuminuria; nao diagnosticar DRC por resultado isolado."},
+  CT:{label:"Colesterol total",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Alvos dependem de risco cardiovascular e condicao clinica; nao usar faixa universal."},
+  HDL:{label:"Colesterol HDL",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Interpretar com perfil de risco e contexto clinico."},
+  LDL:{label:"Colesterol LDL",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Metas individualizadas conforme estratificacao de risco; nao presumir meta."},
+  TG:{label:"Triglicerideos",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Jejum e contexto podem modificar interpretacao; confira o laudo."},
+  Hb:{label:"Hemoglobina",unit:"g/dL",low:null,high:null,source:"Organizacao Mundial da Saude",url:"https://www.who.int/",note:"Intervalos dependem de idade, sexo, gestacao e outras condicoes; transcreva o laudo."},
+  Leuco:{label:"Leucocitos",unit:"/mm3",low:null,high:null,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."},
+  Plaq:{label:"Plaquetas",unit:"/mm3",low:null,high:null,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."}
 };
 const memory={};
 const clinicalSources={
@@ -60,7 +69,7 @@ function addExam(list,values={}){
 }
 function mountLab(form){
  const panel=node("section",undefined,"panel");panel.id="e027-lab";
- panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. Faixas sugeridas precisam de confirmacao profissional.","muted"));
+ panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. Para funcao renal, perfil lipidico e hemograma, os limites iniciam em branco e precisam ser transcritos do laudo.","muted"));
  const units=field("Confirmo que as unidades informadas no laudo correspondem as unidades indicadas abaixo","checkbox",undefined,"units");panel.append(units);
  const fasting=field("Jejum confirmado (para glicemia)","checkbox",undefined,"fasting");panel.append(fasting);
  const table=node("div");panel.append(table);
@@ -74,8 +83,8 @@ function mountLab(form){
   const row=node("div",undefined,"lab-row e027-range");
   row.dataset.key=key;
   row.append(node("strong",ref.label+" ("+ref.unit+")"));
-  row.append(field("Minimo do laudo","text",stored[key+"-low"]??String(ref.low),"range-low"));
-  row.append(field("Maximo do laudo","text",stored[key+"-high"]??String(ref.high),"range-high"));
+  row.append(field("Minimo do laudo","text",stored[key+"-low"]??(ref.low===null?"":String(ref.low)),"range-low"));
+  row.append(field("Maximo do laudo","text",stored[key+"-high"]??(ref.high===null?"":String(ref.high)),"range-high"));
   const source=node("a","Referencia: "+ref.source);source.href=ref.url;source.target="_blank";source.rel="noopener noreferrer";row.append(source);
   row.append(node("p",ref.note,"muted"));table.append(row);
  }

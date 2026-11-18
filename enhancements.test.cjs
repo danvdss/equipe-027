@@ -35,3 +35,12 @@ test("HAS, DM and renal reference groups provide external sources",()=>{
   for(const [label,url] of clinicalSources[key].items){assert.ok(label);assert.ok(url.startsWith("https://"))}
  }
 });
+
+test("renal, lipid and CBC ranges require lab-provided thresholds",()=>{
+ const {definitions,assess}=engine();
+ for(const key of ["Cr","TFG/eTFG","CT","HDL","LDL","TG","Hb","Leuco","Plaq"]){
+  assert.equal(definitions[key].low,null);assert.equal(definitions[key].high,null);
+  assert.ok(definitions[key].url.startsWith("https://"));
+ }
+ assert.equal(assess("120","",""),"unverified");
+});
