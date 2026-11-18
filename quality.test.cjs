@@ -637,3 +637,43 @@ test("keyboard navigation keeps focus inside the selected module and section", (
   assert.equal(button.getAttribute("aria-expanded"), "true");
   assert.equal(body.hidden, false);
 });
+
+test("virtual keyboard geometry follows the visible viewport and clears on zoom or blur", (t) => {
+  const { w, run } = setup(t);
+  run("navigate('general')");
+  const field = w.document.querySelector("#form-search");
+  Object.defineProperty(w, "visualViewport", { configurable: true, value: {
+    height: w.innerHeight - 300, offsetTop: 20, scale: 1
+  } });
+  field.focus();
+  const style = w.document.documentElement.style;
+  assert.equal(style.getPropertyValue("--keyboard-bottom"), "280px");
+  assert.ok(w.document.body.classList.contains("keyboard-open"));
+  w.visualViewport.scale = 2;
+  run("updateKeyboard()");
+  assert.equal(style.getPropertyValue("--visible-height"), "");
+  w.visualViewport.scale = 1;
+  field.blur();
+  run("updateKeyboard()");
+  assert.equal(style.getPropertyValue("--keyboard-bottom"), "");
+});
+
+test("switching modules preserves inactive exam fields without mixing the records", (t) => {
+  const { run, set, w } = setup(t);
+  run("navigate('lab')");
+  set("lab:Hb", "12,4");
+  run("addLab({name:'Exame fictício', value:'5', unit:'u'})");
+  set("labMode", "solicitacao");
+  set("labRequestedExams", "Exame de teste");
+  run("navigate('general'); navigate('lab'); collect()");
+  assert.equal(run("drafts.lab.labRequestedExams"), "Exame de teste");
+  assert.equal(run("drafts.lab['lab:Hb']"), undefined);
+  assert.doesNotMatch(run("compose(drafts.lab,'lab')"), /12,4|Exame fictício/);
+  set("labMode", "avaliacao");
+  assert.equal(w.document.querySelector('[name="lab:Hb"]').value, "12,4");
+  assert.equal(w.document.querySelector('[name^="extraValue:"]').value, "5");
+  run("navigate('home'); navigate('lab'); collect()");
+  assert.equal(run("drafts.lab.labRequestedExams"), undefined);
+  set("labMode", "solicitacao");
+  assert.equal(w.document.querySelector('[name="labRequestedExams"]').value, "Exame de teste");
+});

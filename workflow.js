@@ -732,14 +732,22 @@ const updateKeyboard = () => {
   const typing = focused?.matches(
     "textarea,input:not([type=checkbox]):not([type=radio]):not([type=date]):not([type=time])",
   );
-  document.body.classList.toggle(
-    "keyboard-open",
-    !!typing &&
-      !!window.visualViewport &&
-      window.innerHeight - window.visualViewport.height > 140,
-  );
+  const viewport = window.visualViewport;
+  const keyboardOpen = Boolean(typing && viewport && viewport.scale === 1 &&
+    window.innerHeight - viewport.height > 140);
+  document.body.classList.toggle("keyboard-open", keyboardOpen);
+  const style = document.documentElement.style;
+  if (keyboardOpen) {
+    const bottom = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+    style.setProperty("--keyboard-bottom", bottom + "px");
+    style.setProperty("--visible-height", viewport.height + "px");
+  } else {
+    style.removeProperty("--keyboard-bottom");
+    style.removeProperty("--visible-height");
+  }
 };
 window.visualViewport?.addEventListener("resize", updateKeyboard);
+window.visualViewport?.addEventListener("scroll", updateKeyboard);
 document.addEventListener("focusin", updateKeyboard);
 document.addEventListener("focusout", () => setTimeout(updateKeyboard, 0));
 

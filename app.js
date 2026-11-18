@@ -611,6 +611,11 @@ function collect() {
       (d[k.split(":").slice(0, 2).join(":")] ??= []).push(v);
     } else d[k] = v;
   });
+  if (page === "lab") {
+    // Keep the inactive mode in the session draft, outside the clinical form data.
+    const inactive = f.querySelectorAll("#lab-request-fields [name]:disabled, #lab-evaluation-fields [name]:disabled");
+    d.inactiveLabFields = Object.fromEntries(Array.from(inactive, el => [el.name, el.value]));
+  }
   d.output = $("#output")?.value ?? "";
   d.stale = $("#output")?.dataset.stale === "true";
   d.manual = $("#output")?.dataset.manual === "true";
@@ -861,8 +866,9 @@ function render() {
     };
 }
 function restore() {
-  const d = drafts[page];
-  if (!d) return;
+  const draft = drafts[page];
+  if (!draft) return;
+  const d = page === "lab" ? { ...draft.inactiveLabFields, ...draft } : draft;
   if (page === "lab") {
     Object.keys(d)
       .filter((k) => k.startsWith("extraName:"))
