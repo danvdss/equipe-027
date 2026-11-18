@@ -720,7 +720,11 @@ function clinical() {
   return `<div class="workspace"><form id="clinical" autocomplete="off">${body}</form>${outputPanel()}</div>`;
 }
 function labForm() {
-  return `<div class="workspace"><form id="clinical" autocomplete="off">${section("Motivo da avaliação", `<label>Motivo da avaliação<select name="labReason"><option value="Rotina">Rotina</option><option value="Outro motivo">Outro motivo</option></select></label>${field("labOtherReason", "Descreva outro motivo (se aplicável)", "Informe o motivo da avaliação")}`)}${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}${section("Conduta", `<label>Conduta realizada / orientações<textarea name="labConduct" rows="4" placeholder="Registre apenas as condutas efetivamente realizadas"></textarea></label>`)}</form>${outputPanel()}</div>`;
+  const choice = section("Tipo de atendimento", `<label>O que o paciente procura?<select name="labMode"><option value="avaliacao">Avaliação de exames</option><option value="solicitacao">Solicitação de exames</option></select></label>`);
+  const reason = section("Motivo do atendimento", `<label>Motivo<select name="labReason"><option value="Rotina">Rotina</option><option value="Outro motivo">Outro motivo</option></select></label>${field("labOtherReason", "Descreva outro motivo (se aplicável)", "Informe o motivo")}`);
+  const request = `<div id="lab-request-fields" hidden>${section("Solicitação de exames", `<label>Exames solicitados ou pretendidos<textarea name="labRequestedExams" rows="3" placeholder="Descreva os exames, se houver"></textarea></label><label>Avaliação médica<select name="labMedicalAssessment"><option value="">Não informado</option><option value="Solicitada">Solicitada</option><option value="Não solicitada">Não solicitada</option></select></label>`)}</div>`;
+  const evaluationStart = `<div id="lab-evaluation-fields">`;
+  return `<div class="workspace"><form id="clinical" autocomplete="off">${choice}${reason}${request}${evaluationStart}${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}</div>${section("Conduta e orientações", `<div class="chips"><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado retorno à unidade para continuidade do cuidado">Orientado retorno à unidade para continuidade do cuidado</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado a apresentar os resultados dos exames na unidade">Orientado a apresentar os resultados dos exames na unidade</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado quanto ao acompanhamento conforme avaliação profissional">Orientado quanto ao acompanhamento conforme avaliação profissional</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado a procurar atendimento em caso de piora ou novos sintomas">Orientado a procurar atendimento em caso de piora ou novos sintomas</label></div><label>Outras condutas realizadas<textarea name="labConduct" rows="4" placeholder="Registre apenas orientações e condutas efetivamente realizadas"></textarea></label>`)}</form>${outputPanel()}</div>`;
 }
 function addLab(values = {}) {
   const id = extraCount++;
@@ -818,6 +822,18 @@ function render() {
     $("#edit").onclick = () => $("#output").focus();
     $("#clear").onclick = () => Flow.clear();
     if ($("#addLab")) $("#addLab").onclick = () => addLab();
+    if (page === "lab") {
+      const mode = $("#clinical").querySelector('[name="labMode"]');
+      const toggleLabMode = () => {
+        const requesting = mode.value === "solicitacao";
+        $("#lab-request-fields").hidden = !requesting;
+        $("#lab-evaluation-fields").hidden = requesting;
+        $("#lab-request-fields").querySelectorAll("input,select,textarea").forEach((x) => x.disabled = !requesting);
+        $("#lab-evaluation-fields").querySelectorAll("input,select,textarea").forEach((x) => x.disabled = requesting);
+      };
+      mode.addEventListener("change", toggleLabMode);
+      toggleLabMode();
+    }
 
   }
   app
@@ -926,6 +942,29 @@ function composeBody(d, p, partial = false) {
   const has = (k) => String(d[k] ?? "").trim() !== "";
   const parts = [];
   if (p === "lab") {
+    const requesting = d.labMode === "solicitacao";
+    const reason = String(d.labReason || "Rotina").trim();
+    const otherReason = String(d.labOtherReason || "").trim();
+    const intro = requesting
+      ? "Paciente comparece à unidade para solicitar exames"
+      : "Paciente comparece à unidade para solicitar avaliação de exames";
+    const introduction = reason === "Outro motivo"
+      ? `${intro}. Motivo: ${otherReason || "não especificado"}.`
+      : `${intro} de rotina.`;
+    const guides = Array.isArray(d["c:labGuides"]) ? d["c:labGuides"] : [];
+    const conduct = String(d.labConduct || "").trim();
+    const conductText = [...guides, ...(conduct ? [conduct] : [])];
+    const ending = conductText.length ? `\nConduta: ${conductText.join("; ")}.` : "";
+    if (requesting) {
+      const requested = String(d.labRequestedExams || "").trim();
+      const medical = d.labMedicalAssessment === "Solicitada"
+        ? "Avaliação médica solicitada."
+        : d.labMedicalAssessment === "Não solicitada"
+          ? "Avaliação médica não solicitada."
+          : "";
+      return [introduction, requested ? `Exames mencionados: ${requested}.` : "", medical]
+        .filter(Boolean).join("\n") + ending;
+    }
     if (!partial && !has("date")) throw Error("Informe a data dos exames.");
     const date = d.date ? d.date.split("-").reverse().join("/") : "data não informada";
     const order = [
@@ -989,13 +1028,7 @@ function composeBody(d, p, partial = false) {
       });
     items.push(...LabDetails.compose(d,partial));
     if (!items.length) throw Error("Preencha ao menos um resultado.");
-    const reason = String(d.labReason || "Rotina").trim();
-    const otherReason = String(d.labOtherReason || "").trim();
-    const introduction = reason === "Outro motivo"
-      ? `Paciente comparece à unidade para solicitar avaliação de exames${otherReason ? `. Motivo: ${otherReason}` : " por outro motivo não especificado"}.`
-      : "Paciente comparece à unidade para solicitar avaliação de exames de rotina.";
-    const conduct = String(d.labConduct || "").trim();
-    return `${introduction}\nLAB (${date}): ${items.join(" | ")}.${conduct ? `\nConduta: ${conduct}` : ""}`;
+    return `${introduction}\nLAB (${date}): ${items.join(" | ")}.${ending}`;
   }
   return Notes.compose(d, p, partial);
 }

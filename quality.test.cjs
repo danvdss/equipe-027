@@ -61,6 +61,37 @@ function setup(t) {
   };
   return { w, run, set, answer };
 }
+test("laboratory request and evaluation generate distinct documentary records", (t) => {
+  const { w, run, set } = setup(t);
+  run("navigate('lab')");
+  const request = w.document.querySelector("#lab-request-fields");
+  const evaluation = w.document.querySelector("#lab-evaluation-fields");
+  assert.equal(request.hidden, true);
+  set("labMode", "solicitacao");
+  assert.equal(request.hidden, false);
+  assert.equal(evaluation.hidden, true);
+  set("labReason", "Outro motivo");
+  set("labOtherReason", "Acompanhamento");
+  set("labRequestedExams", "Hemograma");
+  set("labMedicalAssessment", "Solicitada");
+  const guide = w.document.querySelector('[name="c:labGuides"]');
+  guide.checked = true;
+  guide.dispatchEvent(new w.Event("change", { bubbles: true }));
+  const requested = run("collect(); compose(drafts.lab, 'lab')");
+  assert.match(requested, /solicitar exames/);
+  assert.match(requested, /Motivo: Acompanhamento/);
+  assert.match(requested, /Avaliação médica solicitada/);
+  assert.match(requested, /continuidade do cuidado/);
+  assert.doesNotMatch(requested, /LAB \(/);
+  set("labMode", "avaliacao");
+  assert.equal(evaluation.hidden, false);
+  assert.equal(request.hidden, true);
+  set("date", "2026-11-18");
+  set("lab:Hb", "12");
+  const evaluated = run("collect(); compose(drafts.lab, 'lab')");
+  assert.match(evaluated, /LAB \(18\/11\/2026\): Hb 12/);
+  assert.doesNotMatch(evaluated, /Avaliação médica solicitada/);
+});
 test("documentary validation rejects impossible input but accepts decimal comma", (t) => {
   const { run } = setup(t);
   for (const data of [
