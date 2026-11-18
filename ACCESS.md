@@ -1,16 +1,30 @@
-# Acesso e limites operacionais
+# Acesso e limites operacionais — versão vigente
 
-Acesso atual (2026.09.24.4): credencial compartilhada local, restaurada por solicitação explícita do responsável. A interface não exibe login/senha. Essa verificação no navegador é apenas uma barreira visual: os scripts e arquivos do GitHub Pages são públicos. Não tratar esse modo como autenticação segura nem usá-lo para proteger APIs ou dados remotos.
+Atualizado em 18/11/2026. Este documento substitui as descrições históricas de acesso compartilhado local.
 
-O Supabase não é carregado pela página neste modo. O projeto `equipe-027` e a conta anteriormente convidada continuam existentes; nenhum recurso ou usuário foi excluído. Os arquivos da integração por convite permanecem no repositório, mas estão desconectados da interface. Seus testes são mantidos para eventual retomada.
+## Arquitetura atual verificada no código
+- `index.html` carrega `supabase.min.js` e `auth.js`.
+- O login utiliza usuário e senha e consulta a função `username-login` do Supabase antes de validar a sessão.
+- A interface não deve ser tratada como mecanismo isolado de segurança; a autorização efetiva depende das políticas e configurações do serviço remoto.
+- Rascunhos clínicos permanecem na memória da página. O sistema não deve armazenar pacientes no repositório, nos testes, no serviço de autenticação ou em logs.
+- Textos copiados, impressões, imagens exportadas e dispositivos compartilhados ficam fora do controle do aplicativo.
 
-Não adicionar dados de pacientes ao repositório, aos testes ou aos arquivos de calibração. Os formulários atuais usam memória temporária, sem banco de pacientes. Textos copiados, impressões e PNGs ficam fora do controle da plataforma. Recarregar, sair ou iniciar novo atendimento apaga o estado local. A confirmação de saída depende do suporte do navegador e não impede encerramento forçado pelo sistema.
+## Bloqueadores de homologação institucional
+1. Responsável técnico/clínico identificado, com aprovação documentada dos modelos e protocolos locais.
+2. Responsável pela proteção de dados confirma o fluxo, permissões, logs, retenção, incidentes e adequação à LGPD.
+3. Administrador do Supabase confirma usuários autorizados, segurança da função de login, proteção contra abuso, política de senhas e revogação de sessão.
+4. Testes reais com usuários de teste em Android/Chrome, iPhone/Safari e desktop, incluindo teclado, leitores de tela e perda de conexão.
+5. Teste de impressão física com a impressora e configuração da unidade.
+6. Aprovação formal da versão publicada, com data, responsáveis e evidências.
 
-## Verificações pendentes fora deste ambiente
+## Proibições de uso
+- Não registrar dados identificáveis de pacientes nos testes, no GitHub ou em relatórios públicos.
+- Não considerar o sistema um prontuário eletrônico validado, nem usar alertas como diagnóstico, prescrição ou decisão automática.
+- Não declarar homologação institucional com base apenas em testes automatizados.
 
-- Aprovação dos modelos pelo responsável clínico e identificação do protocolo institucional adotado.
-- Testes em Android/Chrome e iPhone/Safari reais, incluindo teclado, rotação, área segura, compartilhamento e impressão.
-- Calibração de impressão com a impressora e as configurações de escala do serviço.
-- Para futuramente retomar autenticação real, reativar e validar a integração e definir as contas autorizadas.
-
-Versão funcional: 2026.09.24.4. Não há decisão automatizada de elegibilidade, prescrição ou aprovação clínica.
+## Registro de aceite
+- Versão aprovada: **pendente**
+- Responsável clínico: **pendente**
+- Responsável por segurança/privacidade: **pendente**
+- Testes em dispositivos reais: **pendente**
+- Homologação institucional: **não concedida**

@@ -3,7 +3,7 @@
   "private": true,
   "version": "2026.11.16",
   "scripts": {
-    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs",
+    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs readiness.test.cjs",
     "check": "node check.cjs",
     "release": "node release.cjs",
     "smoke:pages": "node smoke-pages.cjs"

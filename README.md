@@ -1,5 +1,7 @@
 # EQUIPE 027
 
+> **Situação em 18/11/2026:** versão técnica publicada, **homologação institucional pendente**. A entrada atual usa Supabase Auth por usuário e senha; as descrições de credencial compartilhada local abaixo são históricas e não representam o código atual. Consulte [ACCESS.md](ACCESS.md) e [PLANO-CONCLUSAO.md](PLANO-CONCLUSAO.md) antes do uso assistencial.
+
 **Versão atual: 2026.10.12.** Editor único, revisão opcional e gráficos inicialmente minimizados. Consulte [REVISAO-2026-10.md](REVISAO-2026-10.md) para mudanças, testes e limites. As seções datadas abaixo registram o histórico e podem descrever comportamentos substituídos.
 
 Ferramenta estática para apoiar registros clínicos multiprofissionais, registros LAB e preencher o receituário de Lagarto/SE.

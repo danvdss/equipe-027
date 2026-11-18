@@ -3,7 +3,7 @@
 Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equivale a homologação clínica.
 
 ## Etapa 1 — Base, acesso e registros
-- [x] Navegação, autenticação, rascunhos apenas em memória e limpeza por novo atendimento.
+- [x] Navegação, integração de autenticação por Supabase no código, rascunhos em memória e limpeza por novo atendimento; configuração remota ainda requer auditoria.
 - [x] Anamnese complementar por módulo e inserção explícita no editor.
 - [x] Testes automatizados de regressão, inclusive navegação HAS/DM, separação de rascunhos e limpeza no novo atendimento.
 - [ ] Homologar o fluxo com profissionais da unidade e testar autenticação em ambiente publicado.
@@ -45,3 +45,9 @@ Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equi
 5. Publicação acessível e fluxos principais homologados.
 
 Não usar alertas laboratoriais como diagnóstico ou decisão clínica automática.
+
+## Evidências técnicas adicionais — 18/11/2026
+- Testes de prontidão: presença de autenticação Supabase com validação remota, navegação por teclado, CSS de movimento reduzido, layout móvel e ausência de armazenamento remoto no módulo complementar.
+- Estes testes são estáticos/DOM e **não** comprovam conformidade WCAG, segurança do servidor, LGPD ou segurança clínica.
+- O documento ACCESS.md foi atualizado para refletir a arquitetura de autenticação efetivamente carregada pela página.
+- **Decisão de homologação:** PENDENTE de responsáveis institucionais e testes reais. Não declarar aptidão clínica por conta dos testes automatizados.
