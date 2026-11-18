@@ -12,7 +12,7 @@ Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equi
 ## Etapa 2 — Exames e acompanhamento de HAS/DM
 - [x] Registros de exames laboratoriais e complementares.
 - [x] Conferência contextual com confirmação de unidade e jejum quando aplicável.
-- [x] Limites do laudo editáveis; função renal, lipídios e hemograma iniciam sem limites universais.
+- [x] Cartões gráficos com resultados, faixas predefinidas editáveis e confirmação obrigatória do intervalo do laudo para classificação. Faixas ilustrativas não são metas clínicas universais.
 - [x] Filtros por preenchimento, alerta e ausência de classificação.
 - [x] Campos de adesão, barreiras, autocuidado, metas e retorno.
 - [ ] Validar limites, unidades e linguagem dos alertas com profissional habilitado e protocolos locais.

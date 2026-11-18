@@ -7,15 +7,15 @@ const definitions = {
   HbA1c:{label:"Hemoglobina glicada",unit:"%",low:0,high:5.6,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Screening classification is not an individualized treatment target."},
   Na:{label:"Sodio",unit:"mmol/L",low:135,high:145,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/sodium-blood-test/",note:"Typical interval only; prioritize the reporting laboratory."},
   K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."},
-  Cr:{label:"Creatinina",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Nefrologia",url:"https://sbn.org.br/",note:"Limites dependem do metodo, sexo, idade e massa muscular. Transcreva o intervalo do laudo."},
-  "TFG/eTFG":{label:"Taxa de filtracao glomerular estimada",unit:"mL/min/1,73m2",low:null,high:null,source:"KDIGO",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/",note:"Interpretacao requer contexto clinico, idade, persistencia e albuminuria; nao diagnosticar DRC por resultado isolado."},
-  CT:{label:"Colesterol total",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Alvos dependem de risco cardiovascular e condicao clinica; nao usar faixa universal."},
-  HDL:{label:"Colesterol HDL",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Interpretar com perfil de risco e contexto clinico."},
-  LDL:{label:"Colesterol LDL",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Metas individualizadas conforme estratificacao de risco; nao presumir meta."},
-  TG:{label:"Triglicerideos",unit:"mg/dL",low:null,high:null,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Jejum e contexto podem modificar interpretacao; confira o laudo."},
-  Hb:{label:"Hemoglobina",unit:"g/dL",low:null,high:null,source:"Organizacao Mundial da Saude",url:"https://www.who.int/",note:"Intervalos dependem de idade, sexo, gestacao e outras condicoes; transcreva o laudo."},
-  Leuco:{label:"Leucocitos",unit:"/mm3",low:null,high:null,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."},
-  Plaq:{label:"Plaquetas",unit:"/mm3",low:null,high:null,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."}
+  Cr:{label:"Creatinina",unit:"mg/dL",low:0.6,high:1.3,source:"Sociedade Brasileira de Nefrologia",url:"https://sbn.org.br/",note:"Limites dependem do metodo, sexo, idade e massa muscular. Transcreva o intervalo do laudo."},
+  "TFG/eTFG":{label:"Taxa de filtracao glomerular estimada",unit:"mL/min/1,73m2",low:60,high:120,source:"KDIGO",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/",note:"Interpretacao requer contexto clinico, idade, persistencia e albuminuria; nao diagnosticar DRC por resultado isolado."},
+  CT:{label:"Colesterol total",unit:"mg/dL",low:0,high:190,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Alvos dependem de risco cardiovascular e condicao clinica; nao usar faixa universal."},
+  HDL:{label:"Colesterol HDL",unit:"mg/dL",low:40,high:100,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Interpretar com perfil de risco e contexto clinico."},
+  LDL:{label:"Colesterol LDL",unit:"mg/dL",low:0,high:130,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Metas individualizadas conforme estratificacao de risco; nao presumir meta."},
+  TG:{label:"Triglicerideos",unit:"mg/dL",low:0,high:150,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Jejum e contexto podem modificar interpretacao; confira o laudo."},
+  Hb:{label:"Hemoglobina",unit:"g/dL",low:12,high:17.5,source:"Organizacao Mundial da Saude",url:"https://www.who.int/",note:"Intervalos dependem de idade, sexo, gestacao e outras condicoes; transcreva o laudo."},
+  Leuco:{label:"Leucocitos",unit:"/mm3",low:4000,high:11000,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."},
+  Plaq:{label:"Plaquetas",unit:"/mm3",low:150000,high:450000,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."}
 };
 const memory={};
 const clinicalSources={
@@ -69,13 +69,13 @@ function addExam(list,values={}){
 }
 function mountLab(form){
  const panel=node("section",undefined,"panel");panel.id="e027-lab";
- panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. Para funcao renal, perfil lipidico e hemograma, os limites iniciam em branco e precisam ser transcritos do laudo.","muted"));
+ panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. As faixas predefinidas sao exemplos operacionais, nao metas clinicas universais. Confira e ajuste cada faixa conforme o laudo antes de interpretar.","muted"));
  const units=field("Confirmo que as unidades informadas no laudo correspondem as unidades indicadas abaixo","checkbox",undefined,"units");panel.append(units);
  const fasting=field("Jejum confirmado (para glicemia)","checkbox",undefined,"fasting");panel.append(fasting);
  const filterLabel=node("label","Filtrar exames ");
  const filter=node("select");[["all","Todos"],["filled","Com resultado"],["alerts","Fora do intervalo"],["unchecked","Nao classificaveis"]].forEach(([value,label])=>{const opt=node("option",label);opt.value=value;filter.append(opt)});filterLabel.append(filter);panel.append(filterLabel);
  const summary=node("p");summary.setAttribute("role","status");panel.append(summary);
- const table=node("div");panel.append(table);
+ const table=node("div");table.className="e027-visual-grid";panel.append(table);
  const results=node("div");results.setAttribute("role","status");results.setAttribute("aria-live","polite");panel.append(results);
  panel.append(node("h2","Exames complementares"),node("p","Registre USG, ECG e outros exames; os achados so entram na evolucao quando inseridos.","muted"));
  const exams=node("div");panel.append(exams);
@@ -85,11 +85,14 @@ function mountLab(form){
  for(const [key,ref] of Object.entries(definitions)){
   const row=node("div",undefined,"lab-row e027-range");
   row.dataset.key=key;
+  const result=field("Resultado do exame","text","", "result");result.querySelector("input").inputMode="decimal";row.append(result);
   row.append(node("strong",ref.label+" ("+ref.unit+")"));
   row.append(field("Minimo do laudo","text",stored[key+"-low"]??(ref.low===null?"":String(ref.low)),"range-low"));
   row.append(field("Maximo do laudo","text",stored[key+"-high"]??(ref.high===null?"":String(ref.high)),"range-high"));
   const source=node("a","Referencia: "+ref.source);source.href=ref.url;source.target="_blank";source.rel="noopener noreferrer";row.append(source);
-  row.append(node("p",ref.note,"muted"));table.append(row);
+  const confirmation=field("Faixa conferida com o laudo","checkbox",undefined,"confirmed");confirmation.querySelector("input").checked=!!stored[key+"-confirmed"];row.append(confirmation);
+  const track=node("div",undefined,"e027-track");track.setAttribute("aria-hidden","true");track.append(node("div",undefined,"e027-band"),node("div",undefined,"e027-marker"));row.append(track);
+  row.append(node("p","Aguardando resultado","e027-state"));row.append(node("p",ref.note,"muted"));table.append(row);
  }
  fasting.querySelector("input").checked=!!stored.fasting;units.querySelector("input").checked=!!stored.units;
  (stored.exams||[]).forEach(x=>addExam(exams,x));
@@ -99,9 +102,14 @@ function mountLab(form){
   for(const row of table.children){
    const key=row.dataset.key,ref=definitions[key];
    const input=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+key);
-   const [low,high]=row.querySelectorAll("input");
+   const visual=row.querySelector('[data-e027="result"]');if(input&&document.activeElement!==visual)visual.value=input.value;
+   const confirmed=row.querySelector('[data-e027="confirmed"]').checked;
+   const low=row.querySelector('[data-e027="range-low"]'),high=row.querySelector('[data-e027="range-high"]');
    const filled=!!input?.value.trim();
-   const state=!filled?"empty":!units.querySelector("input").checked||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
+   const state=!filled?"empty":!units.querySelector("input").checked||!confirmed||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
+   const lo=number(low.value),hi=number(high.value),v=number(input?.value),track=row.querySelector(".e027-track"),marker=row.querySelector(".e027-marker"),label=row.querySelector(".e027-state");
+   if(v!==null&&lo!==null&&hi!==null&&hi>lo){marker.style.left=Math.max(0,Math.min(100,20+60*(v-lo)/(hi-lo)))+"%";track.classList.add("is-visible")}else track.classList.remove("is-visible");
+   label.textContent=!filled?"Aguardando resultado":!confirmed?"Confira a faixa com o laudo":state==="low"?"Abaixo da faixa":state==="high"?"Acima da faixa":state==="within"?"Dentro da faixa informada":"Sem classificacao segura";row.dataset.state=state;
    entries.push({row,key,ref,input,filled,state});
   }
   const count={filled:0,alerts:0,unchecked:0};
@@ -123,9 +131,10 @@ function mountLab(form){
  }
  filter.addEventListener("change",refresh); function persist(){
   const values={units:units.querySelector("input").checked,fasting:fasting.querySelector("input").checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
-  for(const row of table.children){const [lo,hi]=row.querySelectorAll("input");values[row.dataset.key+"-low"]=lo.value;values[row.dataset.key+"-high"]=hi.value}
+  for(const row of table.children){const lo=row.querySelector('[data-e027="range-low"]'),hi=row.querySelector('[data-e027="range-high"]');values[row.dataset.key+"-low"]=lo.value;values[row.dataset.key+"-high"]=hi.value;values[row.dataset.key+"-confirmed"]=row.querySelector('[data-e027="confirmed"]').checked}
   memory.lab=values;
  }
+ table.addEventListener("input",event=>{if(event.target?.dataset.e027!=="result")return;const row=event.target.closest(".e027-range");const original=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+row.dataset.key);if(original){original.value=event.target.value;original.dispatchEvent(new Event("input",{bubbles:true}))}});
  form.addEventListener("input",()=>{refresh();persist()});
  form.addEventListener("change",()=>{refresh();persist()});
  refresh();active=panel;

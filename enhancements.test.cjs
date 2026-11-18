@@ -36,10 +36,10 @@ test("HAS, DM and renal reference groups provide external sources",()=>{
  }
 });
 
-test("renal, lipid and CBC ranges require lab-provided thresholds",()=>{
+test("renal, lipid and CBC ranges have editable illustrative presets",()=>{
  const {definitions,assess}=engine();
  for(const key of ["Cr","TFG/eTFG","CT","HDL","LDL","TG","Hb","Leuco","Plaq"]){
-  assert.equal(definitions[key].low,null);assert.equal(definitions[key].high,null);
+  assert.equal(typeof definitions[key].low,"number");assert.equal(typeof definitions[key].high,"number");
   assert.ok(definitions[key].url.startsWith("https://"));
  }
  assert.equal(assess("120","",""),"unverified");
@@ -54,6 +54,7 @@ test("lab interface filters findings and keeps complementary exam rows",()=>{
  assert.ok(panel,"lab panel mounts");
  const check=panel.querySelector('[data-e027="units"]');check.checked=true;
  check.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ const krow=panel.querySelector('[data-key="K"]');krow.querySelector('[data-e027="confirmed"]').checked=true;krow.querySelector('[data-e027="confirmed"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
  const summary=panel.querySelector('[role="status"]');
  assert.ok(summary.textContent.includes("1 alerta"));
  const filter=panel.querySelector("select");
@@ -100,4 +101,26 @@ test("chronic modules preserve separate drafts and clear on new encounter",()=>{
   assert.equal(panel().querySelector('[data-e027="complaint"]').value,"");
   dom.window.close();
  });
+});
+
+test("visual cards show editable presets, synchronize results and require report confirmation",()=>{
+ const {JSDOM}=require("jsdom");
+ const dom=new JSDOM('<!doctype html><html><body><div id="app"><form id="clinical"><section><div id="extras"></div></section><input name="lab:Cr" value=""></form><textarea id="output"></textarea></div></body></html>',{runScripts:"outside-only"});
+ dom.window.eval(source);dom.window.document.dispatchEvent(new dom.window.Event("DOMContentLoaded"));
+ const doc=dom.window.document,panel=doc.querySelector("#e027-lab"),row=panel.querySelector('[data-key="Cr"]');
+ assert.equal(row.querySelector('[data-e027="range-low"]').value,"0.6");
+ assert.equal(row.querySelector('[data-e027="range-high"]').value,"1.3");
+ const input=row.querySelector('[data-e027="result"]');
+ input.value="1,6";input.dispatchEvent(new dom.window.Event("input",{bubbles:true}));
+ assert.equal(doc.querySelector('[name="lab:Cr"]').value,"1,6");
+ assert.equal(row.dataset.state,"unverified");
+ assert.equal(row.querySelector(".e027-track").classList.contains("is-visible"),true);
+ panel.querySelector('[data-e027="units"]').checked=true;
+ row.querySelector('[data-e027="confirmed"]').checked=true;
+ row.querySelector('[data-e027="confirmed"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.equal(row.dataset.state,"high");
+ row.querySelector('[data-e027="range-high"]').value="2";
+ row.querySelector('[data-e027="range-high"]').dispatchEvent(new dom.window.Event("input",{bubbles:true}));
+ assert.equal(row.dataset.state,"within");
+ dom.window.close();
 });

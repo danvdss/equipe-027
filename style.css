@@ -922,3 +922,18 @@ body:has(.workspace[data-view="text"]) #growth-dock{display:none}
 .medicine-shortcuts{gap:.5rem}.medicine-shortcuts button{min-height:44px}
 @media(max-width:899px){#growth-dock{width:260px}.editor-tools button{flex-basis:100%}.block-review{padding:1rem}.growth-dialog .eyebrow{font-size:.75rem}.growth-dialog-heading{align-items:flex-start}.growth-dialog-heading button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Visualização contextual de resultados — interpretação depende de confirmação do laudo. */
+.e027-visual-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:1rem;margin:1rem 0 1.5rem}
+.e027-range{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;padding:1rem;border:1px solid #cdd9e9;border-radius:16px;background:#f8fbff;min-width:0;align-content:start}
+.e027-range>strong,.e027-range>.e027-track,.e027-range>.e027-state,.e027-range>a,.e027-range>p,.e027-range>label:has([data-e027="result"]),.e027-range>label:has([data-e027="confirmed"]){grid-column:1/-1}
+.e027-range label{min-width:0;font-size:.85rem}
+.e027-range input[type="text"]{width:100%;min-width:0}
+.e027-range .e027-track{height:13px;position:relative;border-radius:99px;background:linear-gradient(90deg,#f5c8b6 0 20%,#d5e9d9 20% 80%,#f5c8b6 80% 100%);margin:.5rem 0 .1rem;opacity:.3}
+.e027-range .e027-track.is-visible{opacity:1}
+.e027-marker{position:absolute;top:-5px;left:50%;height:23px;width:4px;border-radius:5px;background:#172b4d;box-shadow:0 0 0 2px white}
+.e027-state{font-size:.84rem;font-weight:700;margin:0}
+.e027-range[data-state="high"],.e027-range[data-state="low"]{border-color:#cf896a}
+.e027-range[data-state="within"]{border-color:#78ad8a}
+.e027-range[hidden]{display:none}
+@media(max-width:420px){.e027-visual-grid{grid-template-columns:minmax(0,1fr)}.e027-range{padding:.85rem}}
