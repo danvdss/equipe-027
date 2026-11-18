@@ -621,6 +621,7 @@ function navigate(p) {
   collect();
   page = p;
   render();
+  $("#workspace-main")?.focus({ preventScroll: true });
   window.scrollTo(0, 0);
 }
 function field(name, label, placeholder = "", type = "text") {

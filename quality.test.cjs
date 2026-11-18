@@ -620,3 +620,20 @@ test('IME composition and plain editor preserve manual content',async t=>{
 test('bulk renewal preserves existing decisions and cancel changes nothing',async t=>{
  const {run,w,set,answer}=setup(t);run("navigate('renewal')");set('req_1_name','Sertralina');set('req_1_result','Não renovado');w.document.querySelector('[data-med-add=req][data-drug="Sinvastatina"]').click();set('medicalRequested','Sim');set('medicalDone','Sim');w.document.querySelector('#renew-all').click();answer('Cancelar');await wait();assert.equal(w.document.querySelector('[name=req_2_result]').value,'');w.document.querySelector('#renew-all').click();answer('Confirmar estes medicamentos');await wait();assert.equal(w.document.querySelector('[name=req_1_result]').value,'Não renovado');assert.equal(w.document.querySelector('[name=req_2_result]').value,'Renovado sem alteração');
 });
+
+test("keyboard navigation keeps focus inside the selected module and section", (t) => {
+  const { w, run } = setup(t);
+  run("navigate('general')");
+  assert.equal(w.document.activeElement.id, "workspace-main");
+  const picker = w.document.querySelector("#section-picker");
+  const button = w.document.querySelector('.section-toggle[aria-expanded="false"]');
+  const section = button.closest("section");
+  const body = w.document.getElementById(button.getAttribute("aria-controls"));
+  assert.ok(body.hidden);
+  picker.focus();
+  picker.value = section.id;
+  picker.dispatchEvent(new w.Event("change", { bubbles: true }));
+  assert.equal(w.document.activeElement, button);
+  assert.equal(button.getAttribute("aria-expanded"), "true");
+  assert.equal(body.hidden, false);
+});

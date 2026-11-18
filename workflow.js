@@ -510,12 +510,14 @@ const Flow = (() => {
       if (el.tagName === "SECTION") {
         const body = document.createElement("div");
         body.className = "section-body";
+        body.id = el.id + "-body";
         for (const child of [...el.children])
           if (child !== title) body.append(child);
         el.append(body);
         const b = document.createElement("button");
         b.type = "button";
         b.className = "section-toggle";
+        b.setAttribute("aria-controls", body.id);
         b.textContent = label;
         const count = document.createElement("span");
         count.className = "section-count";
@@ -542,6 +544,7 @@ const Flow = (() => {
             .querySelector(".section-toggle")
             .setAttribute("aria-expanded", "true");
         }
+        target.querySelector(".section-toggle, summary")?.focus({ preventScroll: true });
         target.scrollIntoView({ block: "start" });
       }
     };

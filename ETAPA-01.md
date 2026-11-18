@@ -1,14 +1,20 @@
 # Etapa 01 — Tema escuro e contraste
 
-A paleta de tela em theme.css atende ao ambiente clínico e ao receituário. O teste de contraste em readiness.test.cjs acompanha as cores de texto, controles, foco, mensagens e barras gráficas. O fluxo de publicação inclui a nova folha de estilos.
+O ambiente clínico e os controles do receituário usam a paleta de tela em `theme.css`. As regras de impressão ficam separadas. A navegação entre módulos leva o foco ao conteúdo principal. O seletor de seção abre a seção escolhida e leva o foco ao respectivo controle. Cada botão de expansão identifica o conteúdo associado por `aria-controls`.
 
-## Evidências técnicas
+## Evidências
 
-- npm run check passou. O conjunto de 88 testes passou no Windows.
-- Em Brave, foram percorridas 15 telas em cada área de visualização, 1440 × 960 e 390 × 844. O ensaio usou uma cópia isolada, sem tráfego para o backend e sem dados de pacientes.
-- A varredura do texto visível sobre fundos sólidos não encontrou razões abaixo dos limiares de texto comum e grande nas telas percorridas. O teste de paleta também cobriu indicadores essenciais a 3:1.
-- O login apresentou contorno de foco ao pressionar Tab. A revisão visual dos cartões laboratoriais verificou campos, unidades, links e estado textual no fundo escuro. Os ensaios usaram a preferência por movimento reduzido.
+| Verificação | Resultado |
+| --- | --- |
+| Verificação do projeto e regressões | `npm run check` e 89 testes aprovados. |
+| Texto visível em fundos sólidos | Varredura anterior de 15 telas por largura, sem ocorrência abaixo do limiar entre os elementos avaliados. |
+| Gradientes | Medição nos títulos e textos da abertura, símbolo do cabeçalho, cartões do painel e cabeçalhos clínicos. Menor contraste de 6,37:1 em 1440 px e 6,47:1 em 390 px. |
+| Teclado | 92 controles de expansão por largura. Ativação, estado expandido, associação ao conteúdo e foco visível após Tab. Abertura e fechamento do menu de módulos, transferência de foco na navegação e retorno do editor com Escape. |
+| Campos condicionais | Alternância entre solicitação e avaliação de exames, exibição dos campos de administração de medicamento e ativação da data de retorno. |
+| Movimento reduzido | A preferência foi ativada nas duas execuções em navegador. |
 
-## Escopo do aceite
+As verificações em Brave no Windows usaram dados de teste e recursos locais. A medição dos gradientes comparou capturas do mesmo elemento com e sem o texto e avaliou os pixels de fundo sob os caracteres. A largura de 390 px foi emulada em navegador de desktop. Outros navegadores, uso em aparelho físico e aprovação institucional pertencem à validação posterior do roadmap.
 
-A emulação de largura móvel não comprova uso em aparelho físico. A varredura dos fundos sólidos cobre apenas texto visível com fundo identificável. Permanecem para revisão o contraste em fundos decorativos e a operação integral dos estados condicionais por teclado. Situação da entrega: implementada, com validação técnica parcial.
+## Reprodução
+
+Na raiz do projeto, execute `npm ci`, `npm run check` e `npm test`. Para repetir o ensaio visual, instale `playwright-core@1.56.1` com `npm install --no-save --package-lock=false playwright-core@1.56.1`, defina `E027_BROWSER` com o caminho do executável do Brave ou Chromium e execute `node tests/theme-browser.cjs`. O ensaio abre um perfil temporário e serve os arquivos do projeto em um domínio fictício, sem utilizar o backend.
