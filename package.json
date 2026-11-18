@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs",
     "check": "node check.cjs",
-    "release": "node release.cjs"
+    "release": "node release.cjs",
+    "smoke:pages": "node smoke-pages.cjs"
   },
   "devDependencies": {
     "jsdom": "26.1.0"

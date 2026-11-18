@@ -32,7 +32,9 @@ Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equi
 ## Etapa 5 — Publicação e entrega
 - [x] Workflow de GitHub Pages com verificação de sintaxe e testes.
 - [x] Verificação automática de que assets locais do HTML entram no pacote publicado.
-- [ ] Confirmar sucesso do deploy e abrir a URL pública em navegador.
+- [x] Confirmar sucesso do deploy (GitHub Actions 44357281634) e resposta HTTP 200 do site.
+- [x] Comparar 18 arquivos publicados com os locais usando SHA-256 após normalização de finais de linha (`npm run smoke:pages`).
+- [ ] Homologar visualmente o site em navegador desktop e celular com acesso autenticado.
 - [ ] Homologar o sistema com dados fictícios, registrar responsável e versão aprovada.
 
 ## Condições para considerar o projeto concluído
