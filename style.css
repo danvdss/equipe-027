@@ -397,7 +397,7 @@ textarea {touch-action: manipulation;}
 
 .error-summary {background: #fff1ee; border: 1px solid #d88978; border-radius: 12px; padding: 1rem; color: #86281b;}
 
-[aria-invalid="true"] {border-color: #ac312c !important;}
+[aria-invalid="true"] {border-color: var(--danger);}
 
 .pending-list {border: 1px solid #d5b75e; background: #fff9e9; border-radius: 12px; padding: 1rem; margin-bottom: 1rem;}
 

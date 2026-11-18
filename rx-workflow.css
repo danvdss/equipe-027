@@ -1,3 +1,5 @@
+@import url("theme.css") screen;
+
 .rx-switch {
   display: none;
   gap: 8px;
@@ -96,34 +98,29 @@
   }
 }
 
-/* Dark controls; the prescription paper and export remain white. */
+/* Keep the paper and print layout independent of the screen palette. */
 @media screen {
-  :root { color-scheme:dark; --ink:#e9f0f8; --soft:#a1b0c3; --line:#304257; --teal:#63d6c5; --teal-dark:#9ae6d7; --teal-soft:#203e40; --bg:#0c1420; --danger:#ffadbb; }
-  body,.preview { background:#0c1420; color:var(--ink); }
-  .topbar,.panel,.rx-switch,.rx-dialog { background:#131f2e; color:var(--ink); border-color:var(--line); }
-  .medgroup,details,summary { background:#182637; border-color:var(--line); }
-  input[type=text],input[type=file],select { background:#0d1827; color:var(--ink); border-color:#35465c; }
-  .actions { background:linear-gradient(180deg,#131f2e00,#131f2e 28%); }
-  button { background:#23364b; color:#e2ecf7; transition:background 160ms; }
-  button:hover { background:#304960; }
-  .primary,.rx-switch button[aria-pressed="true"] { background:#63d6c5; color:#072c2b; }
-  .primary:hover { background:#91e9db; }
-  .danger { background:#3c2934; border-color:#805267; }
-  .num,.status { background:#23433e; color:#b2f5e4; }
-  .stage-shell { color-scheme:light; color:#111; }
-  :focus-visible { outline:2px solid #91d9ff; outline-offset:3px; }
-}
-@media(prefers-reduced-motion:reduce) { * { transition:none!important; } }
-
-/* Match the bento workspace without changing the printable prescription. */
-@media screen {
-  :root{--ink:#f5f5f7;--soft:#b0b0b8;--line:#3d3d43;--teal:#a4baff;--teal-dark:#d2ddff;--teal-soft:#292938;--bg:#080809}
-  body,.preview{background:#080809}
-  .topbar,.panel,.rx-switch,.rx-dialog{background:#1c1c1e;border-color:#3d3d43}
-  .medgroup,details,summary{background:#25252b;border-color:#3d3d43;border-radius:14px}
-  input[type=text],input[type=file],select{background:#141416;border-color:#494950}
-  .actions{background:linear-gradient(180deg,#1c1c1e00,#1c1c1e 28%)}
-  button{background:#28282c}button:hover{background:#35353a}
-  .primary,.rx-switch button[aria-pressed="true"]{background:#ededed;color:#151517}.primary:hover{background:#fff}
-  .num,.status{background:#303650;color:#d6dfff}
+  :root {
+    color-scheme: dark;
+    --ink: var(--ui-text);
+    --soft: var(--ui-muted);
+    --line: var(--ui-line);
+    --teal: var(--ui-brand);
+    --teal-dark: var(--ui-brand);
+    --teal-soft: var(--ui-action);
+    --danger: var(--ui-error);
+    --bg: var(--ui-page);
+  }
+  body, .preview { background: var(--bg); color: var(--ink); }
+  .topbar, .panel, .rx-switch, .rx-dialog { background: var(--ui-card); color: var(--ink); border-color: var(--line); }
+  .medgroup, details, summary { background: var(--ui-surface); border-color: var(--line); border-radius: 14px; }
+  input[type=text], input[type=file], select { background: var(--ui-field); color: var(--ink); border-color: var(--ui-control); }
+  input::placeholder { color: var(--soft); }
+  .actions { background: var(--ui-card); }
+  button { background: var(--ui-surface); color: var(--ink); border-color: var(--ui-control); }
+  button:hover { background: var(--ui-hover); }
+  .primary, .topbar .brand .mark, .rx-switch button[aria-pressed=true] { background: var(--ui-action); color: var(--ui-brand); }
+  .primary:hover { background: var(--ui-action-hover); }
+  .danger { background: var(--ui-error-bg); color: var(--danger); border-color: var(--danger); }
+  .stage-shell { color-scheme: light; color: #111; }
 }

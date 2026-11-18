@@ -1,0 +1,41 @@
+/* Palette for the clinical workspace and the prescription controls. */
+@media screen {
+  :root {
+    --ui-page: #10171e;
+    --ui-card: #1a252f;
+    --ui-surface: #24333f;
+    --ui-hover: #304351;
+    --ui-field: #111e27;
+    --ui-line: #536571;
+    --ui-control: #849aa4;
+    --ui-text: #eef4f6;
+    --ui-muted: #bfced4;
+    --ui-brand: #a4e5d9;
+    --ui-action: #234d49;
+    --ui-action-hover: #315e59;
+    --ui-focus: #a9d8ff;
+    --ui-error: #ffb8c5;
+    --ui-error-bg: #412732;
+    --ui-warning: #f5d99d;
+    --ui-warning-bg: #382f21;
+    --ui-chart-low-high: #ba7764;
+    --ui-chart-normal: #629984;
+  }
+
+  :root :is(button, a, input, select, summary, textarea, [tabindex]):focus-visible {
+    outline: 3px solid var(--ui-focus);
+    outline-offset: 2px;
+  }
+
+  :root [aria-invalid="true"] {
+    border-color: var(--ui-error) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
