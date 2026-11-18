@@ -339,6 +339,7 @@ const Flow = (() => {
       history.length > 0 ||
       !!undo ||
       Object.values(drafts).some(Care.meaningful) ||
+      (typeof window.Equipe027HasExtraDraft === "function" && window.Equipe027HasExtraDraft()) ||
       (q("#clinical") && snapshot() !== initial)
     );
   }
@@ -355,6 +356,7 @@ const Flow = (() => {
       )) !== "yes"
     )
       return;
+    window.dispatchEvent(new Event("equipe027:new-encounter"));
     drafts = {};
     history = [];
     extraCount = 0;

@@ -1,74 +1,128 @@
-/* Equipe-027: apoio documental; alertas não substituem interpretação clínica. */
+/* Equipe 027: complementary documentation and contextual laboratory checks.
+   This module does not make diagnoses or store patient data persistently. */
 (() => {
-  "use strict";
-  const ranges = {
-    "Glic": {name:"Glicemia (somente se em jejum)", low:70, high:99, unit:"mg/dL", source:"Sociedade Brasileira de Diabetes — Diretrizes", url:"https://diretriz.diabetes.org.br/", context:"Aplicável apenas se coleta em jejum; limite inferior é operacional, não critério diagnóstico."},
-    "HbA1c": {name:"Hemoglobina glicada", high:5.6, unit:"%", source:"Sociedade Brasileira de Diabetes — Diretrizes", url:"https://diretriz.diabetes.org.br/", context:"Faixa de rastreamento, não meta terapêutica individual."},
-    "Na": {name:"Sódio", low:135, high:145, unit:"mmol/L", source:"MedlinePlus — Sodium Blood Test", url:"https://medlineplus.gov/lab-tests/sodium-blood-test/", context:"Faixa usual; conferir o intervalo do laboratório."},
-    "K": {name:"Potássio", low:3.5, high:5.0, unit:"mmol/L", source:"National Kidney Foundation — Potassium", url:"https://www.kidney.org/kidney-topics/potassium", context:"Faixa usual; conferir o intervalo do laboratório."}
-  };
-  const parse = v => {const t=String(v||"").trim().replace(",",".");return /^-?\d+(\.\d+)?$/.test(t)?Number(t):null};
-  function evaluate(key,value,unit,fasting=false){
-    const r=ranges[key]; if(!r||!String(value||"").trim())return null;
-    if(key==="Glic"&&!fasting)return {state:"unknown",reason:"Jejum não confirmado.",ref:r};
-    if(unit!==r.unit)return {state:"unknown",reason:"Unidade não confirmada: "+r.unit+".",ref:r};
-    const n=parse(value);if(n===null)return {state:"unknown",reason:"Resultado não numérico.",ref:r};
-    return {state:(r.low!==undefined&&n<r.low)||(r.high!==undefined&&n>r.high)?"alert":"within",reason:"Faixa configurada: "+(r.low??"—")+" a "+(r.high??"—")+" "+r.unit+".",ref:r};
+"use strict";
+const definitions = {
+  Glic:{label:"Glicemia de jejum",unit:"mg/dL",low:70,high:99,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Only applicable when fasting is confirmed. The lower limit is operational, not a diagnostic criterion."},
+  HbA1c:{label:"Hemoglobina glicada",unit:"%",low:0,high:5.6,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Screening classification is not an individualized treatment target."},
+  Na:{label:"Sodio",unit:"mmol/L",low:135,high:145,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/sodium-blood-test/",note:"Typical interval only; prioritize the reporting laboratory."},
+  K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."}
+};
+const memory={};
+let active=null;
+const number=s=>{const v=String(s??"").trim().replace(",",".");return /^-?\d+(\.\d+)?$/.test(v)?Number(v):null};
+function assess(value,low,high){
+ const v=number(value),lo=number(low),hi=number(high);
+ if(v===null||lo===null||hi===null||lo>hi)return "unverified";
+ return v<lo?"low":v>hi?"high":"within";
+}
+const node=(tag,txt,cls)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;if(cls)e.className=cls;return e};
+const html=(markup)=>{const e=node("div");e.innerHTML=markup;return e.firstElementChild};
+function insertText(text){
+ const out=document.querySelector("#output");if(!out)return;
+ out.value+=(out.value.trim()?"\n":"")+text;out.dataset.manual="true";
+ out.dispatchEvent(new Event("input",{bubbles:true}));
+}
+function save(){
+ if(!active||!active.isConnected)return;
+ const form=active.closest("form");if(!form)return;
+ const key=active.id==="e027-lab"?"lab":"anamnesis";
+ const values={};active.querySelectorAll("[data-e027]").forEach(x=>{values[x.dataset.e027]=x.type==="checkbox"?x.checked:x.value});
+ memory[key]=values;
+}
+function field(label,type,value,key){
+ const wrapper=node("label",label+" ");
+ const input=node(type==="textarea"?"textarea":"input");
+ if(type!=="textarea")input.type=type;
+ input.dataset.e027=key;if(value!==undefined)input.value=value;
+ wrapper.append(input);return wrapper;
+}
+function addExam(list,values={}){
+ const row=node("div",undefined,"lab-row e027-exam");
+ const kind=node("select");["USG","ECG","Ecocardiograma","Radiografia","Tomografia","Ressonancia","Outro"].forEach(v=>{const o=node("option",v);o.value=v;kind.append(o)});
+ kind.dataset.e027="exam-kind";kind.value=values.kind||"USG";
+ const date=field("Data","date",values.date||"","exam-date");
+ const report=field("Achados do laudo","textarea",values.report||"","exam-report");
+ const remove=node("button","Remover");remove.type="button";remove.onclick=()=>{row.remove();save()};
+ const insert=node("button","Inserir no editor");insert.type="button";insert.onclick=()=>{
+  const finding=report.querySelector("textarea").value.trim();
+  if(!finding){alert("Informe os achados documentados no laudo.");return}
+  const dateValue=date.querySelector("input").value;
+  insertText(kind.value+(dateValue?" ("+dateValue.split("-").reverse().join("/")+")":"")+": "+finding);
+ };
+ const kindLabel=node("label","Exame ");kindLabel.append(kind);
+ row.append(kindLabel,date,report,remove,insert);list.append(row);
+}
+function mountLab(form){
+ const panel=node("section",undefined,"panel");panel.id="e027-lab";
+ panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. Faixas sugeridas precisam de confirmacao profissional.","muted"));
+ const units=field("Confirmo que as unidades informadas no laudo correspondem as unidades indicadas abaixo","checkbox",undefined,"units");panel.append(units);
+ const fasting=field("Jejum confirmado (para glicemia)","checkbox",undefined,"fasting");panel.append(fasting);
+ const table=node("div");panel.append(table);
+ const results=node("div");results.setAttribute("role","status");results.setAttribute("aria-live","polite");panel.append(results);
+ panel.append(node("h2","Exames complementares"),node("p","Registre USG, ECG e outros exames; os achados so entram na evolucao quando inseridos.","muted"));
+ const exams=node("div");panel.append(exams);
+ const add=node("button","+ Adicionar exame complementar");add.type="button";add.onclick=()=>{addExam(exams);save()};panel.append(add);
+ form.querySelector("#extras").closest("section")?.insertAdjacentElement("afterend",panel);
+ const stored=memory.lab||{};
+ for(const [key,ref] of Object.entries(definitions)){
+  const row=node("div",undefined,"lab-row e027-range");
+  row.dataset.key=key;
+  row.append(node("strong",ref.label+" ("+ref.unit+")"));
+  row.append(field("Minimo do laudo","text",stored[key+"-low"]??String(ref.low),"range-low"));
+  row.append(field("Maximo do laudo","text",stored[key+"-high"]??String(ref.high),"range-high"));
+  const source=node("a","Referencia: "+ref.source);source.href=ref.url;source.target="_blank";source.rel="noopener noreferrer";row.append(source);
+  row.append(node("p",ref.note,"muted"));table.append(row);
+ }
+ fasting.querySelector("input").checked=!!stored.fasting;units.querySelector("input").checked=!!stored.units;
+ (stored.exams||[]).forEach(x=>addExam(exams,x));
+ function refresh(){
+  results.replaceChildren();let count=0;
+  for(const row of table.children){
+   const key=row.dataset.key,ref=definitions[key];
+   const input=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+key);
+   if(!input?.value.trim())continue;
+   const [low,high]=row.querySelectorAll("input");
+   const state=!units.querySelector("input").checked||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
+   const message=state==="low"?"Abaixo do intervalo informado":state==="high"?"Acima do intervalo informado":state==="within"?"Dentro do intervalo informado":"Nao classificavel: confirme jejum, limites e unidade";
+   results.append(node("p",(state==="high"||state==="low"?"ALERTA: ":"")+ref.label+" — "+input.value+" (unidade esperada: "+ref.unit+"): "+message+"."));
+   count++;
   }
-  const make=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e};
-  function addText(text){
-    const out=document.querySelector("#output");if(!out)return;
-    out.value+=(out.value.trim()?"\n":"")+text;
-    out.dataset.manual="true";
-    out.dispatchEvent(new Event("input",{bubbles:true}));
-  }
-  function mount(){
-    const form=document.querySelector("#clinical");if(!form)return;
-    if(form.querySelector("#extras")){
-      if(form.querySelector("#e027-lab"))return;
-      const panel=make("section",undefined,"panel");panel.id="e027-lab";
-      panel.innerHTML='<h2>Alertas de resultados laboratoriais</h2><p class="muted">Apoio à conferência, não diagnóstico. Compare com o laudo original, idade, gestação e contexto clínico. Valores não cobertos não são classificados como normais.</p><label><input id="e027-units" type="checkbox"> Confirmo que Glic está em mg/dL, HbA1c em %, Na e K em mmol/L conforme laudo</label><label><input id="e027-fasting" type="checkbox"> Glicemia coletada em jejum (confirmado)</label><div id="e027-flags" role="status" aria-live="polite"></div><h2>Exames complementares</h2><p class="muted">USG, ECG e outros exames, com achados transcritos do laudo. Inserção manual no editor.</p><div id="e027-extra"></div><button type="button" id="e027-add">+ Adicionar exame complementar</button>';
-      const extras=form.querySelector("#extras");extras.closest("section")?.insertAdjacentElement("afterend",panel);
-      panel.querySelector("#e027-add").onclick=()=>{
-        const row=make("div",undefined,"lab-row");
-        row.innerHTML='<label>Exame<select><option>USG</option><option>ECG</option><option>Ecocardiograma</option><option>Radiografia</option><option>Tomografia</option><option>Ressonância</option><option>Outro</option></select></label><label>Data<input type="date"></label><label>Achados do laudo<textarea rows="2"></textarea></label><button type="button" class="remove">Remover</button><button type="button" class="insert">Inserir no registro</button>';
-        row.querySelector(".remove").onclick=()=>row.remove();
-        row.querySelector(".insert").onclick=()=>{
-          const [kind,date,report]=row.querySelectorAll("select,input,textarea");
-          if(!report.value.trim()){alert("Informe os achados do laudo.");return}
-          addText(kind.value+(date.value?" ("+date.value.split("-").reverse().join("/")+")":"")+": "+report.value.trim());
-        };
-        panel.querySelector("#e027-extra").append(row);
-      };
-      const update=()=>{
-        const target=panel.querySelector("#e027-flags");target.replaceChildren();
-        let count=0;
-        for(const [key,ref] of Object.entries(ranges)){
-          const input=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+key);
-          if(!input?.value.trim())continue;
-          const unitsConfirmed=panel.querySelector("#e027-units").checked; const result=evaluate(key,input.value,unitsConfirmed?ref.unit:"unconfirmed",panel.querySelector("#e027-fasting").checked);
-          const icon=result.state==="alert"?"⚠️":result.state==="within"?"✓":"ℹ️";
-          const line=make("p",icon+" "+ref.name+": "+input.value+" "+ref.unit+" — "+(result.state==="alert"?"fora da faixa configurada":result.state==="within"?"dentro da faixa configurada":result.reason)+". "+ref.context+" ");
-          const link=make("a","Referência");link.href=ref.url;link.target="_blank";link.rel="noopener noreferrer";line.append(link);target.append(line);count++;
-        }
-        if(!count)target.append(make("p","Preencha glicemia, HbA1c, sódio ou potássio para visualizar os alertas disponíveis.","muted"));
-      };
-      form.addEventListener("input",update);form.addEventListener("change",update);update();
-    }else if(!form.querySelector("#e027-anamnesis")){
-      const panel=make("section",undefined,"panel");panel.id="e027-anamnesis";
-      panel.innerHTML='<h2>Anamnese estruturada</h2><p class="muted">Campos opcionais. Registre apenas informações realmente obtidas.</p><div class="fields"><label>Queixa principal<textarea data-title="Queixa principal" rows="2"></textarea></label><label>História atual<textarea data-title="História atual" rows="2"></textarea></label><label>Antecedentes<textarea data-title="Antecedentes" rows="2"></textarea></label><label>Medicamentos em uso<textarea data-title="Medicamentos em uso" rows="2"></textarea></label><label>Alergias relatadas<textarea data-title="Alergias relatadas" rows="2"></textarea></label></div><button type="button">Inserir no editor</button>';
-      form.prepend(panel);
-      panel.querySelector("button").onclick=()=>{
-        const lines=[...panel.querySelectorAll("[data-title]")].filter(x=>x.value.trim()).map(x=>x.dataset.title+": "+x.value.trim());
-        if(lines.length)addText(lines.join("\n"));
-      };
-    }
-  }
-  const start=()=>{
-    const root=document.querySelector("#app");if(!root)return;
-    const observer=new MutationObserver(()=>{const form=root.querySelector("#clinical");if(form&&!form.querySelector("#e027-lab")&&!form.querySelector("#e027-anamnesis"))mount()});
-    observer.observe(root,{childList:true,subtree:false});mount();
-  };
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
-  window.Equipe027LabCheck={evaluate};
+  if(!count)results.append(node("p","Informe os resultados nos campos LAB para avaliar as faixas preenchidas.","muted"));
+ }
+ function persist(){
+  const values={units:units.querySelector("input").checked,fasting:fasting.querySelector("input").checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
+  for(const row of table.children){const [lo,hi]=row.querySelectorAll("input");values[row.dataset.key+"-low"]=lo.value;values[row.dataset.key+"-high"]=hi.value}
+  memory.lab=values;
+ }
+ form.addEventListener("input",()=>{refresh();persist()});
+ form.addEventListener("change",()=>{refresh();persist()});
+ refresh();active=panel;
+}
+function mountAnam(form){
+ const panel=node("section",undefined,"panel");panel.id="e027-anamnesis";
+ panel.append(node("h2","Anamnese estruturada"),node("p","Preencha apenas informacoes obtidas. Insercao manual no editor; nenhuma conclusao e presumida.","muted"));
+ const fields=[["Queixa principal","complaint"],["Historia atual","history"],["Antecedentes","past"],["Medicamentos em uso","meds"],["Alergias relatadas","allergies"]];
+ for(const [label,key] of fields){const f=field(label,"textarea",memory.anamnesis?.[key]||"",key);panel.append(f)}
+ const button=node("button","Inserir anamnese no editor");button.type="button";button.onclick=()=>{
+  const lines=fields.map(([label,key])=>{const v=panel.querySelector('[data-e027="'+key+'"]').value.trim();return v?label+": "+v:null}).filter(Boolean);
+  if(lines.length)insertText(lines.join("\n"));
+ };panel.append(button);
+ form.prepend(panel);active=panel;
+ panel.addEventListener("input",()=>{const data={};panel.querySelectorAll("[data-e027]").forEach(x=>data[x.dataset.e027]=x.value);memory.anamnesis=data});
+}
+function mount(){
+ const form=document.querySelector("#clinical");if(!form)return;
+ if(form.querySelector("#extras")){if(!form.querySelector("#e027-lab"))mountLab(form)}
+ else if(!form.querySelector("#e027-anamnesis"))mountAnam(form);
+}
+function start(){
+ const root=document.querySelector("#app");if(!root)return;
+ new MutationObserver(()=>{if(root.querySelector("#clinical"))mount()}).observe(root,{childList:true,subtree:false});
+ mount();
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
+window.Equipe027HasExtraDraft=()=>Object.values(memory).some(x=>Object.entries(x).some(([k,v])=>k!=="fasting"&&k!=="units"&&((Array.isArray(v)&&v.some(y=>y.report?.trim()))||(typeof v==="string"&&v.trim()&&!(k.endsWith("-low")||k.endsWith("-high"))))));
+window.addEventListener("equipe027:new-encounter",()=>{for(const key of Object.keys(memory))delete memory[key];active=null});
+window.Equipe027LabCheck={assess,definitions};
 })();
