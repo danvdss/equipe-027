@@ -27,3 +27,11 @@ test("references identify units and sources",()=>{
   assert.ok(definitions[key].url.startsWith("https://"));
  }
 });
+
+test("HAS, DM and renal reference groups provide external sources",()=>{
+ const {clinicalSources}=engine();
+ for(const key of ["has","dm","renal"]){
+  assert.ok(clinicalSources[key].items.length>=2);
+  for(const [label,url] of clinicalSources[key].items){assert.ok(label);assert.ok(url.startsWith("https://"))}
+ }
+});

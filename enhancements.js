@@ -9,6 +9,11 @@ const definitions = {
   K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."}
 };
 const memory={};
+const clinicalSources={
+ has:{title:"Hipertensao arterial",items:[["Ministerio da Saude — Linha de Cuidado HAS","https://linhasdecuidado.saude.gov.br/portal/hipertensao-arterial-sistemica/"],["Sociedade Brasileira de Cardiologia — Diretrizes","https://www.portal.cardiol.br/diretrizes"]]},
+ dm:{title:"Diabetes mellitus",items:[["Ministerio da Saude — Linha de Cuidado DM2","https://linhasdecuidado.saude.gov.br/portal/diabetes-mellitus-tipo-2/"],["Sociedade Brasileira de Diabetes — Diretrizes","https://diretriz.diabetes.org.br/"]]},
+ renal:{title:"Funcao renal",items:[["Sociedade Brasileira de Nefrologia","https://sbn.org.br/"],["KDIGO — Guidelines","https://kdigo.org/guidelines/"]]}
+};
 let active=null;
 const number=s=>{const v=String(s??"").trim().replace(",",".");return /^-?\d+(\.\d+)?$/.test(v)?Number(v):null};
 function assess(value,low,high){
@@ -100,16 +105,28 @@ function mountLab(form){
  refresh();active=panel;
 }
 function mountAnam(form){
+ const module=document.querySelector(".main-nav [aria-current=page]")?.dataset.nav||"general";
+ const bucket="anamnesis:"+module;
  const panel=node("section",undefined,"panel");panel.id="e027-anamnesis";
  panel.append(node("h2","Anamnese estruturada"),node("p","Preencha apenas informacoes obtidas. Insercao manual no editor; nenhuma conclusao e presumida.","muted"));
  const fields=[["Queixa principal","complaint"],["Historia atual","history"],["Antecedentes","past"],["Medicamentos em uso","meds"],["Alergias relatadas","allergies"]];
- for(const [label,key] of fields){const f=field(label,"textarea",memory.anamnesis?.[key]||"",key);panel.append(f)}
+ for(const [label,key] of fields){const f=field(label,"textarea",memory[bucket]?.[key]||"",key);panel.append(f)}
+ if(["has","dm","both"].includes(module)){
+  const follow=node("section",undefined,"e027-followup");follow.append(node("h3","Acompanhamento de condicoes cronicas"));
+  const followFields=[["Adesao relatada ao tratamento","adherence"],["Barreiras ao cuidado","barriers"],["Autocuidado e habitos","selfcare"],["Metas pactuadas com o paciente","goals"],["Encaminhamentos ou retorno efetivamente acordados","return"]];
+  for(const [label,key] of followFields)follow.append(field(label,"textarea",memory[bucket]?.[key]||"",key));
+  panel.append(follow);fields.push(...followFields);
+  const refs=node("section");refs.append(node("h3","Fontes para consulta profissional"));
+  const groups=module==="both"?["has","dm","renal"]:module==="has"?["has","renal"]:["dm","renal"];
+  for(const group of groups)for(const [label,url] of clinicalSources[group].items){const link=node("a",label);link.href=url;link.target="_blank";link.rel="noopener noreferrer";const line=node("p");line.append(link);refs.append(line)}
+  refs.append(node("p","Consulte a versao vigente e o protocolo local. Links nao representam recomendacao individual de tratamento.","muted"));panel.append(refs);
+ }
  const button=node("button","Inserir anamnese no editor");button.type="button";button.onclick=()=>{
   const lines=fields.map(([label,key])=>{const v=panel.querySelector('[data-e027="'+key+'"]').value.trim();return v?label+": "+v:null}).filter(Boolean);
   if(lines.length)insertText(lines.join("\n"));
  };panel.append(button);
  form.prepend(panel);active=panel;
- panel.addEventListener("input",()=>{const data={};panel.querySelectorAll("[data-e027]").forEach(x=>data[x.dataset.e027]=x.value);memory.anamnesis=data});
+ panel.addEventListener("input",()=>{const data={};panel.querySelectorAll("[data-e027]").forEach(x=>data[x.dataset.e027]=x.value);memory[bucket]=data});
 }
 function mount(){
  const form=document.querySelector("#clinical");if(!form)return;
@@ -124,5 +141,5 @@ function start(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 window.Equipe027HasExtraDraft=()=>Object.values(memory).some(x=>Object.entries(x).some(([k,v])=>k!=="fasting"&&k!=="units"&&((Array.isArray(v)&&v.some(y=>y.report?.trim()))||(typeof v==="string"&&v.trim()&&!(k.endsWith("-low")||k.endsWith("-high"))))));
 window.addEventListener("equipe027:new-encounter",()=>{for(const key of Object.keys(memory))delete memory[key];active=null});
-window.Equipe027LabCheck={assess,definitions};
+window.Equipe027LabCheck={assess,definitions,clinicalSources};
 })();
