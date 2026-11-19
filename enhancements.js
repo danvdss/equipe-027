@@ -116,9 +116,10 @@ function mountLab(form){
    row.append(node("small",group,"muted"),node("strong",title===key?title:title+" · "+key));
    const result=field("Resultado do exame","text",input.value,"result");
    const visual=result.querySelector("input");row.append(result);
-   const originalUnit=ref?.unit||(input.closest("label")?.textContent.trim().endsWith("· %")?"%":"");
-   const unitLabel=field("Unidade do laudo","text",originalUnit||stored[key+"-unit"]||"","unit");
-   const unit=unitLabel.querySelector("input");unit.readOnly=Boolean(originalUnit);
+   const fixedPercent=input.closest("label")?.textContent.trim().endsWith("· %");
+   const originalUnit=ref?.unit||(fixedPercent?"%":"");
+   const unitLabel=field("Unidade do laudo","text",stored[key+"-unit"]??originalUnit,"unit");
+   const unit=unitLabel.querySelector("input");unit.readOnly=Boolean(fixedPercent);
    row.append(unitLabel);
    const lowLabel=field("Mínimo do laudo","text",stored[key+"-low"]??ref?.low??"","range-low");
    const highLabel=field("Máximo do laudo","text",stored[key+"-high"]??ref?.high??"","range-high");
@@ -126,15 +127,42 @@ function mountLab(form){
    low.inputMode=high.inputMode="decimal";
    row.append(lowLabel,highLabel);
    if(ref){
-     const link=node("a","Referência: "+ref.source);link.href=ref.url;link.target="_blank";link.rel="noopener noreferrer";row.append(link);
+     const link=node("a","Consulta complementar: "+ref.source);link.href=ref.url;link.target="_blank";link.rel="noopener noreferrer";row.append(link);
      row.append(node("p",ref.note,"muted"));
    }
+   const details=node("details");details.className="reference-context";
+   details.append(node("summary","Fonte e condições de aplicação"));
+   details.append(node("p",ref?"Valores iniciais ilustrativos do cadastro. Confira no laudo a faixa aplicável ao atendimento.":"Sem faixa predefinida. Transcreva a unidade e os limites informados no laudo.","muted"));
+   const sourceLabel=field("Origem da faixa no laudo (opcional)","text",stored[key+"-source"]||"","reference-source");
+   details.append(sourceLabel);
+   const reportSource=sourceLabel.querySelector("input");
+   const contextLabel=field("Contexto do laudo (opcional)","text",stored[key+"-context"]||"","context");
+   contextLabel.querySelector("input").placeholder="Ex.: método, faixa etária, sexo ou gestação";
+   details.append(contextLabel);row.append(details);
+   const context=contextLabel.querySelector("input");
+   const feedback=node("p",undefined,"reference-feedback");
+   feedback.id="e027-reference-"+rows.length;
+   for(const control of [low,high,unit])control.setAttribute("aria-describedby",feedback.id);
+   row.append(feedback);
    const confirmation=field("Faixa conferida com o laudo","checkbox",undefined,"confirmed");
    const confirmed=confirmation.querySelector("input");confirmed.checked=!!stored[key+"-confirmed"];row.append(confirmation);
+   const restore=node("button","Restaurar faixa inicial");restore.type="button";restore.dataset.e027="restore";
+   row.append(restore);
+   const resetConfirmation=()=>{confirmed.checked=false;};
+   for(const control of [low,high,context,unit,reportSource]){
+     control.addEventListener("input",resetConfirmation);
+     control.addEventListener("change",resetConfirmation);
+   }
+   unit.addEventListener("input",()=>{low.value="";high.value="";});
+   restore.onclick=()=>{
+     unit.value=originalUnit;
+     low.value=ref?.low??"";high.value=ref?.high??"";
+     context.value="";reportSource.value="";resetConfirmation();refresh();persist();
+   };
    const track=node("div",undefined,"e027-track");track.setAttribute("aria-hidden","true");
    const marker=node("div",undefined,"e027-marker");track.append(marker);
    const label=node("p",undefined,"e027-state");row.append(track,label);table.append(row);
-   rows.push({key,group,term:normalize(title+" "+key+" "+group),row,input,visual,unit,low,high,confirmed,track,marker,label});
+   rows.push({key,group,term:normalize(title+" "+key+" "+group),row,input,visual,unit,originalUnit,context,reportSource,feedback,low,high,confirmed,track,marker,label});
    visual.addEventListener("input",()=>{
      input.value=visual.value;
      input.dispatchEvent(new Event("input",{bubbles:true}));
@@ -149,7 +177,17 @@ function mountLab(form){
    const query=normalize(search.value);
    let matches=0,filled=0,alerts=0;
    for(const item of rows){
-     const {key,input,visual,unit,low,high,confirmed,track,marker,label,row}=item;
+     const {key,input,visual,unit,low,high,confirmed,track,marker,label,row,feedback}=item;
+     const lo=number(low.value),hi=number(high.value);
+     const crossed=lo!==null&&hi!==null&&lo>=hi;
+     const badLow=(low.value.trim()!==""&&lo===null)||crossed;
+     const badHigh=(high.value.trim()!==""&&hi===null)||crossed;
+     low.setAttribute("aria-invalid",String(badLow));high.setAttribute("aria-invalid",String(badHigh));
+     const valid=Boolean(unit.value.trim())&&lo!==null&&hi!==null&&!crossed;
+     confirmed.disabled=!valid;
+     if(!valid)confirmed.checked=false;
+     const hint=crossed?"O mínimo deve ser menor que o máximo.":badLow||badHigh?"Digite limites numéricos.":!valid?"Informe a unidade e os dois limites do laudo.":confirmed.checked?"Faixa conferida com o laudo.":"Faixa ainda não conferida com o laudo.";
+     if(feedback.textContent!==hint)feedback.textContent=hint;
      if(visual.value!==input.value)visual.value=input.value;
      const value=input.value.trim();
      let state="empty",description="Aguardando resultado";
@@ -185,9 +223,11 @@ function mountLab(form){
  }
  function persist(){
    const values={units:unitsBox.checked,fasting:fastingBox.checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
-   for(const {key,low,high,unit,confirmed} of rows){
+   for(const {key,low,high,unit,originalUnit,context,reportSource,confirmed} of rows){
      values[key+"-low"]=low.value;values[key+"-high"]=high.value;values[key+"-confirmed"]=confirmed.checked;
-     if(!unit.readOnly&&unit.value)values[key+"-unit"]=unit.value;
+     if(unit.value!==originalUnit)values[key+"-unit"]=unit.value;
+     if(context.value)values[key+"-context"]=context.value;
+     if(reportSource.value)values[key+"-source"]=reportSource.value;
    }
    memory.lab=values;
  }

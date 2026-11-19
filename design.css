@@ -230,3 +230,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   flex-direction: column;
   justify-content: space-between;
 }
+#e027-lab .reference-context, #e027-lab [data-e027="restore"] { grid-column: 1 / -1; }
+#e027-lab .reference-context summary { cursor: pointer; padding-block: .65rem; }
+#e027-lab .reference-feedback { margin: 0; font-size: .875rem; color: var(--ui-muted); }
+#e027-lab .e027-range:has([aria-invalid=true]) .reference-feedback { color: var(--ui-error); }

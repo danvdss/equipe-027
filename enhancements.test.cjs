@@ -121,7 +121,18 @@ test("visual cards show editable presets, synchronize results and require report
  assert.equal(row.dataset.state,"high");
  row.querySelector('[data-e027="range-high"]').value="2";
  row.querySelector('[data-e027="range-high"]').dispatchEvent(new dom.window.Event("input",{bubbles:true}));
+ assert.equal(row.dataset.state,"unverified");
+ const confirmation=row.querySelector('[data-e027="confirmed"]');
+ assert.equal(confirmation.checked,false);
+ confirmation.checked=true;confirmation.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
  assert.equal(row.dataset.state,"within");
+ const max=row.querySelector('[data-e027="range-high"]');
+ max.value="0,2";max.dispatchEvent(new dom.window.Event("input",{bubbles:true}));
+ assert.equal(max.getAttribute("aria-invalid"),"true");
+ assert.equal(confirmation.disabled,true);
+ row.querySelector('[data-e027="restore"]').click();
+ assert.equal(max.value,"1.3");assert.equal(confirmation.checked,false);
+ assert.equal(input.value,"1,6");assert.equal(row.querySelector(".e027-track").hidden,true);
  dom.window.close();
 });
 
@@ -135,7 +146,7 @@ test("catalog search, category and status combine without changing the LAB value
   const panel=w.document.querySelector("#e027-lab"),visible=()=>[...panel.querySelectorAll(".e027-range")].filter(x=>!x.hidden);
   const event=(el,type)=>el.dispatchEvent(new w.Event(type,{bubbles:true}));
   assert.equal(visible().length,8);
-  panel.querySelector("button").click();assert.equal(visible().length,11);
+  [...panel.querySelectorAll("button")].find(b=>b.textContent==="Mostrar mais exames").click();assert.equal(visible().length,11);
   const search=panel.querySelector('[type="search"]');search.value="acido";event(search,"input");
   assert.deepEqual(visible().map(x=>x.dataset.key),["Ácido fólico"]);
   const [filter,category]=panel.querySelectorAll(".lab-panel-filters select");category.value="Ferro";event(category,"change");assert.equal(visible().length,0);
