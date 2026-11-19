@@ -60,7 +60,7 @@ test("lab interface filters findings and keeps complementary exam rows",()=>{
  const filter=panel.querySelector("select");
  filter.value="alerts";filter.dispatchEvent(new dom.window.Event("change"));
  assert.equal([...panel.querySelectorAll(".e027-range")].filter(x=>!x.hidden).length,1);
- panel.querySelector("button").click();
+ [...panel.querySelectorAll("button")].find(b=>b.textContent.includes("Adicionar exame")).click();
  assert.equal(panel.querySelectorAll(".e027-exam").length,1);
  dom.window.close();
 });
@@ -114,7 +114,7 @@ test("visual cards show editable presets, synchronize results and require report
  input.value="1,6";input.dispatchEvent(new dom.window.Event("input",{bubbles:true}));
  assert.equal(doc.querySelector('[name="lab:Cr"]').value,"1,6");
  assert.equal(row.dataset.state,"unverified");
- assert.equal(row.querySelector(".e027-track").classList.contains("is-visible"),true);
+ assert.equal(row.querySelector(".e027-track").hidden,true);
  panel.querySelector('[data-e027="units"]').checked=true;
  row.querySelector('[data-e027="confirmed"]').checked=true;
  row.querySelector('[data-e027="confirmed"]').dispatchEvent(new dom.window.Event("change",{bubbles:true}));
@@ -123,4 +123,33 @@ test("visual cards show editable presets, synchronize results and require report
  row.querySelector('[data-e027="range-high"]').dispatchEvent(new dom.window.Event("input",{bubbles:true}));
  assert.equal(row.dataset.state,"within");
  dom.window.close();
+});
+
+test("catalog search, category and status combine without changing the LAB values",()=>{
+ const {JSDOM}=require("jsdom");
+ const fields=["Ferritina","Transferrina",...Array.from({length:8},(_,i)=>"Exame "+i)];
+ const group=(title,keys)=>'<details class="lab-group"><summary>'+title+'</summary>'+keys.map(k=>'<input name="lab:'+k+'">').join("")+'</details>';
+ const dom=new JSDOM('<div id="app"><form id="clinical"><div id="lab-evaluation-fields">'+group("Ferro",fields)+group("Vitaminas",["Ácido fólico"])+'<section><div id="extras"></div></section></div></form></div>',{runScripts:"outside-only"});
+ try{
+  const w=dom.window;w.eval(source);w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
+  const panel=w.document.querySelector("#e027-lab"),visible=()=>[...panel.querySelectorAll(".e027-range")].filter(x=>!x.hidden);
+  const event=(el,type)=>el.dispatchEvent(new w.Event(type,{bubbles:true}));
+  assert.equal(visible().length,8);
+  panel.querySelector("button").click();assert.equal(visible().length,11);
+  const search=panel.querySelector('[type="search"]');search.value="acido";event(search,"input");
+  assert.deepEqual(visible().map(x=>x.dataset.key),["Ácido fólico"]);
+  const [filter,category]=panel.querySelectorAll(".lab-panel-filters select");category.value="Ferro";event(category,"change");assert.equal(visible().length,0);
+  category.value="";event(category,"change");
+  const row=visible()[0],original=w.document.querySelector('[name="lab:Ácido fólico"]');
+  original.value="5";event(original,"input");
+  assert.equal(row.querySelector('[data-e027=result]').value,"5");
+  filter.value="unchecked";event(filter,"change");assert.equal(visible().length,1);
+  assert.equal(row.querySelector(".e027-track").hidden,true);
+  for(const [key,value] of [["unit","unidade de teste"],["range-low","3"],["range-high","7"]])row.querySelector('[data-e027="'+key+'"]').value=value;
+  panel.querySelector('[data-e027=units]').checked=true;row.querySelector('[data-e027=confirmed]').checked=true;event(row.querySelector('[data-e027=confirmed]'),"change");
+  filter.value="within";event(filter,"change");
+  assert.equal(visible().length,1);assert.equal(row.querySelector(".e027-track").hidden,false);
+  assert.match(row.querySelector(".e027-state").textContent,/5 unidade de teste/);
+  assert.equal(original.value,"5");
+ } finally {dom.window.close()}
 });

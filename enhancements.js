@@ -3,19 +3,26 @@
 (() => {
 "use strict";
 const definitions = {
-  Glic:{label:"Glicemia de jejum",unit:"mg/dL",low:70,high:99,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Only applicable when fasting is confirmed. The lower limit is operational, not a diagnostic criterion."},
-  HbA1c:{label:"Hemoglobina glicada",unit:"%",low:0,high:5.6,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Screening classification is not an individualized treatment target."},
-  Na:{label:"Sodio",unit:"mmol/L",low:135,high:145,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/sodium-blood-test/",note:"Typical interval only; prioritize the reporting laboratory."},
-  K:{label:"Potassio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Typical interval only; prioritize the reporting laboratory."},
+  Glic:{label:"Glicemia de jejum",unit:"mg/dL",low:70,high:99,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Confirme o jejum e confira os limites no laudo."},
+  HbA1c:{label:"Hemoglobina glicada",unit:"%",low:0,high:5.6,source:"Sociedade Brasileira de Diabetes",url:"https://diretriz.diabetes.org.br/",note:"Confira a faixa do laudo. Metas de tratamento são individualizadas."},
+  Na:{label:"Sódio",unit:"mmol/L",low:135,high:145,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/sodium-blood-test/",note:"Faixa inicial ilustrativa. Confira os limites do laboratório."},
+  K:{label:"Potássio",unit:"mmol/L",low:3.5,high:5.0,source:"National Kidney Foundation",url:"https://www.kidney.org/kidney-topics/potassium",note:"Faixa inicial ilustrativa. Confira os limites do laboratório."},
   Cr:{label:"Creatinina",unit:"mg/dL",low:0.6,high:1.3,source:"Sociedade Brasileira de Nefrologia",url:"https://sbn.org.br/",note:"Limites dependem do metodo, sexo, idade e massa muscular. Transcreva o intervalo do laudo."},
-  "TFG/eTFG":{label:"Taxa de filtracao glomerular estimada",unit:"mL/min/1,73m2",low:60,high:120,source:"KDIGO",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/",note:"Interpretacao requer contexto clinico, idade, persistencia e albuminuria; nao diagnosticar DRC por resultado isolado."},
+  "TFG/eTFG":{label:"Taxa de filtração glomerular estimada",unit:"mL/min/1,73m2",low:60,high:120,source:"KDIGO",url:"https://kdigo.org/guidelines/ckd-evaluation-and-management/",note:"Interpretacao requer contexto clinico, idade, persistencia e albuminuria; nao diagnosticar DRC por resultado isolado."},
   CT:{label:"Colesterol total",unit:"mg/dL",low:0,high:190,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Alvos dependem de risco cardiovascular e condicao clinica; nao usar faixa universal."},
   HDL:{label:"Colesterol HDL",unit:"mg/dL",low:40,high:100,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Interpretar com perfil de risco e contexto clinico."},
   LDL:{label:"Colesterol LDL",unit:"mg/dL",low:0,high:130,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Metas individualizadas conforme estratificacao de risco; nao presumir meta."},
-  TG:{label:"Triglicerideos",unit:"mg/dL",low:0,high:150,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Jejum e contexto podem modificar interpretacao; confira o laudo."},
+  TG:{label:"Triglicerídeos",unit:"mg/dL",low:0,high:150,source:"Sociedade Brasileira de Cardiologia",url:"https://www.portal.cardiol.br/diretrizes",note:"Jejum e contexto podem modificar interpretacao; confira o laudo."},
   Hb:{label:"Hemoglobina",unit:"g/dL",low:12,high:17.5,source:"Organizacao Mundial da Saude",url:"https://www.who.int/",note:"Intervalos dependem de idade, sexo, gestacao e outras condicoes; transcreva o laudo."},
-  Leuco:{label:"Leucocitos",unit:"/mm3",low:4000,high:11000,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."},
+  Leuco:{label:"Leucócitos",unit:"/mm3",low:4000,high:11000,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."},
   Plaq:{label:"Plaquetas",unit:"/mm3",low:150000,high:450000,source:"MedlinePlus",url:"https://medlineplus.gov/lab-tests/complete-blood-count-cbc/",note:"Unidades e limites variam; confira o hemograma original."}
+};
+const examNames={
+ Ht:"Hematócrito",Neutro:"Neutrófilos",Linf:"Linfócitos",Mono:"Monócitos",Eos:"Eosinófilos",Baso:"Basófilos",
+ VCM:"Volume corpuscular médio",HCM:"Hemoglobina corpuscular média",CHCM:"Concentração de hemoglobina corpuscular média",
+ Ur:"Ureia",TGO:"Aspartato aminotransferase (AST)",TGP:"Alanina aminotransferase (ALT)",FA:"Fosfatase alcalina",
+ BT:"Bilirrubina total",BD:"Bilirrubina direta",BI:"Bilirrubina indireta",Ca:"Cálcio",Mg:"Magnésio",Cl:"Cloreto",
+ T4L:"Tiroxina livre",TSH:"Hormônio tireoestimulante",PCR:"Proteína C reativa"
 };
 const memory={};
 const clinicalSources={
@@ -24,10 +31,10 @@ const clinicalSources={
  renal:{title:"Funcao renal",items:[["Sociedade Brasileira de Nefrologia","https://sbn.org.br/"],["KDIGO — Guidelines","https://kdigo.org/guidelines/"]]}
 };
 let active=null;
-const number=s=>{const v=String(s??"").trim().replace(",",".");return /^-?\d+(\.\d+)?$/.test(v)?Number(v):null};
+const number=s=>{const v=String(s??"").trim().replace(",",".");return /^-?\d+(\.\d+)?$/.test(v)&&Number.isFinite(Number(v))?Number(v):null};
 function assess(value,low,high){
  const v=number(value),lo=number(low),hi=number(high);
- if(v===null||lo===null||hi===null||lo>hi)return "unverified";
+ if(v===null||lo===null||hi===null||lo>=hi)return "unverified";
  return v<lo?"low":v>hi?"high":"within";
 }
 const node=(tag,txt,cls)=>{const e=document.createElement(tag);if(txt!==undefined)e.textContent=txt;if(cls)e.className=cls;return e};
@@ -69,74 +76,131 @@ function addExam(list,values={}){
 }
 function mountLab(form){
  const panel=node("section",undefined,"panel");panel.id="e027-lab";
- panel.append(node("h2","Conferencia contextual de exames"),node("p","Alertas informativos, nao diagnosticos. Use o intervalo e a unidade do laudo. As faixas predefinidas sao exemplos operacionais, nao metas clinicas universais. Confira e ajuste cada faixa conforme o laudo antes de interpretar.","muted"));
- const units=field("Confirmo que as unidades informadas no laudo correspondem as unidades indicadas abaixo","checkbox",undefined,"units");panel.append(units);
- const fasting=field("Jejum confirmado (para glicemia)","checkbox",undefined,"fasting");panel.append(fasting);
- const filterLabel=node("label","Filtrar exames ");
- const filter=node("select");[["all","Todos"],["filled","Com resultado"],["alerts","Fora do intervalo"],["unchecked","Nao classificaveis"]].forEach(([value,label])=>{const opt=node("option",label);opt.value=value;filter.append(opt)});filterLabel.append(filter);panel.append(filterLabel);
+ panel.append(node("h2","Painel de exames"),node("p","Compare o resultado com os limites do laudo. Confirme a unidade e a faixa antes de usar o gráfico.","muted"));
+ const units=field("Conferi as unidades dos resultados com o laudo","checkbox",undefined,"units");panel.append(units);
+ const fasting=field("Jejum confirmado para a glicemia de jejum","checkbox",undefined,"fasting");panel.append(fasting);
+ const controls=node("div",undefined,"lab-panel-filters");
+ const searchLabel=field("Buscar por nome ou sigla","search","","search");
+ const search=searchLabel.querySelector("input");
+ const filterLabel=node("label","Situação ");
+ const filter=node("select");
+ for(const [value,label] of [["all","Todas"],["filled","Com resultado"],["alerts","Fora da faixa"],["within","Dentro da faixa"],["unchecked","Sem comparação"],["empty","Sem resultado"]]){
+   filter.add(new Option(label,value));
+ }
+ filterLabel.append(filter);
+ const groupLabel=node("label","Categoria ");
+ const category=node("select");
+ category.add(new Option("Todas as categorias",""));
+ groupLabel.append(category);
+ controls.append(searchLabel,filterLabel,groupLabel);panel.append(controls);
  const summary=node("p");summary.setAttribute("role","status");panel.append(summary);
  const table=node("div");table.className="e027-visual-grid";panel.append(table);
- const results=node("div");results.setAttribute("role","status");results.setAttribute("aria-live","polite");panel.append(results);
+ const more=node("button","Mostrar mais exames");more.type="button";panel.append(more);
  panel.append(node("h2","Exames complementares"),node("p","Registre USG, ECG e outros exames; os achados so entram na evolucao quando inseridos.","muted"));
  const exams=node("div");panel.append(exams);
  const add=node("button","+ Adicionar exame complementar");add.type="button";add.onclick=()=>{addExam(exams);persist();refresh()};panel.append(add);
- form.querySelector("#extras").closest("section")?.insertAdjacentElement("afterend",panel);
+ const container=form.querySelector("#lab-evaluation-fields");
+ if(container)container.prepend(panel);
+ else form.querySelector("#extras").closest("section").after(panel);
  const stored=memory.lab||{};
- for(const [key,ref] of Object.entries(definitions)){
-  const row=node("div",undefined,"lab-row e027-range");
-  row.dataset.key=key;
-  const result=field("Resultado do exame","text","", "result");result.querySelector("input").inputMode="decimal";row.append(result);
-  row.append(node("strong",ref.label+" ("+ref.unit+")"));
-  row.append(field("Minimo do laudo","text",stored[key+"-low"]??(ref.low===null?"":String(ref.low)),"range-low"));
-  row.append(field("Maximo do laudo","text",stored[key+"-high"]??(ref.high===null?"":String(ref.high)),"range-high"));
-  const source=node("a","Referencia: "+ref.source);source.href=ref.url;source.target="_blank";source.rel="noopener noreferrer";row.append(source);
-  const confirmation=field("Faixa conferida com o laudo","checkbox",undefined,"confirmed");confirmation.querySelector("input").checked=!!stored[key+"-confirmed"];row.append(confirmation);
-  const track=node("div",undefined,"e027-track");track.setAttribute("aria-hidden","true");track.append(node("div",undefined,"e027-band"),node("div",undefined,"e027-marker"));row.append(track);
-  row.append(node("p","Aguardando resultado","e027-state"));row.append(node("p",ref.note,"muted"));table.append(row);
+ const rows=[];
+ const groups=new Set();
+ const normalize=value=>value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+ for(const input of form.querySelectorAll('input[name^="lab:"]')){
+   const key=input.name.slice(4);
+   const ref=definitions[key];
+   const group=input.closest(".lab-group")?.querySelector("summary")?.textContent.trim()||"Outros";
+   groups.add(group);
+   const row=node("article",undefined,"lab-row e027-range");row.dataset.key=key;
+   const title=ref?.label||examNames[key]||key;
+   row.append(node("small",group,"muted"),node("strong",title===key?title:title+" · "+key));
+   const result=field("Resultado do exame","text",input.value,"result");
+   const visual=result.querySelector("input");row.append(result);
+   const originalUnit=ref?.unit||(input.closest("label")?.textContent.trim().endsWith("· %")?"%":"");
+   const unitLabel=field("Unidade do laudo","text",originalUnit||stored[key+"-unit"]||"","unit");
+   const unit=unitLabel.querySelector("input");unit.readOnly=Boolean(originalUnit);
+   row.append(unitLabel);
+   const lowLabel=field("Mínimo do laudo","text",stored[key+"-low"]??ref?.low??"","range-low");
+   const highLabel=field("Máximo do laudo","text",stored[key+"-high"]??ref?.high??"","range-high");
+   const low=lowLabel.querySelector("input"),high=highLabel.querySelector("input");
+   low.inputMode=high.inputMode="decimal";
+   row.append(lowLabel,highLabel);
+   if(ref){
+     const link=node("a","Referência: "+ref.source);link.href=ref.url;link.target="_blank";link.rel="noopener noreferrer";row.append(link);
+     row.append(node("p",ref.note,"muted"));
+   }
+   const confirmation=field("Faixa conferida com o laudo","checkbox",undefined,"confirmed");
+   const confirmed=confirmation.querySelector("input");confirmed.checked=!!stored[key+"-confirmed"];row.append(confirmation);
+   const track=node("div",undefined,"e027-track");track.setAttribute("aria-hidden","true");
+   const marker=node("div",undefined,"e027-marker");track.append(marker);
+   const label=node("p",undefined,"e027-state");row.append(track,label);table.append(row);
+   rows.push({key,group,term:normalize(title+" "+key+" "+group),row,input,visual,unit,low,high,confirmed,track,marker,label});
+   visual.addEventListener("input",()=>{
+     input.value=visual.value;
+     input.dispatchEvent(new Event("input",{bubbles:true}));
+   });
  }
- fasting.querySelector("input").checked=!!stored.fasting;units.querySelector("input").checked=!!stored.units;
+ for(const group of groups)category.add(new Option(group,group));
+ const unitsBox=units.querySelector("input"),fastingBox=fasting.querySelector("input");
+ unitsBox.checked=!!stored.units;fastingBox.checked=!!stored.fasting;
  (stored.exams||[]).forEach(x=>addExam(exams,x));
+ let limit=8;
  function refresh(){
-  results.replaceChildren();
-  const entries=[];
-  for(const row of table.children){
-   const key=row.dataset.key,ref=definitions[key];
-   const input=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+key);
-   const visual=row.querySelector('[data-e027="result"]');if(input&&document.activeElement!==visual)visual.value=input.value;
-   const confirmed=row.querySelector('[data-e027="confirmed"]').checked;
-   const low=row.querySelector('[data-e027="range-low"]'),high=row.querySelector('[data-e027="range-high"]');
-   const filled=!!input?.value.trim();
-   const state=!filled?"empty":!units.querySelector("input").checked||!confirmed||(key==="Glic"&&!fasting.querySelector("input").checked)?"unverified":assess(input.value,low.value,high.value);
-   const lo=number(low.value),hi=number(high.value),v=number(input?.value),track=row.querySelector(".e027-track"),marker=row.querySelector(".e027-marker"),label=row.querySelector(".e027-state");
-   if(v!==null&&lo!==null&&hi!==null&&hi>lo){marker.style.left=Math.max(0,Math.min(100,20+60*(v-lo)/(hi-lo)))+"%";track.classList.add("is-visible")}else track.classList.remove("is-visible");
-   label.textContent=!filled?"Aguardando resultado":!confirmed?"Confira a faixa com o laudo":state==="low"?"Abaixo da faixa":state==="high"?"Acima da faixa":state==="within"?"Dentro da faixa informada":"Sem classificacao segura";row.dataset.state=state;
-   entries.push({row,key,ref,input,filled,state});
-  }
-  const count={filled:0,alerts:0,unchecked:0};
-  for(const item of entries){
-   const {row,ref,input,filled,state}=item;
-   if(filled)count.filled++;
-   if(state==="low"||state==="high")count.alerts++;
-   if(state==="unverified")count.unchecked++;
-   const selected=filter.value;
-   row.hidden=selected==="filled"?!filled:selected==="alerts"?!["low","high"].includes(state):selected==="unchecked"?state!=="unverified":false;
-   if(!filled||row.hidden)continue;
-   const message=state==="low"?"Abaixo do intervalo informado":state==="high"?"Acima do intervalo informado":state==="within"?"Dentro do intervalo informado":"Nao classificavel: confirme jejum, limites e unidade";
-   const itemLine=node("p",(state==="high"||state==="low"?"ALERTA: ":"")+ref.label+": "+input.value+" ("+ref.unit+"): "+message+".");
-   itemLine.dataset.state=state;
-   results.append(itemLine);
-  }
-  summary.textContent=count.filled+" resultado(s) preenchido(s) | "+count.alerts+" alerta(s) | "+count.unchecked+" sem classificacao.";
-  if(!results.children.length)results.append(node("p",count.filled?"Nenhum resultado corresponde ao filtro selecionado.":"Preencha os resultados nos campos LAB para avaliar as faixas informadas.","muted"));
+   const query=normalize(search.value);
+   let matches=0,filled=0,alerts=0;
+   for(const item of rows){
+     const {key,input,visual,unit,low,high,confirmed,track,marker,label,row}=item;
+     if(visual.value!==input.value)visual.value=input.value;
+     const value=input.value.trim();
+     let state="empty",description="Aguardando resultado";
+     if(value){
+       filled++;
+       state="unverified";
+       if(!unit.value.trim()||!unitsBox.checked)description="Confira a unidade no laudo";
+       else if(!confirmed.checked)description="Confira a faixa no laudo";
+       else if(key==="Glic"&&!fastingBox.checked)description="Jejum sem confirmação";
+       else {
+         state=assess(value,low.value,high.value);
+         description={low:"Abaixo da faixa",within:"Dentro da faixa",high:"Acima da faixa",unverified:"Sem comparação numérica"}[state];
+       }
+     }
+     const comparable=["low","within","high"].includes(state);
+     track.hidden=!comparable;track.classList.toggle("is-visible",comparable);
+     if(comparable){
+       const position=20+60*(number(value)-number(low.value))/(number(high.value)-number(low.value));
+       marker.style.left=Math.max(0,Math.min(100,position))+"%";
+       description+=" · "+value+" "+unit.value+" · faixa "+low.value+" a "+high.value+" "+unit.value;
+     }
+     row.dataset.state=state;
+     if(label.textContent!==description)label.textContent=description;
+     const outside=state==="high"||state==="low";if(outside)alerts++;
+     const statuses={all:true,filled:!!value,alerts:outside,within:state==="within",unchecked:state==="unverified",empty:!value};
+     const match=statuses[filter.value]&&(!category.value||category.value===item.group)&&item.term.includes(query);
+     if(match)matches++;
+     row.hidden=!match||matches>limit;
+   }
+   const status=matches ? Math.min(matches,limit)+" de "+matches+" exames exibidos" : "Nenhum exame corresponde à busca";
+   summary.textContent=status+" · No formulário: "+filled+" com resultado · "+alerts+" alerta(s) fora da faixa.";
+   more.hidden=matches<=limit;
  }
- filter.addEventListener("change",refresh); function persist(){
-  const values={units:units.querySelector("input").checked,fasting:fasting.querySelector("input").checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
-  for(const row of table.children){const lo=row.querySelector('[data-e027="range-low"]'),hi=row.querySelector('[data-e027="range-high"]');values[row.dataset.key+"-low"]=lo.value;values[row.dataset.key+"-high"]=hi.value;values[row.dataset.key+"-confirmed"]=row.querySelector('[data-e027="confirmed"]').checked}
-  memory.lab=values;
+ function persist(){
+   const values={units:unitsBox.checked,fasting:fastingBox.checked,exams:[...exams.children].map(row=>({kind:row.querySelector("select").value,date:row.querySelector('input[type="date"]').value,report:row.querySelector("textarea").value}))};
+   for(const {key,low,high,unit,confirmed} of rows){
+     values[key+"-low"]=low.value;values[key+"-high"]=high.value;values[key+"-confirmed"]=confirmed.checked;
+     if(!unit.readOnly&&unit.value)values[key+"-unit"]=unit.value;
+   }
+   memory.lab=values;
  }
- table.addEventListener("input",event=>{if(event.target?.dataset.e027!=="result")return;const row=event.target.closest(".e027-range");const original=[...form.querySelectorAll('input[name^="lab:"]')].find(x=>x.name==="lab:"+row.dataset.key);if(original){original.value=event.target.value;original.dispatchEvent(new Event("input",{bubbles:true}))}});
- form.addEventListener("input",()=>{refresh();persist()});
- form.addEventListener("change",()=>{refresh();persist()});
+ more.onclick=()=>{limit+=8;refresh()};
+ search.addEventListener("input",()=>{limit=8;refresh()});
+ for(const select of [filter,category])select.addEventListener("change",()=>{limit=8;refresh()});
+ function handle(event){
+   if(controls.contains(event.target)||event.target.dataset.e027==="result")return;
+   refresh();
+   if(panel.contains(event.target))persist();
+ }
+ form.addEventListener("input",handle);
+ form.addEventListener("change",handle);
  refresh();active=panel;
 }
 function mountAnam(form){
