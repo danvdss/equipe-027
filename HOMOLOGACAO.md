@@ -45,3 +45,7 @@ A instituição deve registrar a versão examinada, aparelho e navegador, result
 - Painel com 91 exames testado a 1440, 390 e 320 px, incluindo filtros, gráfico, busca e mudança de modalidade.
 - Brave e Edge executaram busca, desfazer/refazer, modelos, prévia, exportação TXT e geração de PDF. O TXT correspondeu ao texto editado. Cada PDF teve três páginas A4. A extração recuperou as 120 linhas numeradas em ordem nos dois arquivos.
 - A estação disponibilizava somente impressora virtual. Continuam pendentes o teste em papel e o teste em celular físico.
+
+### Conferência adicional no Firefox
+
+Na revisão be3ec46, o Firefox 142.0.1 em Windows, com perfil temporário, abriu a avaliação com o painel recolhido e o filtro **Com resultado** selecionado. Digitar zero no campo de ferritina do formulário exibiu um cartão de resultado. A prévia reproduziu exatamente o texto de teste. O PDF gerado pelo motor de impressão do Firefox continha três páginas A4. A extração de texto confirmou as 120 linhas fictícias, com acentos, na ordem original e sem controles da interface. A conferência foi digital. O aceite em papel permanece pendente.
