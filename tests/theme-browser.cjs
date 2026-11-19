@@ -107,7 +107,7 @@ async function run() {
           const mode=page.locator('[name=labMode]');await mode.focus();await mode.press("End");
           assert.equal(await page.locator("#lab-request-fields").isVisible(),true);
           assert.equal(await page.locator("#lab-evaluation-fields").isVisible(),false);
-          await mode.press("Home");assert.equal(await page.locator("#lab-evaluation-fields").isVisible(),true);
+          await mode.press("Home");await mode.press("ArrowDown");assert.equal(await page.locator("#lab-evaluation-fields").isVisible(),true);
         }
       }
       console.log({width,sections:count,lowest,failures});assert.equal(failures,0);

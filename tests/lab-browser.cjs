@@ -13,6 +13,7 @@ async function run(){
    });
    await page.goto("http://equipe.test");
    await page.evaluate("logged=true;navigate('lab')");
+   await page.locator('[name="labMode"]').selectOption("avaliacao");
    const panel=page.locator("#e027-lab"),row=panel.locator('[data-key="Ferritina"]');
    const count=await page.locator('input[name^="lab:"]').count();
    assert.equal(await panel.locator(".e027-range").count(),count);

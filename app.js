@@ -614,6 +614,7 @@ function collect() {
   if (page === "lab") {
     // Keep the inactive mode in the session draft, outside the clinical form data.
     const inactive = f.querySelectorAll("#lab-request-fields [name]:disabled, #lab-evaluation-fields [name]:disabled");
+    d.labModeDrafts = f.labModeDrafts;
     d.inactiveLabFields = Object.fromEntries(Array.from(inactive, el => [el.name, el.value]));
   }
   d.output = $("#output")?.value ?? "";
@@ -726,10 +727,10 @@ function clinical() {
   return `<div class="workspace"><form id="clinical" autocomplete="off">${body}</form>${outputPanel()}</div>`;
 }
 function labForm() {
-  const choice = section("Tipo de atendimento", `<label>O que o paciente procura?<select name="labMode"><option value="avaliacao">Avaliação de exames</option><option value="solicitacao">Solicitação de exames</option></select></label>`);
-  const reason = section("Motivo do atendimento", `<label>Motivo<select name="labReason"><option value="Rotina">Rotina</option><option value="Outro motivo">Outro motivo</option></select></label>${field("labOtherReason", "Descreva outro motivo (se aplicável)", "Informe o motivo")}`);
-  const request = `<div id="lab-request-fields" hidden>${section("Solicitação de exames", `<label>Exames solicitados ou pretendidos<textarea name="labRequestedExams" rows="3" placeholder="Descreva os exames, se houver"></textarea></label><label>Avaliação médica<select name="labMedicalAssessment"><option value="">Não informado</option><option value="Solicitada">Solicitada</option><option value="Não solicitada">Não solicitada</option></select></label>`)}</div>`;
-  const evaluationStart = `<div id="lab-evaluation-fields">`;
+  const choice = section("Tipo de atendimento", `<label>O que o paciente procura?<select name="labMode"><option value="">Selecione o atendimento</option><option value="avaliacao">Avaliação de exames</option><option value="solicitacao">Solicitação de exames</option></select></label>`);
+  const reason = section("Motivo do atendimento", `<label>Motivo<select name="labReason"><option value="">Não informado</option><option value="Rotina">Rotina</option><option value="Outro motivo">Outro motivo</option></select></label>${field("labOtherReason", "Descreva outro motivo (se aplicável)", "Informe o motivo")}`);
+  const request = `<div id="lab-request-fields" hidden>${section("Solicitação de exames", `<label>Exames mencionados pelo paciente<textarea name="labRequestedExams" rows="3" placeholder="Descreva os exames, se houver"></textarea></label><label>Exames efetivamente solicitados pelo profissional<textarea name="labOrdered" rows="2"></textarea></label><label>Solicitação de avaliação médica<select name="labMedicalAssessment"><option value="">Não informado</option><option value="Solicitada">Solicitada</option><option value="Não solicitada">Não solicitada</option></select></label>`)}</div>`;
+  const evaluationStart = `<div id="lab-evaluation-fields">${section("Resultados apresentados", '<label>Achados documentados no laudo<textarea name="labFindings" rows="3"></textarea></label><label>Solicitação de avaliação médica<select name="labEvaluationReferral"><option value="">Não informado</option><option>Solicitada</option><option>Não solicitada</option></select></label>')}`;
   return `<div class="workspace"><form id="clinical" autocomplete="off">${choice}${reason}${request}${evaluationStart}${section("Data da coleta", field("date", "Data dos exames", "", "date"))}${labs.map(([name, ls]) => `<details class="lab-group" open><summary>${name}</summary><div class="fields">${ls.map((v) => field("lab:" + v, v + (percent.has(v) ? " · %" : ""))).join("")}</div></details>`).join("")}${LabDetails.form()}${section("Outros exames", `<div id="extras"></div><button type="button" id="addLab">+ ADICIONAR EXAME</button>`)}</div>${section("Conduta e orientações", `<div class="chips"><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado retorno à unidade para continuidade do cuidado">Orientado retorno à unidade para continuidade do cuidado</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado a apresentar os resultados dos exames na unidade">Orientado a apresentar os resultados dos exames na unidade</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado quanto ao acompanhamento conforme avaliação profissional">Orientado quanto ao acompanhamento conforme avaliação profissional</label><label class="chip"><input type="checkbox" name="c:labGuides" value="Orientado a procurar atendimento em caso de piora ou novos sintomas">Orientado a procurar atendimento em caso de piora ou novos sintomas</label></div><label>Outras condutas realizadas<textarea name="labConduct" rows="4" placeholder="Registre apenas orientações e condutas efetivamente realizadas"></textarea></label>`)}</form>${outputPanel()}</div>`;
 }
 function addLab(values = {}) {
@@ -829,16 +830,45 @@ function render() {
     $("#clear").onclick = () => Flow.clear();
     if ($("#addLab")) $("#addLab").onclick = () => addLab();
     if (page === "lab") {
-      const mode = $("#clinical").querySelector('[name="labMode"]');
-      const toggleLabMode = () => {
-        const requesting = mode.value === "solicitacao";
-        $("#lab-request-fields").hidden = !requesting;
-        $("#lab-evaluation-fields").hidden = requesting;
-        $("#lab-request-fields").querySelectorAll("input,select,textarea").forEach((x) => x.disabled = !requesting);
-        $("#lab-evaluation-fields").querySelectorAll("input,select,textarea").forEach((x) => x.disabled = requesting);
-      };
-      mode.addEventListener("change", toggleLabMode);
-      toggleLabMode();
+      const form=$("#clinical"), mode=form.elements.labMode, out=$("#output");
+      form.labModeDrafts={...drafts.lab?.labModeDrafts};
+      const shared=[form.elements.labReason,form.elements.labOtherReason,form.elements.labConduct,...form.querySelectorAll('[name="c:labGuides"]')];
+      let previous=mode.value;
+      function showMode(){
+        for(const [id,value] of [["lab-request-fields","solicitacao"],["lab-evaluation-fields","avaliacao"]]){
+          const container=document.getElementById(id);
+          container.hidden=mode.value!==value;
+          container.querySelectorAll("[name]").forEach(el=>el.disabled=container.hidden);
+        }
+        for(const el of shared){
+          el.disabled=!mode.value;
+          el.closest("section").hidden=!mode.value;
+        }
+        form.elements.labOtherReason.closest("label").hidden=form.elements.labReason.value!=="Outro motivo";
+        for(const option of document.querySelectorAll("#section-picker option[value]")){
+          if(option.value) option.hidden=Boolean(document.getElementById(option.value)?.closest("[hidden]"));
+        }
+      }
+      mode.addEventListener("change",()=>{
+        if(previous!==mode.value){
+          if(previous)form.labModeDrafts[previous]={
+            values:shared.map(el=>el.type==="checkbox"?el.checked:el.value),
+            output:out.value,manual:out.dataset.manual,baseline:out.dataset.baseline,stale:out.dataset.stale
+          };
+          const saved=form.labModeDrafts[mode.value];
+          shared.forEach((el,i)=>{
+            if(el.type==="checkbox")el.checked=Boolean(saved?.values[i]);
+            else el.value=saved?.values[i]||"";
+          });
+          out.value=saved?.output||"";
+          for(const key of ["manual","baseline","stale"])out.dataset[key]=saved?.[key]||"";
+          previous=mode.value;
+        }
+        showMode();
+        LiveReview.update();
+      });
+      form.elements.labReason.addEventListener("change",showMode);
+      showMode();
     }
 
   }
@@ -891,6 +921,9 @@ function restore() {
         );
       else x.value = d[x.name] ?? "";
     });
+  if(page==="lab" && draft.labMode===undefined && Object.keys(draft).some(key=>key.startsWith("lab:") && draft[key])){
+    $("#clinical").elements.labMode.value="avaliacao";
+  }
   $("#output").value = d.output ?? "";
   $("#output").dataset.stale = d.stale ? "true" : "false";
 }
@@ -950,29 +983,29 @@ function composeBody(d, p, partial = false) {
   const parts = [];
   if (p === "lab") {
     const requesting = d.labMode === "solicitacao";
-    const reason = String(d.labReason || "Rotina").trim();
+    if(!requesting && d.labMode!=="avaliacao")return "";
+    const reason = String(d.labReason || "").trim();
     const otherReason = String(d.labOtherReason || "").trim();
     const intro = requesting
       ? "Paciente comparece à unidade para solicitar exames"
       : "Paciente comparece à unidade para solicitar avaliação de exames";
-    const introduction = reason === "Outro motivo"
-      ? `${intro}. Motivo: ${otherReason || "não especificado"}.`
-      : `${intro} de rotina.`;
+    const place = {"No domicílio":"Paciente em atendimento domiciliar","À beira do leito":"Paciente em atendimento à beira do leito","Sem especificar o local":"Paciente em atendimento"}[d.recordSetting];
+    const opening = place ? intro.replace("Paciente comparece à unidade",place) : intro;
+    const introduction = reason === "Outro motivo" && otherReason
+      ? `${opening}. Motivo: ${otherReason}.`
+       : reason === "Rotina" ? `${opening} de rotina.` : opening+".";
     const guides = Array.isArray(d["c:labGuides"]) ? d["c:labGuides"] : [];
     const conduct = String(d.labConduct || "").trim();
     const conductText = [...guides, ...(conduct ? [conduct] : [])];
     const ending = conductText.length ? `\nConduta: ${conductText.join("; ")}.` : "";
+    const referral=requesting?d.labMedicalAssessment:d.labEvaluationReferral;
+    const medical=referral==="Solicitada"?"Avaliação médica solicitada.":referral==="Não solicitada"?"Avaliação médica não solicitada.":"";
     if (requesting) {
       const requested = String(d.labRequestedExams || "").trim();
-      const medical = d.labMedicalAssessment === "Solicitada"
-        ? "Avaliação médica solicitada."
-        : d.labMedicalAssessment === "Não solicitada"
-          ? "Avaliação médica não solicitada."
-          : "";
-      return [introduction, requested ? `Exames mencionados: ${requested}.` : "", medical]
+      return [introduction, requested ? `Exames mencionados: ${requested}.` : "", has("labOrdered") ? `Exames solicitados: ${d.labOrdered}.` : "", medical]
         .filter(Boolean).join("\n") + ending;
     }
-    if (!partial && !has("date")) throw Error("Informe a data dos exames.");
+
     const date = d.date ? d.date.split("-").reverse().join("/") : "data não informada";
     const order = [
       "Hb",
@@ -1034,8 +1067,8 @@ function composeBody(d, p, partial = false) {
           items.push(d[k] + " " + Care.labValue(d[v], has(u) ? d[u] : ""));
       });
     items.push(...LabDetails.compose(d,partial));
-    if (!items.length) throw Error("Preencha ao menos um resultado.");
-    return `${introduction}\nLAB (${date}): ${items.join(" | ")}.${ending}`;
+    if(items.length && !partial && !has("date"))throw Error("Informe a data dos exames.");
+    return [introduction,items.length?`LAB (${date}): ${items.join(" | ")}.`:"",has("labFindings")?`Achados documentados: ${d.labFindings}.`:"",medical].filter(Boolean).join("\n")+ending;
   }
   return Notes.compose(d, p, partial);
 }

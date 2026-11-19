@@ -172,6 +172,7 @@ test("clear can be undone; new encounter clears all modules and history", async 
 test("lab removal marks generated output stale and percentages are not duplicated", async (t) => {
   const { w, run, set } = setup(t);
   run("navigate('lab')");
+  set("labMode","avaliacao");
   set("date", "2026-09-24");
   w.document.querySelector("#addLab").click();
   set("extraName:0", "Teste");
@@ -286,6 +287,7 @@ test("prescription clearing is confirmed and undo restores both copies", async (
 test("EPF and EAS start blank, preserve findings and reject conflicting results", async (t) => {
   const { w, run, set } = setup(t);
   run("navigate('lab')");
+  set("labMode","avaliacao");
   set("date", "2026-09-24");
   assert.equal(w.document.querySelector("[name=epfStatus]").value, "");
   assert.equal(w.document.querySelector("[name=urine_nitrite]").value, "");
@@ -310,6 +312,7 @@ test("EPF and EAS start blank, preserve findings and reject conflicting results"
 test("EPF and EAS use separate dates and survive navigating away", async (t) => {
   const { w, run, set } = setup(t);
   run("navigate('lab')");
+  set("labMode","avaliacao");
   set("date", "2026-09-24");
   set("epfDate", "2026-09-23");
   set("epfStatus", "Não encontrados na amostra examinada");
@@ -432,7 +435,7 @@ test('live partial renewal retains incomplete input and manual edits survive sub
   assert.equal(out.dataset.stale,'true');
 });
 test('live validation covers EPF contradiction and pending callbacks cannot cross modules', async t => {
-  const {w,run,set}=setup(t);run("navigate('lab')");set('date','2026-09-27');
+  const {w,run,set}=setup(t);run("navigate('lab')");set("labMode","avaliacao");set('date','2026-09-27');
   set('epfStatus','Não encontrados na amostra examinada');set('epf_giardia','Cistos');run('LiveReview.update()');
   assert.match(w.document.querySelector('#live-issues').textContent,/EPF/);
   assert.ok(w.document.querySelectorAll('#live-preview .incoherent').length>=2);
@@ -661,6 +664,7 @@ test("virtual keyboard geometry follows the visible viewport and clears on zoom 
 test("switching modules preserves inactive exam fields without mixing the records", (t) => {
   const { run, set, w } = setup(t);
   run("navigate('lab')");
+  set("labMode","avaliacao");
   set("lab:Hb", "12,4");
   run("addLab({name:'Exame fictício', value:'5', unit:'u'})");
   set("labMode", "solicitacao");
@@ -694,4 +698,32 @@ test("session reset clears complementary drafts and cancels open clinical review
   assert.equal(w.document.querySelector("body > dialog.review-dialog"), null);
   assert.equal(w.Equipe027HasExtraDraft(), false);
   assert.equal(w.document.body.style.overflow, "");
+});
+
+test("lab starts blank and preserves each mode's clinical decisions and manual text", t => {
+  const {w,run,set}=setup(t);
+  run("navigate('lab')");
+  assert.equal(run("LiveReview.update().text"),"");
+  assert.ok(w.document.querySelector("#lab-evaluation-fields").hidden);
+  set("labMode","solicitacao");
+  assert.doesNotMatch(run("LiveReview.update().text"),/rotina|Avaliação médica|Conduta:|Exames solicitados:/i);
+  set("labOrdered","Exame fictício A");
+  set("labReason","Rotina");
+  set("labConduct","Conduta registrada A");
+  assert.match(run("LiveReview.update().text"),/Exames solicitados: Exame fictício A/);
+  const output=w.document.querySelector("#output");
+  output.value="Edição manual A";
+  output.dispatchEvent(new w.Event("input",{bubbles:true}));
+  set("labMode","avaliacao");
+  set("labFindings","Achado transcrito B");
+  set("labEvaluationReferral","Não solicitada");
+  const evaluated=run("LiveReview.update().text");
+  assert.match(evaluated,/Achado transcrito B/);
+  assert.match(evaluated,/Avaliação médica não solicitada/);
+  assert.doesNotMatch(evaluated,/rotina|Conduta registrada A|Edição manual A|Exame fictício A/);
+  run("navigate('home');navigate('lab')");
+  set("labMode","solicitacao");
+  run("LiveReview.update()");
+  assert.equal(w.document.querySelector("#output").value,"Edição manual A");
+  assert.equal(w.document.querySelector('[name=labConduct]').value,"Conduta registrada A");
 });
