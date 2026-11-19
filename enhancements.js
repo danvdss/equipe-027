@@ -75,8 +75,8 @@ function addExam(list,values={}){
  row.append(kindLabel,date,report,remove,insert);list.append(row);
 }
 function mountLab(form){
- const panel=node("section",undefined,"panel");panel.id="e027-lab";
- panel.append(node("h2","Painel de exames"),node("p","Compare o resultado com os limites do laudo. Confirme a unidade e a faixa antes de usar o gráfico.","muted"));
+ const panel=node("details",undefined,"panel");panel.id="e027-lab";
+ panel.append(node("summary","Painel de exames"),node("p","Compare o resultado com os limites do laudo. Confirme a unidade e a faixa antes de usar o gráfico.","muted"));
  const units=field("Conferi as unidades dos resultados com o laudo","checkbox",undefined,"units");panel.append(units);
  const fasting=field("Jejum confirmado para a glicemia de jejum","checkbox",undefined,"fasting");panel.append(fasting);
  const controls=node("div",undefined,"lab-panel-filters");

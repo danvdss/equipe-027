@@ -224,6 +224,7 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 #e027-lab .e027-range > label:has([data-e027="unit"]) { grid-column: 1 / -1; }
 #e027-lab .e027-range :read-only:is(input[type=text]) { border-style: dashed; }
 #e027-lab .e027-range .e027-track[hidden] { display: none; }
+#e027-lab > summary { cursor: pointer; min-height: 44px; padding-block: .65rem; font-weight: 600; }
 #e027-lab > button { min-height: 44px; margin-bottom: 1rem; }
 #e027-lab .e027-range > label:has([data-e027^="range-"]) {
   display: flex;

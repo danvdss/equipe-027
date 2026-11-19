@@ -18,9 +18,15 @@ async function run(){
    const count=await page.locator('input[name^="lab:"]').count();
    assert.equal(await panel.locator(".e027-range").count(),count);
    const search=panel.locator('input[type=search]');
+   assert.equal(await search.isVisible(),false);
+   await panel.locator(":scope > summary").press("Enter");
    await search.fill("ferritina");
    assert.equal(await panel.locator(".e027-range:visible").count(),1);
    await row.locator('[data-e027=result]').fill("12,5");
+   await panel.locator(":scope > summary").click();
+   assert.equal(await search.isVisible(),false);
+   await panel.locator(":scope > summary").click();
+   assert.equal(await row.locator("[data-e027=result]").inputValue(),"12,5");
    assert.equal(await page.locator('[name="lab:Ferritina"]').inputValue(),"12,5");
    assert.equal(await row.locator(".e027-track").isVisible(),false);
    await panel.locator('[data-e027=units]').check();
@@ -37,6 +43,8 @@ async function run(){
     await row.screenshot({path:path.join(process.env.E027_SCREENSHOTS,"e027-exames-"+width+".png")});
    }
    await page.evaluate("navigate('general');navigate('lab')");
+   assert.equal(await search.isVisible(),false);
+   await panel.locator(":scope > summary").press("Enter");
    await search.fill("ferritina");
    assert.equal(await row.locator('[data-e027=result]').inputValue(),"12,5");
    assert.equal(await row.locator(".e027-track").isVisible(),true);
@@ -46,6 +54,8 @@ async function run(){
    await row.locator('[data-e027=reference-source]').fill("Laboratório fictício");
    await row.locator('[data-e027=confirmed]').check();
    await page.evaluate("navigate('home');navigate('lab')");
+   assert.equal(await search.isVisible(),false);
+   await panel.locator(":scope > summary").press("Enter");
    await search.fill("ferritina");
    assert.equal(await row.locator('[data-e027=context]').inputValue(),"Método de teste");
    await row.locator('[data-e027=unit]').fill("outra unidade");
