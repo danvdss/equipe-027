@@ -576,10 +576,7 @@ const DIU = (() => {
       paragraphs = [];
     const date = (v) => v.split("-").reverse().join("/");
     const sentence = (s) => s.replace(/[.\s]+$/, "") + ".";
-    const intro = procedure(d)
-      ? "Paciente comparece à unidade para inserção de dispositivo intrauterino."
-      : "Paciente comparece à unidade para avaliação e solicitação de dispositivo intrauterino como método contraceptivo.";
-    paragraphs.push(intro);
+    paragraphs.push("Paciente comparece à unidade para atendimento relacionado ao dispositivo intrauterino (DIU).");
     groups.forEach(([title, fs, when], i) => {
       if (when && !when(d)) return;
       let parts = [];

@@ -216,7 +216,7 @@ const Implante = (() => {
     const intro = [
       "Paciente" +
         (v(d, "age") ? ", " + d.age + " anos," : "") +
-        " comparece à unidade para avaliação e solicitação de implante contraceptivo subdérmico de etonogestrel (Implanon)",
+        " comparece à unidade para atendimento relacionado ao implante contraceptivo subdérmico de etonogestrel (Implanon)",
     ];
     date(intro, "visitDate", "Atendimento");
     item(intro, "unit", "Unidade/equipe");

@@ -49,3 +49,7 @@ A instituição deve registrar a versão examinada, aparelho e navegador, result
 ### Conferência adicional no Firefox
 
 Na revisão be3ec46, o Firefox 142.0.1 em Windows, com perfil temporário, abriu a avaliação com o painel recolhido e o filtro **Com resultado** selecionado. Digitar zero no campo de ferritina do formulário exibiu um cartão de resultado. A prévia reproduziu exatamente o texto de teste. O PDF gerado pelo motor de impressão do Firefox continha três páginas A4. A extração de texto confirmou as 120 linhas fictícias, com acentos, na ordem original e sem controles da interface. A conferência foi digital. O aceite em papel permanece pendente.
+
+### Revisão das evoluções de DIU e implante
+
+A abertura automática identificava avaliação e solicitação mesmo ao registrar apenas avaliação de DIU ou preferência por outro método no módulo de implante. A abertura agora identifica o método do atendimento. Finalidade, decisão, pedido, consentimento e desfecho continuam vinculados aos campos do registro. A suíte de 110 testes passou, incluindo a distinção entre motivo de inserção e inserção concluída. O ensaio tests/contraception-browser.cjs verificou os fluxos com dados fictícios no Brave a 1440 e 320 px. Os protocolos aguardam avaliação profissional.

@@ -773,3 +773,36 @@ for(const moduleId of ["general","has","dm","both","lab","renewal","prenatal","c
     assert.equal(w.document.querySelector("#output").value,expected);
   });
 }
+
+test("implant record keeps the expressed decision separate from a request", t => {
+  const {run, set, w} = setup(t);
+  run("navigate('implante')");
+  set("decision", "Prefere outro método");
+  run("LiveReview.update()");
+  const out = w.document.querySelector("#output");
+  assert.match(out.value, /prefere outro método/i);
+  assert.doesNotMatch(out.value, /solicita|agendada|assinado/i);
+  set("requestReason", "Atualização da solicitação");
+  run("LiveReview.update()");
+  assert.match(out.value, /Atualização da solicitação/i);
+});
+
+test("DIU form distinguishes visit purpose from a performed procedure", t => {
+  const {run, set, w} = setup(t);
+  run("navigate('diu')");
+  set("reason", "Avaliação");
+  run("LiveReview.update()");
+  const out = w.document.querySelector("#output");
+  assert.match(out.value, /avaliação/i);
+  assert.doesNotMatch(out.value, /solicitação|inserção/i);
+  set("reason", "Solicitação");
+  run("LiveReview.update()");
+  assert.match(out.value, /solicitação/i);
+  set("mode", "Inserção");
+  set("reason", "Inserção");
+  run("LiveReview.update()");
+  assert.doesNotMatch(out.value, /realizada inserção de DIU/i);
+  set("outcome", "Inserção concluída");
+  run("LiveReview.update()");
+  assert.match(out.value, /realizada inserção de DIU/i);
+});
