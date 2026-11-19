@@ -114,6 +114,7 @@ const LiveReview = (() => {
       q('#live-issues').append(item);
     }
     q('#live-status').textContent=manual ? (out.dataset.stale==='true'?'Formulário alterado. Sua edição foi preservada; use Retomar automático se desejar.':'Sua edição está preservada.') : partial?'Texto parcial: confira os campos indicados. Você pode continuar e copiar.':'Atualizado · revise antes de copiar.';
+    EditorTools.sync(out);
     Flow.updateStatus();
     return {issues,manualIssues,text,partial};
   }
@@ -143,7 +144,7 @@ const LiveReview = (() => {
       const selected=[...dialog.querySelectorAll('[data-block]')].filter(x=>x.value);if(!selected.length){dialog.querySelector('.block-error').textContent='Escolha ao menos um destino.';return;}
       const targets=selected.filter(x=>x.value!=='append').map(x=>x.value);if(new Set(targets).size!==targets.length){dialog.querySelector('.block-error').textContent='Escolha apenas um trecho para substituir cada parágrafo.';return;}
       const result=current.slice();selected.forEach(x=>{if(x.value==='append')result.push(blocks[+x.dataset.block]);else result[+x.value]=blocks[+x.dataset.block];});
-      saveHistory(original);out.value=result.join('\n\n');out.dataset.baseline=candidate;out.dataset.manual='true';update();collect();close();toast('Trechos aplicados. A versão anterior está no histórico da sessão.');
+      saveHistory(original);out.value=result.join('\n\n');out.dataset.baseline=candidate;out.dataset.manual='true';out.dispatchEvent(new Event('input',{bubbles:true}));update();collect();close();toast('Trechos aplicados. A versão anterior está no histórico da sessão.');
     };
     dialog.addEventListener('close',()=>{dialog.remove();out.focus({preventScroll:true});},{once:true});document.body.append(dialog);dialog.showModal();
   }
@@ -158,6 +159,7 @@ const LiveReview = (() => {
     tools.append(merge,plain);q('#live-status').after(tools);
     out.addEventListener('scroll',()=>{q('#live-preview').scrollTop=out.scrollTop;q('#live-preview').scrollLeft=out.scrollLeft;});
     update();
+    EditorTools.mount(out,tools);
   }
   return {mount,update,schedule,inspect,analyzeText,resume,mergeBlocks};
 })();
@@ -308,6 +310,7 @@ const Flow = (() => {
     )
       return;
     undo = { page: current, draft: clone(drafts[current]) };
+    EditorTools.clear(current);
     delete drafts[current];
     render();
     toast("Módulo limpo. Use Desfazer limpeza para recuperar.");
@@ -699,6 +702,8 @@ const Flow = (() => {
     rxDirty = value;
   }
   function reset() {
+    EditorTools.clear();
+    document.querySelectorAll("body > .clinical-print").forEach(el=>el.remove());
     window.dispatchEvent(new Event("equipe027:new-encounter"));
     for (const review of document.querySelectorAll("body > dialog.review-dialog")) {
       if (review.open) review.close("cancel");
@@ -768,3 +773,150 @@ window.addEventListener("message", (e) => {
     Flow.setRxDirty(e.data.dirty === true);
 });
 
+
+// History is limited to the encounter. Only reusable section labels are stored locally.
+const EditorTools = (() => {
+  const histories = new Map();
+  const templateKey = "equipe027.ui.templates.v1";
+  const defaults = ["Demanda", "Observações", "Conduta", "Seguimento"];
+  function key() { return page + "/" + (document.querySelector('[name="labMode"]')?.value || ""); }
+  function clear(module) {
+    for (const id of histories.keys()) if (!module || id.startsWith(module + "/")) histories.delete(id);
+  }
+  function button(parent, label, action) {
+    const element = document.createElement("button");
+    element.type = "button";
+    element.textContent = label;
+    element.onclick = action;
+    parent.append(element);
+    return element;
+  }
+  function field(parent, title, tag, value="") {
+    const label = document.createElement("label");
+    label.textContent = title;
+    const control = document.createElement(tag);
+    control.value = value;
+    label.append(control);
+    parent.append(label);
+    return control;
+  }
+  function dialog(title) {
+    const el = document.createElement("dialog");
+    el.className = "review-dialog document-tools";
+    el.setAttribute("aria-label",title);
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    el.append(heading);
+    button(el,"Fechar",()=>el.close());
+    el.addEventListener("close",()=>el.remove(),{once:true});
+    document.body.append(el);
+    el.showModal();
+    return el;
+  }
+  function templates(out) {
+    const el = dialog("Modelos de " + (titles[page] || "evolução"));
+    let all;
+    try { all=JSON.parse(localStorage.getItem(templateKey)||"{}"); } catch { all={}; }
+    if(!all || typeof all!=="object" || Array.isArray(all))all={};
+    const id=key();
+    const models=Array.isArray(all[id]) ? all[id].filter(m=>m && typeof m.name==="string" && Array.isArray(m.sections) && m.sections.every(s=>typeof s==="string")) : [];
+    const select=field(el,"Modelo","select");
+    const name=field(el,"Nome do modelo","input");
+    const headings=field(el,"Seções do modelo (um título por linha, sem dados do atendimento)","textarea");
+    const entries=document.createElement("div");
+    const status=document.createElement("p");
+    status.setAttribute("role","status");
+    function save() {
+      all[id]=models;
+      try {localStorage.setItem(templateKey,JSON.stringify(all));status.textContent="Modelo salvo neste navegador.";}
+      catch {status.textContent="Armazenamento indisponível. O modelo pode ser usado nesta janela.";}
+    }
+    function show(index){
+      select.replaceChildren(new Option("Modelo inicial","-1"),...models.map((m,i)=>new Option(m.name,String(i))));
+      select.value=String(index);
+      const model=models[index]||{name:"Modelo inicial",sections:defaults};
+      name.value=model.name;headings.value=model.sections.join("\n");
+      entries.replaceChildren();
+      for(const label of model.sections)field(entries,label+" (opcional)","textarea");
+    }
+    select.onchange=()=>show(Number(select.value));
+    function storeModel(create) {
+      const sections=[...new Set(headings.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean))];
+      if(!sections.length || !name.value.trim()){status.textContent="Informe o nome e ao menos uma seção.";return;}
+      const index=create||select.value==="-1"?models.length:Number(select.value);
+      models[index]={name:name.value.trim(),sections};
+      save();show(index);
+    }
+    button(el,"Salvar modelo",()=>storeModel(false));
+    button(el,"Duplicar",()=>{name.value+=" (cópia)";storeModel(true);});
+    button(el,"Criar modelo",()=>{show(-1);name.value="";name.focus();});
+    button(el,"Restaurar seções iniciais",()=>{headings.value=defaults.join("\n");storeModel(false);});
+    el.append(status,entries);
+    button(el,"Acrescentar seções preenchidas",()=>{
+      const lines=[...entries.querySelectorAll("textarea")].map((c,i)=>c.value.trim()?headingsForDisplay()[i]+": "+c.value.trim():"").filter(Boolean);
+      if(!lines.length){status.textContent="Preencha ao menos uma seção para inserir.";return;}
+      out.value+=(out.value?"\n\n":"")+lines.join("\n\n");
+      out.dispatchEvent(new Event("input",{bubbles:true}));
+      el.close();
+    });
+    function headingsForDisplay(){return (models[Number(select.value)]?.sections||defaults);}
+    show(-1);
+  }
+  function documentPreview(out) {
+    if(!out.value.trim()){toast("Preencha o texto antes de exportar.");return;}
+    const text=out.value, el=dialog("Prévia do documento");
+    const paper=document.createElement("pre");
+    paper.className="clinical-paper";paper.textContent=text;
+    el.append(paper);
+    const printPage=document.createElement("pre");
+    printPage.className="clinical-print";printPage.textContent=text;
+    document.body.append(printPage);
+    el.addEventListener("close",()=>printPage.remove(),{once:true});
+    button(el,"Imprimir / salvar PDF",()=>window.print());
+    button(el,"Baixar texto",()=>{
+      const url=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"}));
+      const link=document.createElement("a");link.href=url;link.download="evolucao.txt";link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
+  }
+  function sync(out){
+    if(!out.editorHistory)return;
+    const id=key();
+    if(!histories.has(id))histories.set(id,{past:[],future:[],current:out.value});
+    const state=histories.get(id);
+    state.current=out.value;
+    out.editorHistory.undo.disabled=!state.past.length;
+    out.editorHistory.redo.disabled=!state.future.length;
+  }
+  function mount(out,tools){
+    function move(back){
+      const state=histories.get(key());
+      if(!state)return;
+      const from=back?state.past:state.future,to=back?state.future:state.past;
+      if(!from.length)return;
+      to.push(out.value);out.value=from.pop();out.dataset.manual="true";
+      LiveReview.update();collect();out.focus();
+    }
+    const undo=button(tools,"Desfazer edição",()=>move(true));
+    const redo=button(tools,"Refazer edição",()=>move(false));
+    out.editorHistory={undo,redo};sync(out);
+    function remember(){
+      const state=histories.get(key());
+      if(!state || state.current===out.value)return;
+      state.past.push(state.current);if(state.past.length>80)state.past.shift();
+      state.future=[];sync(out);
+    }
+    out.addEventListener("input",e=>{if(!e.isComposing && out.dataset.composing!=="true")remember();});
+    out.addEventListener("compositionend",remember);
+    out.addEventListener("keydown",event=>{
+      if(event.isComposing || !(event.ctrlKey||event.metaKey) || event.altKey)return;
+      const letter=event.key.toLowerCase();
+      if(letter!=="z" && letter!=="y")return;
+      event.preventDefault();
+      move(letter==="z" && !event.shiftKey);
+    });
+    button(tools,"Modelos",()=>templates(out));
+    button(tools,"Imprimir / exportar",()=>documentPreview(out));
+  }
+  return {mount,sync,clear};
+})();

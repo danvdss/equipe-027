@@ -727,3 +727,49 @@ test("lab starts blank and preserves each mode's clinical decisions and manual t
   assert.equal(w.document.querySelector("#output").value,"Edição manual A");
   assert.equal(w.document.querySelector('[name=labConduct]').value,"Conduta registrada A");
 });
+
+test("manual history, templates, dashboard search and exact document preview", t=>{
+  const {w,run,set}=setup(t);
+  const doc=w.document,click=(root,text)=>{const b=[...root.querySelectorAll("button")].find(b=>b.textContent===text);assert.ok(b,text);b.click();};
+  doc.querySelector(".dashboard-search").click();
+  const search=doc.querySelector("#module-search");search.value="ferritina";search.oninput();
+  assert.equal(doc.querySelectorAll(".module-choice").length,1);
+  assert.equal(doc.querySelector(".module-choice button").dataset.module,"lab");
+  run("navigate('general')");
+  set("complaint","Demanda fictícia");run("LiveReview.update()");
+  const out=doc.querySelector("#output"),base=out.value;
+  out.value="Texto fictício manual";out.dispatchEvent(new w.Event("input",{bubbles:true}));
+  click(doc,"Desfazer edição");assert.equal(out.value,base);
+  click(doc,"Refazer edição");assert.equal(out.value,"Texto fictício manual");
+  click(doc,"Modelos");let dialog=doc.querySelector(".document-tools");
+  click(dialog,"Criar modelo");dialog.querySelector("input").value="Seguimento TO";
+  dialog.querySelector("textarea").value="Atividade\nParticipação";
+  click(dialog,"Salvar modelo");
+  dialog.querySelector("div textarea").value="Conteúdo fictício individual";
+  click(dialog,"Acrescentar seções preenchidas");
+  assert.match(out.value,/Atividade: Conteúdo fictício individual/);
+  assert.doesNotMatch(out.value,/Participação:/);
+  assert.doesNotMatch(w.localStorage.getItem("equipe027.ui.templates.v1"),/Conteúdo fictício/);
+  click(doc,"Imprimir / exportar");dialog=doc.querySelector(".document-tools");
+  assert.equal(dialog.querySelector("pre").textContent,out.value);
+  let printed;w.print=()=>{printed=doc.querySelector(".clinical-print").textContent;};
+  click(dialog,"Imprimir / salvar PDF");assert.equal(printed,out.value);
+  click(dialog,"Fechar");
+  assert.equal(doc.querySelector(".clinical-print"),null);
+});
+
+for(const moduleId of ["general","has","dm","both","lab","renewal","prenatal","child","occupational","cervical","diu","implante"]){
+  test("module review: repeated navigation and exact manual record in "+moduleId,t=>{
+    const {w,run}=setup(t);run("navigate('"+moduleId+"')");
+    const out=w.document.querySelector("#output");
+    if(moduleId==="lab"){
+      const mode=w.document.querySelector('[name=labMode]');mode.value="avaliacao";mode.dispatchEvent(new w.Event("change",{bubbles:true}));
+    }
+    run("LiveReview.update()");
+    assert.doesNotMatch(out.value,/undefined|\bNaN\b|\[object Object\]/);
+    const expected="Registro fictício\n"+moduleId;
+    out.value=expected;out.dispatchEvent(new w.Event("input",{bubbles:true}));
+    run("navigate('home');navigate('"+moduleId+"');LiveReview.update()");
+    assert.equal(w.document.querySelector("#output").value,expected);
+  });
+}

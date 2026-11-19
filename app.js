@@ -1149,10 +1149,20 @@ function mountMobileNavigation() {
   const wrap=document.createElement('div');wrap.className='mobile-nav';
   wrap.innerHTML=`<button type="button" id="module-menu" aria-haspopup="dialog">${uiIcon('home')} Módulos</button><span>${esc(titles[page]||'Início')}</span>`;nav.after(wrap);
   const dialog=document.createElement('dialog');dialog.className='module-dialog';dialog.setAttribute('aria-labelledby','module-title');
-  dialog.innerHTML='<div class="row-title"><h2 id="module-title">Módulos de atendimento</h2><button type="button" data-close>Fechar</button></div><label>Buscar módulo<input type="search" id="module-search" placeholder="Ex.: Pré-natal, renovação"></label><p class="privacy">Use a estrela para organizar seus favoritos neste dispositivo.</p><div class="module-list"></div>';
+  dialog.innerHTML='<div class="row-title"><h2 id="module-title">Módulos de atendimento</h2><button type="button" data-close>Fechar</button></div><label>Buscar módulo ou funcionalidade<input type="search" id="module-search" placeholder="Ex.: Pré-natal, renovação"></label><p class="privacy">Use a estrela para organizar seus favoritos neste dispositivo.</p><div class="module-list"></div>';
   app.append(dialog);
   let favorites=favoriteModules();
-  function list(){const term=dialog.querySelector('input').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();const all=[...modules,['history','Histórico da sessão']].filter(([id,t])=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(term));all.sort((a,b)=>Number(favorites.includes(b[0]))-Number(favorites.includes(a[0])));
+  const keywords={
+    general:"atendimento evolução enfermagem sinais vitais anamnese curativo",
+    has:"pressão arterial hipertenso hipertensão",dm:"diabetes diabético glicemia",
+    both:"hipertensão diabetes acompanhamento conjunto",
+    prenatal:"gestação gestante cartão pré natal",child:"pediatria puericultura crescimento curvas vacinação",
+    occupational:"terapia ocupacional TO ocupação atividade participação",lab:"laboratório resultados hemograma ferritina vitaminas B12 transferrina curva glicêmica solicitação avaliação",
+    renewal:"renovar receita medicamentos uso contínuo",rx:"prescrição impressão receituário",
+    cervical:"papanicolau citologia coleta HPV",diu:"contracepção dispositivo intrauterino",
+    implante:"contracepção implante subdérmico implanon",history:"histórico desta sessão"
+  };
+  function list(){const term=dialog.querySelector('input').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();const all=[...modules,['history','Histórico da sessão']].filter(([id,t])=>(t+' '+(keywords[id]||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(term));all.sort((a,b)=>Number(favorites.includes(b[0]))-Number(favorites.includes(a[0])));
     const target=dialog.querySelector('.module-list');target.innerHTML=all.length?all.map(([id,t])=>`<div class="module-choice"><button type="button" data-module="${id}" ${id===page?'aria-current="page"':''}>${uiIcon(id)}<span>${esc(t)}</span></button>${id!=='home'&&id!=='history'?`<button type="button" class="favorite-toggle" data-favorite="${id}" aria-label="Favoritar ${esc(t)}" aria-pressed="${favorites.includes(id)}">${favorites.includes(id)?'★':'☆'}</button>`:''}</div>`).join(''):'<p class="privacy">Nenhum módulo encontrado.</p>';
     target.querySelectorAll('[data-module]').forEach(b=>b.onclick=()=>{dialog.close();navigate(b.dataset.module);});
     target.querySelectorAll('[data-favorite]').forEach(b=>b.onclick=()=>{const id=b.dataset.favorite;favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];try{localStorage.setItem('equipe027.ui.favorites',JSON.stringify(favorites));}catch{}list();refreshFavorites();dialog.querySelector(`[data-favorite="${id}"]`)?.focus();});
@@ -1163,5 +1173,11 @@ function mountMobileNavigation() {
   dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.querySelector('input').oninput=list;
   function refreshFavorites(){let bar=document.querySelector('.favorite-modules');if(page!=='home')return;if(!bar){bar=document.createElement('section');bar.className='favorite-modules';document.querySelector('.cards')?.before(bar);}bar.innerHTML='<div class="row-title"><h2>Seus favoritos</h2><button type="button" data-organize>Organizar</button></div><div class="chips">'+(favorites.length?favorites.map(id=>`<button type="button" data-fav-nav="${id}">${uiIcon(id)} ${esc(modules.find(([m])=>m===id)?.[1]||id)}</button>`).join(''):'<p class="privacy">Marque os módulos que você mais usa para acessá-los aqui.</p>')+'</div>';bar.querySelector('[data-organize]').onclick=open;bar.querySelectorAll('[data-fav-nav]').forEach(b=>b.onclick=()=>navigate(b.dataset.favNav));}
   refreshFavorites();
+  if(page==="home"){
+    const trigger=document.createElement("button");
+    trigger.type="button";trigger.className="dashboard-search";trigger.textContent="Pesquisar módulos e funcionalidades";
+    trigger.setAttribute("aria-haspopup","dialog");trigger.onclick=open;
+    document.querySelector("#workspace-main .intro")?.after(trigger);
+  }
 }
 

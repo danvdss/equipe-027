@@ -234,3 +234,18 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 #e027-lab .reference-context summary { cursor: pointer; padding-block: .65rem; }
 #e027-lab .reference-feedback { margin: 0; font-size: .875rem; color: var(--ui-muted); }
 #e027-lab .e027-range:has([aria-invalid=true]) .reference-feedback { color: var(--ui-error); }
+
+.document-tools { width: min(680px,calc(100% - 24px)); }
+.document-tools > *, .document-tools > div > label { margin-block: .45rem; }
+.document-tools button { margin-inline-end: .45rem; min-height: 44px; }
+.clinical-paper,.clinical-print { white-space: pre-wrap; overflow-wrap: anywhere; font: 11pt/1.5 Arial,sans-serif; }
+.clinical-paper { background: white; color: black; padding: 1.4rem; }
+.clinical-print { display: none; }
+@media print {
+  @page { size: A4; margin: 18mm; }
+  body:has(> .clinical-print) > :not(.clinical-print) { display: none !important; }
+  body:has(> .clinical-print), html:has(.clinical-print) { overflow: visible !important; height: auto; background: white; color: black; }
+  body:has(> .clinical-print) dialog::backdrop { display: none; }
+  body > .clinical-print { display: block; margin: 0; color: black; orphans: 3; widows: 3; }
+}
+.dashboard-search { min-height: 46px; margin: 0 0 1rem; }
