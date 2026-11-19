@@ -145,11 +145,17 @@ test("catalog search, category and status combine without changing the LAB value
   const w=dom.window;w.eval(source);w.document.dispatchEvent(new w.Event("DOMContentLoaded"));
   const panel=w.document.querySelector("#e027-lab"),visible=()=>[...panel.querySelectorAll(".e027-range")].filter(x=>!x.hidden);
   const event=(el,type)=>el.dispatchEvent(new w.Event(type,{bubbles:true}));
+  const [filter,category]=panel.querySelectorAll(".lab-panel-filters select");
+  assert.equal(filter.value,"filled");assert.equal(visible().length,0);
+  const ferritina=w.document.querySelector('[name="lab:Ferritina"]');
+  ferritina.value="0";event(ferritina,"input");assert.deepEqual(visible().map(x=>x.dataset.key),["Ferritina"]);
+  ferritina.value="";event(ferritina,"input");assert.equal(visible().length,0);
+  filter.value="all";event(filter,"change");
   assert.equal(visible().length,8);
   [...panel.querySelectorAll("button")].find(b=>b.textContent==="Mostrar mais exames").click();assert.equal(visible().length,11);
   const search=panel.querySelector('[type="search"]');search.value="acido";event(search,"input");
   assert.deepEqual(visible().map(x=>x.dataset.key),["Ácido fólico"]);
-  const [filter,category]=panel.querySelectorAll(".lab-panel-filters select");category.value="Ferro";event(category,"change");assert.equal(visible().length,0);
+  category.value="Ferro";event(category,"change");assert.equal(visible().length,0);
   category.value="";event(category,"change");
   const row=visible()[0],original=w.document.querySelector('[name="lab:Ácido fólico"]');
   original.value="5";event(original,"input");

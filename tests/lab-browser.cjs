@@ -20,6 +20,9 @@ async function run(){
    const search=panel.locator('input[type=search]');
    assert.equal(await search.isVisible(),false);
    await panel.locator(":scope > summary").press("Enter");
+   assert.equal(await panel.locator(".lab-panel-filters select").first().inputValue(),"filled");
+   assert.equal(await panel.locator(".e027-range:visible").count(),0);
+   await panel.locator(".lab-panel-filters select").first().selectOption("all");
    await search.fill("ferritina");
    assert.equal(await panel.locator(".e027-range:visible").count(),1);
    await row.locator('[data-e027=result]').fill("12,5");

@@ -87,6 +87,7 @@ function mountLab(form){
  for(const [value,label] of [["all","Todas"],["filled","Com resultado"],["alerts","Fora da faixa"],["within","Dentro da faixa"],["unchecked","Sem comparação"],["empty","Sem resultado"]]){
    filter.add(new Option(label,value));
  }
+ filter.value="filled";
  filterLabel.append(filter);
  const groupLabel=node("label","Categoria ");
  const category=node("select");
