@@ -53,3 +53,18 @@ Na revisão be3ec46, o Firefox 142.0.1 em Windows, com perfil temporário, abriu
 ### Revisão das evoluções de DIU e implante
 
 A abertura automática identificava avaliação e solicitação mesmo ao registrar apenas avaliação de DIU ou preferência por outro método no módulo de implante. A abertura agora identifica o método do atendimento. Finalidade, decisão, pedido, consentimento e desfecho continuam vinculados aos campos do registro. A suíte de 110 testes passou, incluindo a distinção entre motivo de inserção e inserção concluída. O ensaio tests/contraception-browser.cjs verificou os fluxos com dados fictícios no Brave a 1440 e 320 px. Os protocolos aguardam avaliação profissional.
+
+### Sessão com dados fictícios no navegador
+
+Na revisão f037544, o Brave no Windows executou tests/session-browser.cjs com o SDK distribuído e respostas HTTP simuladas. Cancelar a saída preservou o texto. Ao confirmar, a aplicação consultou o usuário e enviou o pedido de encerramento durante o fluxo. Com resposta 204, a sessão seguinte abriu com editor vazio e sem edição para desfazer. Com resposta 503, a tela exibiu a orientação para fechar a aba. Após recarregar e entrar novamente, a sessão também começou vazia. O marcador fictício estava ausente da tela de login e dos armazenamentos localStorage e sessionStorage nos dois casos. O ensaio não verifica revogação no servidor real.
+
+### Ficha de conferência na unidade
+
+Registrar a revisão do sistema, a data e o responsável por cada ensaio. Usar exclusivamente dados fictícios. Registrar evidências e decisões no canal institucional apropriado.
+
+| Ensaio pendente | Ação e resultado a conferir | Resultado observado / responsável |
+| --- | --- | --- |
+| Sessão institucional | Entrar com a identidade fictícia autorizada, editar um rascunho, cancelar a saída e conferir o texto. Confirmar a saída, entrar novamente e verificar editor e histórico vazios. Conferir o encerramento também no provedor. | A preencher |
+| Celular físico | Anotar aparelho, sistema e navegador. Abrir Avaliação de exames, registrar zero em ferritina, abrir o painel e conferir o cartão em Com resultado. Editar a evolução com o teclado aberto, girar o aparelho e voltar ao módulo. Conferir texto, acesso às ações e rolagem. | A preencher |
+| Papel A4 | Anotar navegador e impressora. Imprimir uma evolução fictícia com linhas numeradas suficientes para duas páginas. Comparar primeira e última linha, sequência, acentos, margens e ausência de controles com o texto editado. | A preencher |
+| Pareceres e decisão | Identificar módulos e regras revisados, ressalvas clínicas, parecer de segurança e privacidade, falhas a corrigir e decisão formal sobre a versão. | A preencher |
