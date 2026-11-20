@@ -1,3 +1,9 @@
+# ATENÇÃO — PLANO SUPERADO PELA REFORMULAÇÃO SEM PRONTUÁRIO
+
+Este planejamento de persistência longitudinal não deve ser executado. A decisão mais recente determina que o Projeto-TO **não terá cadastro, prontuário nem armazenamento de pacientes**. Consultar [REWORK-TO-SEM-PACIENTES.md](REWORK-TO-SEM-PACIENTES.md). O texto histórico abaixo permanece para rastreabilidade.
+
+---
+
 # Entrega da interface unificada — Equipe-027 / Projeto-TO
 
 **Data de referência:** 20/11/2026

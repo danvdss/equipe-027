@@ -1,7 +1,13 @@
+# ATENÇÃO — PLANO SUPERADO PELA REFORMULAÇÃO SEM PRONTUÁRIO
+
+Este planejamento de persistência longitudinal não deve ser executado. A decisão mais recente determina que o Projeto-TO **não terá cadastro, prontuário nem armazenamento de pacientes**. Consultar [REWORK-TO-SEM-PACIENTES.md](REWORK-TO-SEM-PACIENTES.md). O texto histórico abaixo permanece para rastreabilidade.
+
+---
+
 # Equipe-027 — Plano de incorporação do Projeto-TO na aba Terapia Ocupacional
 
-**Versão do documento:** 1.0 · **Data:** 20/11/2026  
-**Repositórios:** https://github.com/danvdss/equipe-027 (principal, público) e https://github.com/danvdss/projeto-to (origem, privado).  
+**Versão do documento:** 1.0 · **Data:** 20/11/2026
+**Repositórios:** https://github.com/danvdss/equipe-027 (principal, público) e https://github.com/danvdss/projeto-to (origem, privado).
 **Situação:** planejamento para desenvolvimento; nenhuma integração foi homologada ou autorizada para dados de pacientes reais.
 
 ## 1. Decisão principal: preservar a página inicial ORIGINAL do Projeto-TO
@@ -223,8 +229,8 @@ A interface informativa pode ser construída antes da etapa 3, porém **nenhum a
 
 ## 11. Condição de conclusão
 
-**Implementado** = home original e botão Entrar integrados, navegação e recursos disponíveis em versão de testes.  
-**Validado tecnicamente** = identidade/autorização, RLS, editor, histórico, testes e regressões comprovados.  
+**Implementado** = home original e botão Entrar integrados, navegação e recursos disponíveis em versão de testes.
+**Validado tecnicamente** = identidade/autorização, RLS, editor, histórico, testes e regressões comprovados.
 **Homologado** = aprovação clínica, de privacidade/segurança e institucional documentada.
 
 **Nenhuma das três condições é automaticamente comprovada pela existência deste arquivo.**

@@ -125,13 +125,11 @@ test("cancelling an unsaved clinical form prevents changing the module", async (
   assert.equal(forceCalled, true);
 });
 
-test("mount forwards a checked shell identity and in-memory client to the private module", async (t) => {
+test("mount forwards checked shell identity without a Supabase client", async (t) => {
   const {w,run} = setup(t);
   run("navigate('occupational')");
-  const client = { supabaseUrl: "https://test-issuer.example" };
-  const attestation = { userId: "synthetic-user", supabaseUrl: client.supabaseUrl };
+  const attestation = { userId: "synthetic-user" };
   w.Access = {
-    getEmbeddedClient: () => client,
     verifiedBridgeIdentity: async () => attestation,
   };
   let received;
@@ -143,7 +141,7 @@ test("mount forwards a checked shell identity and in-memory client to the privat
       return {unmount: () => true};
     },
   }));
-  assert.equal(received.getShellClient(), client);
+  assert.equal(received.getShellClient, undefined, "Clinical module never receives database access");
   assert.deepEqual(await received.verifyShellIdentity(), attestation);
   assert.match(w.document.querySelector("#ot-embedded-root").textContent, /Página inicial fictícia/);
 });

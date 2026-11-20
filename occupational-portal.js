@@ -24,9 +24,9 @@
     const isProject = view === "projeto";
     return '<section class="panel ot-hub-picker" aria-label="Modo de Terapia Ocupacional">' +
       '<div class="ot-hub-actions" role="group" aria-label="Escolher modalidade">' +
-      '<button type="button" data-ot-view="projeto" aria-pressed="' + isProject + '">Projeto-TO completo</button>' +
+      '<button type="button" data-ot-view="projeto" aria-pressed="' + isProject + '">Ferramentas do Projeto-TO</button>' +
       '<button type="button" data-ot-view="rapida" aria-pressed="' + !isProject + '">Evolução rápida</button>' +
-      '</div><p class="muted">A evolução rápida continua temporária. O prontuário longitudinal requer acesso autorizado.</p></section>' +
+      '</div><p class="muted">As duas opções são temporárias, sem cadastro, banco ou histórico de pacientes.</p></section>' +
       (isProject
         ? '<section id="ot-embedded-root" role="region" aria-label="Página inicial do Projeto-TO">' +
           '<p class="privacy" role="status">Carregando a página inicial de Terapia Ocupacional…</p></section>'
@@ -49,8 +49,8 @@
     message.className = "privacy ot-hub-unavailable";
     message.setAttribute("role", "status");
     message.textContent =
-      "O Projeto-TO completo ainda não está disponível neste ambiente. " +
-      "A Evolução rápida continua acessível pela opção acima. Nenhum prontuário foi carregado.";
+      "O Ferramentas do Projeto-TO ainda não está disponível neste ambiente. " +
+      "A Evolução rápida continua acessível pela opção acima. Nenhum dado clínico foi carregado.";
     current.append(message);
   }
   async function mount(importer = loadModule) {
@@ -62,15 +62,11 @@
       const loaded = await importer();
       if (request !== generation || host !== target || !target.isConnected) return false;
       if (!loaded || typeof loaded.mountProjetoTo !== "function") throw new Error("Invalid embedded module");
-      // No token is sent across instances; the embedded app validates the
-      // backend issuer, actual user and workspace before opening any record.
+      // The shell verifies its own account; the temporary TO tools never access
+      // a patient database and never receive a Supabase client or JWT.
       // The React entrypoint requires an empty container (no loading placeholder).
       target.replaceChildren();
       controller = loaded.mountProjetoTo(target, {
-        getShellClient: () => {
-          if (typeof Access === "undefined" || typeof Access.getEmbeddedClient !== "function") return null;
-          return Access.getEmbeddedClient();
-        },
         verifyShellIdentity: async () => {
           if (typeof Access === "undefined" || typeof Access.verifiedBridgeIdentity !== "function") return null;
           return Access.verifiedBridgeIdentity();
