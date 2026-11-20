@@ -119,5 +119,18 @@ const Access = (() => {
       }
     }
   }
-  return {start, screen, signOut};
+  // Read-only bridge for the embedded TO module. Always rechecks identity on
+  // the issuing Auth backend; never exposes credentials, tokens or user data.
+  async function verifiedBridgeIdentity() {
+    if (!logged || !client) return null;
+    try {
+      const {data, error} = await client.auth.getUser();
+      if (error || !data?.user?.id || !data.user.email_confirmed_at) return null;
+      return {userId: String(data.user.id), supabaseUrl: client.supabaseUrl};
+    } catch {
+      return null;
+    }
+  }
+  function getEmbeddedClient() { return logged && client ? client : null; }
+  return {start, screen, signOut, verifiedBridgeIdentity, getEmbeddedClient};
 })();

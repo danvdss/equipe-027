@@ -250,3 +250,14 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   body > .clinical-print { display: block; margin: 0; color: black; orphans: 3; widows: 3; }
 }
 .dashboard-search { min-height: 46px; margin: 0 0 1rem; }
+
+/* Abas de Terapia Ocupacional: módulo longitudinal e evolução rápida. */
+.ot-hub-picker{margin:0 0 1rem;display:grid;gap:.65rem}
+.ot-hub-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.ot-hub-actions button{min-height:44px;padding:.65rem 1rem;background:#1b252a;color:#c8e8e4;border:1px solid #50646b;border-radius:11px;font-weight:600}
+.ot-hub-actions button[aria-pressed="true"]{background:#28453e;color:#dbfbef;border-color:#70b7a5}
+.ot-hub-actions button:focus-visible{outline:3px solid #9fe0d2;outline-offset:2px}
+.ot-hub-picker p{margin:0}
+#ot-embedded-root{min-height:380px;overflow:hidden;border:1px solid #38565b;border-radius:16px;background:#0a1110}
+#ot-embedded-root .privacy{padding:1.3rem;color:#c4d8d2}
+@media(max-width:600px){.ot-hub-actions{display:grid;grid-template-columns:1fr}.ot-hub-actions button{width:100%}#ot-embedded-root{border-radius:12px}}

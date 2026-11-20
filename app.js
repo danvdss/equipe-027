@@ -285,6 +285,7 @@ const Occupational = (() => {
 
 const $ = (s) => document.querySelector(s);
 const app = $("#app");
+const otPortal = typeof OccupationalPortal !== "undefined" ? OccupationalPortal : null;
 const modules = [
   ["home", "Início"],
   ["general", "Evolução"],
@@ -624,6 +625,8 @@ function collect() {
   drafts[page] = d;
 }
 function navigate(p) {
+  if (page === "occupational" && otPortal?.currentView() === "projeto" && !otPortal.leave()) return;
+  if (page !== "occupational" && p === "occupational") otPortal?.resetView();
   collect();
   page = p;
   render();
@@ -797,9 +800,11 @@ function dashboard() {
   return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="tile-art" aria-hidden="true"><i></i><i></i><i></i></span><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
 }
 function render() {
+  // React must be unmounted before replacing the E027 shell with innerHTML.
+  otPortal?.leave(true);
   document.body.style.overflow='';
   if (!logged) return login();
-  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? Occupational.form() : clinical())}</main>`;
+  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? (otPortal ? otPortal.form(() => Occupational.form()) : Occupational.form()) : clinical())}</main>`;
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
@@ -808,6 +813,20 @@ function render() {
     .querySelectorAll("[data-nav]")
     .forEach((b) => (b.onclick = () => navigate(b.dataset.nav)));
   $("#logout").onclick = () => Flow.end(true);
+  if (page === "occupational" && otPortal) {
+    app.querySelectorAll("[data-ot-view]").forEach((button) => {
+      button.onclick = () => {
+        const next = button.dataset.otView;
+        if (next === otPortal.currentView()) return;
+        if (otPortal.currentView() === "projeto" && !otPortal.leave()) return;
+        if (otPortal.currentView() === "rapida") collect();
+        otPortal.setView(next);
+        render();
+        $("#workspace-main")?.focus({preventScroll:true});
+      };
+    });
+    if (otPortal.currentView() === "projeto") void otPortal.mount();
+  }
   if ($("#clinical")) {
     Flow.addFields();
     restore();
