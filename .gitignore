@@ -1,7 +1,10 @@
 node_modules/
 
-# Private Projeto-TO bundle; built only in an authorized staging deployment.
-ot-embedded/
+# Only audited static client assets from private Projeto-TO are distributable.
+# Never track source, credentials, maps, or other build files here.
+ot-embedded/*
+!ot-embedded/projeto-to-embedded.js
+!ot-embedded/bundle-manifest.json
 
 # Local-only preview fixture
 ot-dev-preview.html

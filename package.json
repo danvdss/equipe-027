@@ -3,11 +3,12 @@
   "private": true,
   "version": "2026.11.21",
   "scripts": {
-    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs readiness.test.cjs occupational-portal.test.cjs prepare-private-to.test.cjs",
+    "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs readiness.test.cjs occupational-portal.test.cjs prepare-private-to.test.cjs pages-bundle.test.cjs",
     "check": "node check.cjs",
     "stage:to": "node prepare-private-to.cjs",
     "release": "node release.cjs",
-    "smoke:pages": "node smoke-pages.cjs"
+    "smoke:pages": "node smoke-pages.cjs",
+    "verify:to": "node verify-pages-to.cjs"
   },
   "devDependencies": {
     "jsdom": "26.1.0"

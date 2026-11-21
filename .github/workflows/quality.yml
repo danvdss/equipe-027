@@ -21,10 +21,14 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - name: Verificar pacote estático do Projeto-TO (sem banco de pacientes)
+        run: npm run verify:to
       - name: Preparar arquivos públicos
         run: |
           mkdir public
           cp enhancements.js growth.js growth-data.js renewal.js auth.js supabase.min.js index.html style.css theme.css design.css lab-details.js shortcuts.js occupational-portal.js app.js care.js workflow.js notes.js prenatal.js implante.js diu.js receituario.html rx-workflow.js rx-workflow.css html2canvas.min.js public/
+          mkdir -p public/ot-embedded
+          cp ot-embedded/projeto-to-embedded.js ot-embedded/bundle-manifest.json public/ot-embedded/
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
