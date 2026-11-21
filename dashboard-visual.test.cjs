@@ -84,3 +84,11 @@ test("dashboard motion, focus and mobile styles are accessible and published", (
   assert.match(html, /dashboard-cards\.css\?v=2026\.11\.22/);
   assert.match(workflow, /design\.css dashboard-cards\.css/);
 });
+
+test("homepage credits its creator without changing the history shortcut", (t) => {
+  const { window } = setup(t);
+  const credit = window.document.querySelector(".bottom-note .creator-credit");
+  assert.equal(credit?.textContent.trim(), "Criado por danielvieiralsd@gmail.com");
+  assert.equal(credit.querySelector("a")?.getAttribute("href"), "mailto:danielvieiralsd@gmail.com");
+  assert.equal(window.document.querySelectorAll(".bottom-note button[data-nav=history]").length, 1);
+});

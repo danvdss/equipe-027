@@ -157,6 +157,9 @@ small,
 .bottom-note {display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-top: 1.5rem; padding-top: 1.25rem; font-size: 0.75rem; color: var(--muted);}
 
 .bottom-note button {font-size: 0.875rem; border-radius: 99px;}
+.creator-credit {display: block; margin-top: 0.5rem; color: var(--muted); line-height: 1.5;}
+.creator-credit a {color: #c8dcff; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere;}
+.creator-credit a:focus-visible {outline: 2px solid var(--ui-focus); outline-offset: 3px; border-radius: 3px;}
 
 .workspace {display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 350px); align-items: start; gap: 1.25rem;}
 
