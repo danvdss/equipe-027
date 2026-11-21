@@ -46,3 +46,15 @@ As alterações de código são desenvolvidas, revisadas e testadas **no reposit
 - O Vercel poderá permanecer apenas como histórico de homologação até a aprovação definitiva. Não é necessário para a interface pública do Pages.
 - Em caso de regressão, usar o GitHub Actions para publicar novamente um **commit anterior validado** ou reverter o PR. Não usar `git push --force` para reescrever `main`.
 - Em ambiente real, a publicação da interface não equivale à homologação institucional, clínica ou LGPD.
+
+
+## Atualização visual da página inicial — 21/11/2026
+
+- Os **13 blocos** da página inicial ganharam ícones SVG distintos para cada módulo (evolução, citopatológico, puericultura, TO, renovação, hipertensão, diabetes, acompanhamento combinado, pré-natal, implante, DIU, exames e receituário).
+- O novo CSS `dashboard-cards.css` isola a identidade visual dos blocos: paleta por área, símbolo ampliado ao fundo, halo discreto, entrada escalonada, flutuação lenta e destaque ao passar o mouse.
+- Os elementos interativos continuam sendo botões com `data-nav` originais; nenhuma função ou formulário foi substituído.
+- Botões têm foco visível para navegação por teclado, contraste elevado e comportamento estático em `prefers-reduced-motion: reduce` ou no modo de cores forçadas.
+- Em celulares de até 600 px, os cards usam linhas compactas, ícone destacado e texto com boa leitura; não há rolagem lateral.
+- No Projeto-TO, a home original com brasão animado foi preservada, mas foram removidos os dois botões **Sobre o projeto** e o acesso duplicado no cabeçalho. Restou somente o botão principal **Entrar na plataforma**, que valida silenciosamente a sessão do Equipe-027.
+- Os testes simulados no Edge, em 1440 e 390 px, verificaram os 13 cards, os 13 símbolos únicos e o caminho completo de Terapia Ocupacional até o editor, sem erros de execução ou carregamentos ausentes.
+- Novo ciclo de release `2026.11.22` para atualização de cache dos recursos estáticos no GitHub Pages.

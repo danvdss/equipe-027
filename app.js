@@ -582,7 +582,7 @@ function login() {
   app.textContent = "Não foi possível carregar a autenticação. Recarregue a página.";
 }
 const iconPaths = {
-  cervical: "M9 3h6 M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3 M8 16h8",
+  cervical: "M4 20h16 M9 20v-4 M7 11l5-6 4 4-5 6z M13 5l2-2 M14 17a5 5 0 0 0 5-5 M5 20h8",
   child: "M12 3a9 9 0 1 0 9 9 M12 3c4 0 6 2 6 4s-3 3-4 1 M8 11h.01 M16 11h.01 M8 15q4 4 8 0",
   occupational: "M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6 M5 12l7 2 7-2 M12 14v4 M12 18l-4 4 M12 18l4 4",
   arrow: "M7 17L17 7 M7 7h10v10",
@@ -797,7 +797,7 @@ function dashboard() {
       "Modelo de Lagarto/SE, impressão e exportação PNG.",
     ],
   ];
-  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards">${cards.map(([id, icon, t, d]) => `<button class="card" data-nav="${id}"><span class="tile-art" aria-hidden="true"><i></i><i></i><i></i></span><span class="icon">${uiIcon(id)}</span><span class="arrow">${uiIcon("arrow")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
+  return `<div class="intro"><div><div class="eyebrow">Área de trabalho</div><h1>Seu próximo atendimento</h1><p>Escolha um favorito ou módulo para começar.</p></div><span class="intro-number" aria-hidden="true">027</span></div><div class="module-heading"><h2>Módulos de atendimento</h2><span>Selecione · Preencha · Revise</span></div><div class="cards" aria-label="Módulos disponíveis">${cards.map(([id, icon, t, d], index) => `<button type="button" class="card module-card" data-nav="${id}" style="--tile-order:${index}"><span class="tile-art" aria-hidden="true">${uiIcon(id)}</span><span class="icon" aria-hidden="true">${uiIcon(id)}</span><span class="arrow" aria-hidden="true">${uiIcon("arrow")}</span><span class="tile-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><strong>${t}</strong><p>${d}</p></button>`).join("")}</div><div class="bottom-note"><span>Informações temporárias · Nenhum cadastro de pacientes</span><button data-nav="history">Histórico da sessão (${history.length})</button></div>`;
 }
 function render() {
   // React must be unmounted before replacing the E027 shell with innerHTML.
