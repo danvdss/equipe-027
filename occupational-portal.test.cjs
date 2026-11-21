@@ -72,10 +72,12 @@ test("returning to occupational tab reopens Projeto-TO home instead of legacy ed
 
 test("bundled private module is a fixed same-origin asset and not a remote arbitrary URL", (t) => {
   const {w} = setup(t);
-  assert.equal(w.OccupationalPortal.modulePath, "./ot-embedded/projeto-to-embedded.js");
+  const embeddedManifest = JSON.parse(fs.readFileSync("ot-embedded/bundle-manifest.json", "utf8"));
+  const versionedPath = "./ot-embedded/projeto-to-embedded.js?v=" + embeddedManifest.commit.slice(0, 12);
+  assert.equal(w.OccupationalPortal.modulePath, versionedPath);
   assert.equal(
     w.OccupationalPortal.moduleUrl("https://example.test/equipe-027/"),
-    "https://example.test/equipe-027/ot-embedded/projeto-to-embedded.js",
+    new URL(versionedPath, "https://example.test/equipe-027/").href,
   );
   assert.match(fs.readFileSync(".gitignore", "utf8"), /ot-embedded\//);
   assert.match(fs.readFileSync("index.html", "utf8"), /occupational-portal\.js/);

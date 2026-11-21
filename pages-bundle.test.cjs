@@ -17,6 +17,19 @@ test("the only distributed TO client bundle is verified against a pinned private
   assert.ok(content.includes("mountProjetoTo"), "Missing integration mount");
 });
 
+test("published occupational bundle exposes hospital sectors and pre/post vital signs", () => {
+  const embedded = fs.readFileSync(path.join(__dirname, "ot-embedded", "projeto-to-embedded.js"), "utf8");
+  for (const expected of [
+    "SINAIS VITAIS — ANTES DA INTERVENÇÃO",
+    "SINAIS VITAIS — APÓS A INTERVENÇÃO",
+    "Eixo Crítico (Unidade Amarela)",
+    "Medida de Independência Funcional (MIF)",
+    "Clínica Médica",
+    "Clínica Cirúrgica",
+    "Pediatria",
+  ]) assert.ok(embedded.includes(expected), "Missing hospital content: " + expected);
+});
+
 test("a manifest must not allow tampered client JS to publish", (t) => {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), "e027-pages-bundle-"));
   t.after(() => fs.rmSync(base, { recursive: true, force: true }));

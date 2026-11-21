@@ -8,7 +8,7 @@
   else root.OccupationalPortal = api;
 })(typeof globalThis === "object" ? globalThis : this, function () {
   "use strict";
-  const MODULE_PATH = "./ot-embedded/projeto-to-embedded.js";
+  const MODULE_PATH = "./ot-embedded/projeto-to-embedded.js?v=f6e2d0384cc0";
   let view = "projeto";
   let controller = null;
   let host = null;

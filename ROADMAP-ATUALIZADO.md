@@ -60,7 +60,7 @@
 **Aceite:** termo de revisão por módulo, com nome do profissional, versão, data e ajustes registrados.
 
 ### 08. Integração da Terapia Ocupacional — CONCLUÍDA (técnica)
-**Entregue:** entrada integrada ao Projeto-TO, preservação da evolução rápida anterior, montagem/desmontagem e avisos de conteúdo não salvo; pacote de navegador verificado por manifesto/hash.
+**Entregue:** entrada integrada ao Projeto-TO, preservação da evolução rápida anterior, montagem/desmontagem e avisos de conteúdo não salvo; pacote de navegador verificado por manifesto/hash. Em 21/11/2026 foram acrescentados o contexto hospitalar (UTI, Eixo Crítico, Pediatria, Clínica Médica e Cirúrgica), o registro de Katz/MIF por setor e os sinais vitais antes e depois da intervenção. Campos e instrumentos permanecem opcionais e sem interpretação automática.
 **Falta para homologação:** validar identidade/fluxos clínicos com profissionais, garantir atualização segura do pacote privado e verificar condições de uso dos instrumentos de avaliação.
 **Aceite:** teste real do fluxo integral sem perda de dados, dupla autenticação indesejada ou carregamento incorreto.
 
