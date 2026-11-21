@@ -143,3 +143,30 @@ Instruções operacionais completas: [GUIA-STAGING-LOCAL-TO.md](GUIA-STAGING-LOC
 - Advisors identificaram RPCs clínicas privilegiadas no projeto legado e avisos de proteção de senhas comprometidas nos dois projetos; exigem avaliação institucional antes de alterar privilégios.
 - Concluídos **292 testes no Projeto-TO** e **126 testes no Equipe-027** nesta rodada, totalizando **418 aprovados**. Build incorporável, Vercel, TypeScript, lint e checagem da plataforma aprovados.
 - A versão pública permanece intacta, sem homologação, desativação de banco ou uso de dados reais de pacientes.
+
+## Revalidação da conta principal e atalhos de intervenções — 20/11/2026
+
+- Quando o Projeto-TO está incorporado ao Equipe-027, a conta profissional verificada em **Entrar** é comparada com a identidade retornada ao voltar o foco do navegador ou reabrir a aba.
+- Antes das ações explícitas **Copiar evolução** ou **Imprimir / PDF**, a identidade profissional é reconfirmada no emissor do login E027. Nenhum texto clínico é enviado nessa verificação.
+- Se a conta foi revogada, substituída, não está disponível ou a checagem falha, a oficina temporária é desmontada, o texto e o histórico local são descartados e a home mostra o motivo.
+- O Projeto-TO independente mantém o comportamento solicitado: home e botão **Entrar** sem segundo login nem cadastro de paciente.
+- Criados seis atalhos *opcionais* de intervenções de Terapia Ocupacional. Nenhum item é preenchido automaticamente; o profissional seleciona explicitamente uma intervenção realmente realizada, e pode desfazer/refazer.
+- **Testes unitários específicos:** revalidação de sessão, troca de usuário, falha de rede, cópia e impressão autorizadas e negadas, retorno de aba, preenchimento rápido e desfazer.
+- **Navegador real (Edge em localhost, QA com identidade fictícia):** verificadas a remoção do rascunho após revogação ao voltar à aba (390 px), bloqueio de cópia após mudança de usuário (1360 px) e intervenção por atalho com desfazer (390 px). Todos sem erros de execução e sem requisições clínicas remotas observadas.
+- **Limites:** a validação real de credenciais institucionais e testes de políticas implantadas ainda dependem de ambiente de homologação autorizado. A interface não impede que funções nativas externas ao app salvem cópias por conta do próprio profissional.
+
+## Fechamento da etapa de continuidade de sessão e preenchimento dinâmico
+
+**Verificações concluídas em 20/11/2026, na branch de integração (não implantada no site público):**
+
+- npm run check e ESLint do Projeto-TO: **aprovados**.
+- npm run build:embedded: **aprovado**, com verificação automática de ausência do backend clínico antigo; pacote de aproximadamente 382 KB.
+- npm run build:vercel: **aprovado**, com verificação de artefatos locais; políticas HTTP remotas ainda não foram validadas.
+- npm test no Projeto-TO: **304 testes aprovados em 40 arquivos**.
+- npm run check no Equipe-027: **aprovado**.
+- npm test no Equipe-027: **126 testes aprovados**.
+- **Total verificado nesta rodada: 430 testes aprovados**, sem falhas.
+- Smoke tests em navegador Edge, com identidade de profissional **simulada em localhost**, confirmaram três fluxos: descarte ao retomar sessão revogada (390 px), bloqueio de cópia após troca de usuário (1360 px) e atalho de intervenção com desfazer (390 px).
+- A distribuição local do pacote privado por npm run stage:to continua fora do repositório público; **nenhuma implantação, migração ou alteração de dados clínicos foi feita**.
+
+**Pendências externas à implementação:** login real com conta institucional de homologação, revisão final de acessibilidade em dispositivos físicos, decisões de retenção do Supabase legado, revisão dos avisos de segurança e autorização explícita de publicação.

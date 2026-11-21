@@ -58,6 +58,13 @@
 - Se houver dados anteriores, a política institucional define se devem ser retidos, exportados, eliminados ou preservados por motivo legal. Não assumir que estão apagados.
 - O Supabase do Equipe-027 permanece apenas para **identidade de profissionais** conforme o escopo atual do acesso principal.
 
+### Segurança da sessão incorporada
+
+- O login emitido pelo Equipe-027 continua sendo a única identidade exigida na integração; o Projeto-TO não solicita uma segunda senha.
+- A conta profissional deve ser reconfirmada quando a aba volta ao foco e antes da cópia ou impressão explícitas. A identidade não deve mudar durante a evolução aberta.
+- Falha na revalidação descarta o rascunho e retorna à home, sem salvar conteúdo.
+- Seis intervenções comuns podem ser acrescentadas por atalhos **não pré-selecionados**, somente após confirmação pelo profissional, com desfazer/refazer.
+
 ## 5. Critérios de aceite
 
 - A home original aparece com botão Entrar; sem usuário/senha do Projeto-TO.
