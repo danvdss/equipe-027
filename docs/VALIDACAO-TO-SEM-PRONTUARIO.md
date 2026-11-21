@@ -77,3 +77,51 @@ O módulo React foi montado dentro do shell E027 via pacote same-origin. Uma ide
 ## Próximo passo recomendado
 
 Implementar uma publicação de testes unificada e privada, com autenticação E027, revisão de segurança e teste E2E em ambiente real. Após a aprovação, manter a evolução temporária como produto ativo e arquivar administrativamente os serviços de prontuário antigos. Somente depois ampliar a biblioteca de instrumentos.
+
+## Rodada complementar — impressão, acessibilidade e descarte (20/11/2026)
+
+### Impressão/PDF, sem salvar pacientes
+- Botão explícito **Imprimir / PDF** só habilitado quando a evolução contém texto.
+- O conteúdo de impressão é montado como DOM textual temporário, sem HTML dinâmico, por `buildTemporaryPrintSheet()`.
+- Em `beforeprint`, cria-se uma folha com o texto corrente e aviso de revisão institucional. Em `afterprint` ou na desmontagem, a cópia é removida.
+- Não existe gravação de PDF, arquivo ou prontuário pelo Projeto-TO: salvar como PDF é uma escolha explícita do profissional no navegador e cria dados fora desta ferramenta.
+- Testes unitários confirmam impressão desabilitada em branco, conteúdo correto, ausência de interpretação de HTML e remoção após a saída.
+
+### Navegador real
+- Edge 158, desenvolvimento local com dados **sintéticos**, 1360 px (app independente) e 390 px (incorporado ao Equipe-027).
+- Verificado o percurso da edição até a folha de impressão em `print` CSS: folha presente e visível, texto exato, nenhum campo de paciente, folha removida após `afterprint`.
+- **axe-core** para WCAG 2.0/2.1 A/AA nos dois cenários: **zero violações reportadas**. Isso não substitui avaliação humana, dispositivo físico, testes de teclado/leitor de tela ou auditoria de contraste institucional.
+- Nenhum erro de execução ou requisição a endpoints clínicos/Supabase foi observado nesses fluxos.
+
+### Navegação e privacidade realistas
+- Testado módulo React já incorporado com **identidade simulada somente em QA**, sem autenticação de uma conta real.
+- Após editar dados fictícios, cancelar o diálogo de descarte manteve o rascunho; confirmar a saída desmontou o módulo; reentrar carregou a **home original**, sem o texto anterior.
+- O estado e histórico de desfazer/refazer permanecem na memória da sessão e não são persistidos.
+- A validação com login verdadeiro do Equipe-027, a distribuição privada do pacote, a revisão dos serviços legados e a homologação **ainda estão pendentes**.
+
+## Preparação de staging local privado (sem deploy)
+
+Foi criado no Equipe-027 o script `prepare-private-to.cjs`, acionado por `npm run stage:to`. A rotina:
+
+1. Localiza o repositório privado do Projeto-TO fora do checkout público.
+2. Confere o pacote, executa o build privado e sua verificação de ausência de endpoints clínicos.
+3. Recusa origem errada, referências clínicas e arquivos privados já rastreados pelo Git.
+4. Copia **somente o bundle incorporável** para `ot-embedded/`, pasta ignorada no repositório Equipe-027.
+5. Não faz commit, push, publicação, migração de banco nem troca de credenciais.
+
+Quatro testes automatizados de proteção da montagem local foram aprovados. O próprio comando `npm run stage:to` foi executado e validado no computador de desenvolvimento.
+
+Instruções operacionais completas: [GUIA-STAGING-LOCAL-TO.md](GUIA-STAGING-LOCAL-TO.md).
+
+**Importante:** o staging aqui é **local**. O site público do Equipe-027 permanece inalterado; a autenticação com conta real, hospedagem privada e homologação institucional não foram concluídas.
+
+## Resultado final desta rodada de testes (20/11/2026)
+
+- **Projeto-TO:** 289 testes automatizados aprovados; checagem TypeScript, ESLint, build Worker, Vercel e build incorporável aprovados.
+- **Equipe-027:** 122 testes automatizados aprovados, incluindo quatro testes de proteção da montagem privada e checagem da plataforma aprovada.
+- **Total: 411 testes automatizados aprovados** entre os dois projetos.
+- O navegador Edge confirmou a geração textual, a folha de impressão e a remoção da cópia após o evento afterprint, tanto na versão independente quanto incorporada.
+- Axe-core não apontou violações WCAG 2.0/2.1 A ou AA nos cenários testados; isso não constitui certificação de acessibilidade.
+- Cancelar a saída preserva o rascunho; sair e retornar abre a home sem o texto anterior.
+- A compilação e montagem local privada passaram pela nova rotina npm run stage:to, sem inclusão de bundle no Git público.
+- **Não houve** autenticação com conta real, publicação institucional privada, avaliação em aparelhos físicos, auditoria do banco legado ou homologação clínica.
