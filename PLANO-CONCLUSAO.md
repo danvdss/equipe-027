@@ -1,5 +1,7 @@
 # Equipe-027 — Plano de conclusão e critérios de aceite
 
+> **Revisão atual (21/11/2026):** consulte [ROADMAP-ATUALIZADO.md](ROADMAP-ATUALIZADO.md) para o status consolidado das 12 entregas em 6 fases, evidências mais recentes e pendências priorizadas. Os registros abaixo permanecem como histórico e critérios de aceite.
+
 Atualizado em 18/11/2026. Este arquivo registra evidências técnicas; não equivale a homologação clínica.
 
 ## Etapa 1 — Base, acesso e registros
