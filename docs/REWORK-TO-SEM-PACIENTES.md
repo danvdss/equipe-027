@@ -35,7 +35,7 @@
 - **Atividades repetíveis** com tarefa, desempenho observado, nível de assistência contextualizado e adaptação/recurso.
 - Participação, conclusão da tarefa, análise profissional, orientações, plano e retorno.
 - Instrumentos disponíveis para registro descritivo: **COPM, Katz, Lawton e Brody, PEDI-CAT, Perfil Sensorial 2, MoCA, M-CHAT-R/F e Outro**.
-- Registrar nome, versão, resultados e observações; não reproduzir automaticamente itens protegidos, nem inferir diagnósticos/escores fora da versão validada.
+- Registrar nome, versão, **situação da aplicação, origem das informações**, resultados e observações; não reproduzir automaticamente itens protegidos, nem inferir diagnósticos/escores fora da versão validada.
 - **Prévia em tempo real**, texto corrido/SOAP, edição por blocos com origem preservada, botão copiar e nova evolução.
 - Desktop com campos e prévia lado a lado; celular com alternância Campos/Evolução.
 - Não preencher informações clínicas presumidas ou extraídas de registros anteriores (não há histórico).

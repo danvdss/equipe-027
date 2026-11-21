@@ -49,7 +49,7 @@
     message.className = "privacy ot-hub-unavailable";
     message.setAttribute("role", "status");
     message.textContent =
-      "O Ferramentas do Projeto-TO ainda não está disponível neste ambiente. " +
+      "As ferramentas do Projeto-TO ainda não estão disponíveis neste ambiente. " +
       "A Evolução rápida continua acessível pela opção acima. Nenhum dado clínico foi carregado.";
     current.append(message);
   }
