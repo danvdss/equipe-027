@@ -145,3 +145,24 @@ test("mount forwards checked shell identity without a Supabase client", async (t
   assert.deepEqual(await received.verifyShellIdentity(), attestation);
   assert.match(w.document.querySelector("#ot-embedded-root").textContent, /Página inicial fictícia/);
 });
+
+test("the E027 logout confirmation detects unsaved private React TO text without receiving it", async t => {
+  const {w,run}=setup(t);
+  run("navigate('occupational')");
+  const portal=w.OccupationalPortal;
+  assert.equal(portal.hasUnsavedChanges(),false);
+  await portal.mount(async()=>({
+    mountProjetoTo(target){
+      target.textContent="Fake synthetic content";
+      return {
+        hasUnsavedChanges(){return true;},
+        unmount(){return true;},
+      };
+    },
+  }));
+  assert.equal(portal.hasUnsavedChanges(),true);
+  assert.equal(run("Flow.hasData()"),true,"logout must warn when TO contains unsaved state");
+  portal.leave(true);
+  assert.equal(portal.hasUnsavedChanges(),false);
+  assert.equal(run("Flow.hasData()"),false);
+});

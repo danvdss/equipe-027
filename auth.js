@@ -2,7 +2,14 @@
 const Access = (() => {
   const SITE = "https://danvdss.github.io/equipe-027/";
   let client, setupMode = false, busy = false;
+  function discardEmbeddedTO() {
+    // Unmount React BEFORE replacing login/workspace HTML, even when the
+    // backend revokes the session asynchronously. Force discarding
+    // temporary clinical notes: logging out must never retain them.
+    if (typeof OccupationalPortal !== "undefined") OccupationalPortal.leave(true);
+  }
   function clearWork() {
+    discardEmbeddedTO();
     logged = false; drafts = {}; history = []; extraCount = 0; page = "home";
     Flow.reset(); destroyReceituario();
   }
@@ -11,6 +18,7 @@ const Access = (() => {
     if (el) el.textContent = text;
   }
   function screen(mode = "login", notice = "") {
+    discardEmbeddedTO();
     destroyReceituario();
     const passwordMode = mode === "password";
     const recoveryMode = mode === "recovery";

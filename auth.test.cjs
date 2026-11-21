@@ -65,3 +65,42 @@ test('callback tokens are removed even when the SDK fails during initialization'
  assert.equal(s.w.location.hash,'');
  assert.equal(s.run('logged'),false);
 });
+
+test('remote sign-out unmounts embedded TO before login HTML replaces the shell', async t => {
+ const s=await setup(t);
+ const changes=[];
+ const app=s.w.document.querySelector('#app');
+ app.innerHTML='<section id="embedded-private">Temporary clinical text in memory</section>';
+ s.w.OccupationalPortal={leave(force){
+   changes.push({force,oldDomPresent:!!app.querySelector('#embedded-private')});
+   return true;
+ }};
+ s.run('logged=true;drafts={occupational:{note:"synthetic"}}');
+ s.event('SIGNED_OUT');
+ assert.ok(changes.length>=1);
+ assert.deepEqual(changes[0],{force:true,oldDomPresent:true});
+ assert.equal(s.run('logged'),false);
+ assert.equal(s.run('Object.keys(drafts).length'),0);
+ assert.equal(app.querySelector('#embedded-private'),null);
+ assert.ok(app.querySelector('#login'));
+});
+
+test('explicit logout cleans embedded React even if server session revocation fails',async t=>{
+ const s=await setup(t,{signOut:async()=>({error:{status:500}})});
+ let calls=0;
+ s.w.OccupationalPortal={leave(force){assert.equal(force,true);calls++;return true;}};
+ s.run('logged=true;drafts={occupational:{note:"synthetic"}}');
+ await s.run('Access.signOut()');
+ assert.ok(calls>=1);
+ assert.equal(s.run('logged'),false);
+ assert.equal(s.run('Object.keys(drafts).length'),0);
+});
+
+test('rendering an auth screen also prevents a pending portal mount from reappearing', async t=>{
+ const s=await setup(t);
+ let cleanup=0;
+ s.w.OccupationalPortal={leave(force){assert.equal(force,true);cleanup++;return true;}};
+ s.run('Access.screen("login","Sessão de teste expirada.")');
+ assert.equal(cleanup,1);
+ assert.match(s.w.document.querySelector('#error').textContent,/expirada/);
+});

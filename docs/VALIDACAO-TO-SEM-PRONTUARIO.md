@@ -125,3 +125,21 @@ Instruções operacionais completas: [GUIA-STAGING-LOCAL-TO.md](GUIA-STAGING-LOC
 - Cancelar a saída preserva o rascunho; sair e retornar abre a home sem o texto anterior.
 - A compilação e montagem local privada passaram pela nova rotina npm run stage:to, sem inclusão de bundle no Git público.
 - **Não houve** autenticação com conta real, publicação institucional privada, avaliação em aparelhos físicos, auditoria do banco legado ou homologação clínica.
+
+## Revisão de privacidade e desligamento de sessão
+
+- O projeto Supabase anterior do Projeto-TO ainda mantém tabelas e registros históricos. Foi realizado inventário privado **somente-leitura**, sem identificar pacientes e sem executar exclusões ou migrações.
+- Foram identificados avisos de segurança que exigem avaliação administrativa, inclusive RPCs privilegiadas ainda disponíveis para usuários autenticados.
+- **Desativação do banco legado não realizada**: exige inventário, retenção autorizada, revisão de acessos, testes negativos e plano de reversão.
+- O Equipe-027 agora desmonta o React incorporado antes de substituir a tela por login, tanto no logout explícito quanto na invalidação da sessão.
+- O fluxo de confirmação de saída considera também mudanças não salvas no editor temporário, recebendo apenas um sinal booleano, sem texto clínico.
+- Testes adicionais de limpeza de sessão, recusa de descarte e integridade do estado temporário foram adicionados às branches de desenvolvimento.
+
+## Etapa de segurança do shell e inventário legado — revisão de 20/11/2026
+
+- Corrigido o encerramento de sessão do E027 para desmontar o React antes de reconstruir a tela de login, inclusive em SIGNED_OUT e falha na revogação remota.
+- O editor privado informa ao shell apenas um **booleano de alterações pendentes**, sem compartilhar texto clínico. A confirmação de logout/novo atendimento agora reconhece esses dados temporários.
+- Backend legado Projeto-TO: inventário administrativo de contagens e políticas RLS, sem leitura de informações individuais. **Ainda há registros e objetos históricos**, não foram removidos.
+- Advisors identificaram RPCs clínicas privilegiadas no projeto legado e avisos de proteção de senhas comprometidas nos dois projetos; exigem avaliação institucional antes de alterar privilégios.
+- Concluídos **292 testes no Projeto-TO** e **126 testes no Equipe-027** nesta rodada, totalizando **418 aprovados**. Build incorporável, Vercel, TypeScript, lint e checagem da plataforma aprovados.
+- A versão pública permanece intacta, sem homologação, desativação de banco ou uso de dados reais de pacientes.

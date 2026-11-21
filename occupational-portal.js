@@ -79,6 +79,9 @@
       return false;
     }
   }
+  function hasUnsavedChanges() {
+    return Boolean(controller && typeof controller.hasUnsavedChanges === "function" && controller.hasUnsavedChanges());
+  }
   function leave(force = false) {
     if (controller && typeof controller.unmount === "function") {
       if (controller.unmount(force) === false && !force) return false;
@@ -88,5 +91,5 @@
     host = null;
     return true;
   }
-  return { form, mount, leave, currentView, resetView, setView, modulePath: MODULE_PATH, moduleUrl: url };
+  return { form, mount, leave, hasUnsavedChanges, currentView, resetView, setView, modulePath: MODULE_PATH, moduleUrl: url };
 });
