@@ -11,7 +11,7 @@ Ferramenta estática para apoiar registros clínicos multiprofissionais, registr
 - Cálculo da idade gestacional por DUM ou USG.
 - Texto editável e cópia para o sistema oficial.
 - Receituário em duas vias, impressão e exportação PNG.
-- Terapia Ocupacional: contexto hospitalar com escolha entre UTI, Eixo Crítico, Pediatria, Clínica Médica e Clínica Cirúrgica; Katz/MIF conforme o setor; registro de sinais vitais antes e depois da intervenção (FC, FR, SpO₂, PA e temperatura). O módulo não infere diagnósticos nem substitui revisão clínica.
+- Terapia Ocupacional: contexto hospitalar com escolha entre UTI, Eixo Crítico, Pediatria, Clínica Médica e Clínica Cirúrgica; Katz/MIF conforme o setor; registro de sinais vitais antes e depois da intervenção (FC, FR, SpO₂, PA e temperatura). O texto produzido segue uma evolução clínica narrativa, com parágrafos articulados conforme os exemplos de UTI e Eixo Crítico, preservando fatos informados e a ordem do atendimento. O módulo não infere diagnósticos nem substitui revisão clínica.
 
 ## Uso
 Abra `index.html` por um servidor HTTP local ou pelo GitHub Pages. O acesso usa nome de usuário e senha validados pelo Supabase Auth através de uma função no servidor.
