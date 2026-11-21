@@ -337,9 +337,10 @@ const Flow = (() => {
   }
   function hasData() {
     collect();
-    return (
+    return Boolean(
       rxDirty ||
       history.length > 0 ||
+      (typeof OccupationalPortal !== "undefined" && OccupationalPortal.hasUnsavedChanges()) ||
       !!undo ||
       Object.values(drafts).some(Care.meaningful) ||
       (typeof window.Equipe027HasExtraDraft === "function" && window.Equipe027HasExtraDraft()) ||

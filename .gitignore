@@ -1,1 +1,8 @@
 node_modules/
+
+# Private Projeto-TO bundle; built only in an authorized staging deployment.
+ot-embedded/
+
+# Local-only preview fixture
+ot-dev-preview.html
+ot-visual-preview.png

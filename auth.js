@@ -2,7 +2,14 @@
 const Access = (() => {
   const SITE = "https://danvdss.github.io/equipe-027/";
   let client, setupMode = false, busy = false;
+  function discardEmbeddedTO() {
+    // Unmount React BEFORE replacing login/workspace HTML, even when the
+    // backend revokes the session asynchronously. Force discarding
+    // temporary clinical notes: logging out must never retain them.
+    if (typeof OccupationalPortal !== "undefined") OccupationalPortal.leave(true);
+  }
   function clearWork() {
+    discardEmbeddedTO();
     logged = false; drafts = {}; history = []; extraCount = 0; page = "home";
     Flow.reset(); destroyReceituario();
   }
@@ -11,6 +18,7 @@ const Access = (() => {
     if (el) el.textContent = text;
   }
   function screen(mode = "login", notice = "") {
+    discardEmbeddedTO();
     destroyReceituario();
     const passwordMode = mode === "password";
     const recoveryMode = mode === "recovery";
@@ -119,5 +127,17 @@ const Access = (() => {
       }
     }
   }
-  return {start, screen, signOut};
+  // Read-only bridge for the embedded TO module. Always rechecks identity on
+  // the issuing Auth backend; never exposes credentials, tokens or user data.
+  async function verifiedBridgeIdentity() {
+    if (!logged || !client) return null;
+    try {
+      const {data, error} = await client.auth.getUser();
+      if (error || !data?.user?.id || !data.user.email_confirmed_at) return null;
+      return {userId: String(data.user.id)};
+    } catch {
+      return null;
+    }
+  }
+  return {start, screen, signOut, verifiedBridgeIdentity};
 })();
