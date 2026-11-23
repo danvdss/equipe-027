@@ -1,0 +1,4202 @@
+{
+  "norma": "RDC Anvisa nº 1.036, de 9 de julho de 2026",
+  "publicacao": "13/07/2026",
+  "base": "Anexo I da Portaria SVS/MS nº 344/1998, atualizado pela RDC nº 1.036/2026",
+  "fonte": "https://anvisalegis-empresa.datalegis.net/action/ActionDatalegis.php?acao=abrirTextoAto&cod_menu=8542&cod_modulo=310&link=S&numeroAto=00001036&orgao=RDC%2FDC%2FANVISA%2FMS&seqAto=000&tipo=RDC&valorAno=2026",
+  "paginaAnvisa": "https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados/lista-substancias",
+  "total": 783,
+  "contagens": {
+    "A1": 94,
+    "A2": 13,
+    "A3": 14,
+    "B1": 95,
+    "B2": 8,
+    "C1": 213,
+    "C2": 5,
+    "C3": 3,
+    "C5": 31,
+    "D1": 35,
+    "D2": 13,
+    "E": 9,
+    "F1": 56,
+    "F2": 186,
+    "F3": 1,
+    "F4": 7
+  },
+  "registros": [
+    {
+      "n": "Acetilmetadol",
+      "l": "A1",
+      "i": 1
+    },
+    {
+      "n": "Alfacetilmetadol",
+      "l": "A1",
+      "i": 2
+    },
+    {
+      "n": "Alfameprodina",
+      "l": "A1",
+      "i": 3
+    },
+    {
+      "n": "Alfametadol",
+      "l": "A1",
+      "i": 4
+    },
+    {
+      "n": "Alfaprodina",
+      "l": "A1",
+      "i": 5
+    },
+    {
+      "n": "Alfentanila",
+      "l": "A1",
+      "i": 6
+    },
+    {
+      "n": "Alilprodina",
+      "l": "A1",
+      "i": 7
+    },
+    {
+      "n": "Anileridina",
+      "l": "A1",
+      "i": 8
+    },
+    {
+      "n": "Bezitramida",
+      "l": "A1",
+      "i": 9
+    },
+    {
+      "n": "Benzetidina",
+      "l": "A1",
+      "i": 10
+    },
+    {
+      "n": "Benzilmorfina",
+      "l": "A1",
+      "i": 11
+    },
+    {
+      "n": "Benzoilmorfina",
+      "l": "A1",
+      "i": 12
+    },
+    {
+      "n": "Betacetilmetadol",
+      "l": "A1",
+      "i": 13
+    },
+    {
+      "n": "Betameprodina",
+      "l": "A1",
+      "i": 14
+    },
+    {
+      "n": "Betametadol",
+      "l": "A1",
+      "i": 15
+    },
+    {
+      "n": "Betaprodina",
+      "l": "A1",
+      "i": 16
+    },
+    {
+      "n": "Buprenorfina",
+      "l": "A1",
+      "i": 17
+    },
+    {
+      "n": "Butorfanol",
+      "l": "A1",
+      "i": 18
+    },
+    {
+      "n": "Clonitazeno",
+      "l": "A1",
+      "i": 19
+    },
+    {
+      "n": "Codoxima",
+      "l": "A1",
+      "i": 20
+    },
+    {
+      "n": "Concentrado de palha de dormideira",
+      "l": "A1",
+      "i": 21
+    },
+    {
+      "n": "Dextromoramida",
+      "l": "A1",
+      "i": 22
+    },
+    {
+      "n": "Diampromida",
+      "l": "A1",
+      "i": 23
+    },
+    {
+      "n": "Dietiltiambuteno",
+      "l": "A1",
+      "i": 24
+    },
+    {
+      "n": "Difenoxilato",
+      "l": "A1",
+      "i": 25
+    },
+    {
+      "n": "Difenoxina",
+      "l": "A1",
+      "i": 26
+    },
+    {
+      "n": "Diidromorfina",
+      "l": "A1",
+      "i": 27
+    },
+    {
+      "n": "Dimefeptanol (metadol)",
+      "l": "A1",
+      "i": 28
+    },
+    {
+      "n": "Dimenoxadol",
+      "l": "A1",
+      "i": 29
+    },
+    {
+      "n": "Dimetiltiambuteno",
+      "l": "A1",
+      "i": 30
+    },
+    {
+      "n": "Dioxafetila",
+      "l": "A1",
+      "i": 31
+    },
+    {
+      "n": "Dipipanona",
+      "l": "A1",
+      "i": 32
+    },
+    {
+      "n": "Drotebanol",
+      "l": "A1",
+      "i": 33
+    },
+    {
+      "n": "Etilmetiltiambuteno",
+      "l": "A1",
+      "i": 34
+    },
+    {
+      "n": "Etonitazeno",
+      "l": "A1",
+      "i": 35
+    },
+    {
+      "n": "Etoxeridina",
+      "l": "A1",
+      "i": 36
+    },
+    {
+      "n": "Fenadoxona",
+      "l": "A1",
+      "i": 37
+    },
+    {
+      "n": "Fenampromida",
+      "l": "A1",
+      "i": 38
+    },
+    {
+      "n": "Fenazocina",
+      "l": "A1",
+      "i": 39
+    },
+    {
+      "n": "Fenomorfano",
+      "l": "A1",
+      "i": 40
+    },
+    {
+      "n": "Fenoperidina",
+      "l": "A1",
+      "i": 41
+    },
+    {
+      "n": "Fentanila",
+      "l": "A1",
+      "i": 42
+    },
+    {
+      "n": "Furetidina",
+      "l": "A1",
+      "i": 43
+    },
+    {
+      "n": "Hidrocodona",
+      "l": "A1",
+      "i": 44
+    },
+    {
+      "n": "Hidromorfinol",
+      "l": "A1",
+      "i": 45
+    },
+    {
+      "n": "Hidromorfona",
+      "l": "A1",
+      "i": 46
+    },
+    {
+      "n": "Hidroxipetidina",
+      "l": "A1",
+      "i": 47
+    },
+    {
+      "n": "Intermediário da metadona (4-ciano-2-dimetilamina-4,4-difenilbutano)",
+      "l": "A1",
+      "i": 48
+    },
+    {
+      "n": "Intermediário da moramida (ácido 2-metil-3-morfolina-1,1-difenilpropano carboxílico)",
+      "l": "A1",
+      "i": 49
+    },
+    {
+      "n": "Intermediário \"a\" da petidina (4-ciano-1-metil-4-fenilpiperidina)",
+      "l": "A1",
+      "i": 50
+    },
+    {
+      "n": "Intermediário \"b\" da petidina (éster etílico do ácido 4-fenilpiperidina-4-carboxilíco)",
+      "l": "A1",
+      "i": 51
+    },
+    {
+      "n": "Intermediário \"c\" da petidina (ácido-1-metil-4-fenilpiperidina-4-carboxílico)",
+      "l": "A1",
+      "i": 52
+    },
+    {
+      "n": "Isometadona",
+      "l": "A1",
+      "i": 53
+    },
+    {
+      "n": "Levofenacilmorfano",
+      "l": "A1",
+      "i": 54
+    },
+    {
+      "n": "Levometorfano",
+      "l": "A1",
+      "i": 55
+    },
+    {
+      "n": "Levomoramida",
+      "l": "A1",
+      "i": 56
+    },
+    {
+      "n": "Levorfanol",
+      "l": "A1",
+      "i": 57
+    },
+    {
+      "n": "Metadona",
+      "l": "A1",
+      "i": 58
+    },
+    {
+      "n": "Metazocina",
+      "l": "A1",
+      "i": 59
+    },
+    {
+      "n": "Metildesorfina",
+      "l": "A1",
+      "i": 60
+    },
+    {
+      "n": "Metildiidromorfina",
+      "l": "A1",
+      "i": 61
+    },
+    {
+      "n": "Metopona",
+      "l": "A1",
+      "i": 62
+    },
+    {
+      "n": "Mirofina",
+      "l": "A1",
+      "i": 63
+    },
+    {
+      "n": "Morferidina",
+      "l": "A1",
+      "i": 64
+    },
+    {
+      "n": "Morfina",
+      "l": "A1",
+      "i": 65
+    },
+    {
+      "n": "Morinamida",
+      "l": "A1",
+      "i": 66
+    },
+    {
+      "n": "Nicomorfina",
+      "l": "A1",
+      "i": 67
+    },
+    {
+      "n": "Noracimetadol",
+      "l": "A1",
+      "i": 68
+    },
+    {
+      "n": "Norlevorfanol",
+      "l": "A1",
+      "i": 69
+    },
+    {
+      "n": "Normetadona",
+      "l": "A1",
+      "i": 70
+    },
+    {
+      "n": "Normorfina",
+      "l": "A1",
+      "i": 71
+    },
+    {
+      "n": "Norpipanona",
+      "l": "A1",
+      "i": 72
+    },
+    {
+      "n": "N-oxicodeína",
+      "l": "A1",
+      "i": 73
+    },
+    {
+      "n": "N-oximorfina",
+      "l": "A1",
+      "i": 74
+    },
+    {
+      "n": "Ópio",
+      "l": "A1",
+      "i": 75
+    },
+    {
+      "n": "Oripavina",
+      "l": "A1",
+      "i": 76
+    },
+    {
+      "n": "Oxicodona",
+      "l": "A1",
+      "i": 77
+    },
+    {
+      "n": "Oximorfona",
+      "l": "A1",
+      "i": 78
+    },
+    {
+      "n": "Petidina",
+      "l": "A1",
+      "i": 79
+    },
+    {
+      "n": "Piminodina",
+      "l": "A1",
+      "i": 80
+    },
+    {
+      "n": "Piritramida",
+      "l": "A1",
+      "i": 81
+    },
+    {
+      "n": "Proeptazina",
+      "l": "A1",
+      "i": 82
+    },
+    {
+      "n": "Properidina",
+      "l": "A1",
+      "i": 83
+    },
+    {
+      "n": "Racemetorfano",
+      "l": "A1",
+      "i": 84
+    },
+    {
+      "n": "Racemoramida",
+      "l": "A1",
+      "i": 85
+    },
+    {
+      "n": "Racemorfano",
+      "l": "A1",
+      "i": 86
+    },
+    {
+      "n": "Remifentanila",
+      "l": "A1",
+      "i": 87
+    },
+    {
+      "n": "Sufentanila",
+      "l": "A1",
+      "i": 88
+    },
+    {
+      "n": "Tapentadol",
+      "l": "A1",
+      "i": 89
+    },
+    {
+      "n": "Tebacona",
+      "l": "A1",
+      "i": 90
+    },
+    {
+      "n": "Tebaína",
+      "l": "A1",
+      "i": 91
+    },
+    {
+      "n": "Tilidina",
+      "l": "A1",
+      "i": 92
+    },
+    {
+      "n": "Trimeperidina",
+      "l": "A1",
+      "i": 93
+    },
+    {
+      "n": "Viminol",
+      "l": "A1",
+      "i": 94
+    },
+    {
+      "n": "Acetildiidrocodeina",
+      "l": "A2",
+      "i": 1
+    },
+    {
+      "n": "Codeína",
+      "l": "A2",
+      "i": 2
+    },
+    {
+      "n": "Dextropropoxifeno",
+      "l": "A2",
+      "i": 3
+    },
+    {
+      "n": "Diidrocodeína",
+      "l": "A2",
+      "i": 4
+    },
+    {
+      "n": "Etilmorfina",
+      "l": "A2",
+      "i": 5
+    },
+    {
+      "n": "Folcodina",
+      "l": "A2",
+      "i": 6
+    },
+    {
+      "n": "Nalbufina",
+      "l": "A2",
+      "i": 7
+    },
+    {
+      "n": "Nalorfina",
+      "l": "A2",
+      "i": 8
+    },
+    {
+      "n": "Nicocodina",
+      "l": "A2",
+      "i": 9
+    },
+    {
+      "n": "Nicodicodina",
+      "l": "A2",
+      "i": 10
+    },
+    {
+      "n": "Norcodeína",
+      "l": "A2",
+      "i": 11
+    },
+    {
+      "n": "Propiram",
+      "l": "A2",
+      "i": 12
+    },
+    {
+      "n": "Tramadol",
+      "l": "A2",
+      "i": 13
+    },
+    {
+      "n": "Anfetamina",
+      "l": "A3",
+      "i": 1
+    },
+    {
+      "n": "Catina",
+      "l": "A3",
+      "i": 2
+    },
+    {
+      "n": "Clorfentermina",
+      "l": "A3",
+      "i": 3
+    },
+    {
+      "n": "Dexanfetamina",
+      "l": "A3",
+      "i": 4
+    },
+    {
+      "n": "Dronabinol",
+      "l": "A3",
+      "i": 5
+    },
+    {
+      "n": "Femetrazina",
+      "l": "A3",
+      "i": 6
+    },
+    {
+      "n": "Fenciclidina",
+      "l": "A3",
+      "i": 7
+    },
+    {
+      "n": "Fenetilina",
+      "l": "A3",
+      "i": 8
+    },
+    {
+      "n": "Fenfluramina",
+      "l": "A3",
+      "i": 9
+    },
+    {
+      "n": "Levanfetamina",
+      "l": "A3",
+      "i": 10
+    },
+    {
+      "n": "Lisdexanfetamina",
+      "l": "A3",
+      "i": 11
+    },
+    {
+      "n": "Metilfenidato",
+      "l": "A3",
+      "i": 12
+    },
+    {
+      "n": "Metilsinefrina",
+      "l": "A3",
+      "i": 13
+    },
+    {
+      "n": "Tanfetamina",
+      "l": "A3",
+      "i": 14
+    },
+    {
+      "n": "Alfaxalona",
+      "l": "B1",
+      "i": 1
+    },
+    {
+      "n": "Alobarbital",
+      "l": "B1",
+      "i": 2
+    },
+    {
+      "n": "Alprazolam",
+      "l": "B1",
+      "i": 3
+    },
+    {
+      "n": "Amineptina",
+      "l": "B1",
+      "i": 4
+    },
+    {
+      "n": "Amobarbital",
+      "l": "B1",
+      "i": 5
+    },
+    {
+      "n": "Aprobarbital",
+      "l": "B1",
+      "i": 6
+    },
+    {
+      "n": "Armodafinila",
+      "l": "B1",
+      "i": 7
+    },
+    {
+      "n": "Barbexaclona",
+      "l": "B1",
+      "i": 8
+    },
+    {
+      "n": "Barbital",
+      "l": "B1",
+      "i": 9
+    },
+    {
+      "n": "Bromazepam",
+      "l": "B1",
+      "i": 10
+    },
+    {
+      "n": "Bromazolam",
+      "l": "B1",
+      "i": 11
+    },
+    {
+      "n": "Brotizolam",
+      "l": "B1",
+      "i": 12
+    },
+    {
+      "n": "Butabarbital",
+      "l": "B1",
+      "i": 13
+    },
+    {
+      "n": "Butalbital",
+      "l": "B1",
+      "i": 14
+    },
+    {
+      "n": "Camazepam",
+      "l": "B1",
+      "i": 15
+    },
+    {
+      "n": "Carisoprodol",
+      "l": "B1",
+      "i": 16
+    },
+    {
+      "n": "Cetamina",
+      "l": "B1",
+      "i": 17
+    },
+    {
+      "n": "Cetazolam",
+      "l": "B1",
+      "i": 18
+    },
+    {
+      "n": "Ciclobarbital",
+      "l": "B1",
+      "i": 19
+    },
+    {
+      "n": "Clobazam",
+      "l": "B1",
+      "i": 20
+    },
+    {
+      "n": "Clonazepam",
+      "l": "B1",
+      "i": 21
+    },
+    {
+      "n": "Clonazolam",
+      "l": "B1",
+      "i": 22
+    },
+    {
+      "n": "Clorazepam",
+      "l": "B1",
+      "i": 23
+    },
+    {
+      "n": "Clorazepato",
+      "l": "B1",
+      "i": 24
+    },
+    {
+      "n": "Clordiazepóxido",
+      "l": "B1",
+      "i": 25
+    },
+    {
+      "n": "Cloreto de etila",
+      "l": "B1",
+      "i": 26
+    },
+    {
+      "n": "Cloreto de metileno/diclorometano",
+      "l": "B1",
+      "i": 27
+    },
+    {
+      "n": "Clotiazepam",
+      "l": "B1",
+      "i": 28
+    },
+    {
+      "n": "Cloxazolam",
+      "l": "B1",
+      "i": 29
+    },
+    {
+      "n": "Delorazepam",
+      "l": "B1",
+      "i": 30
+    },
+    {
+      "n": "Diazepam",
+      "l": "B1",
+      "i": 31
+    },
+    {
+      "n": "Diclazepam",
+      "l": "B1",
+      "i": 32
+    },
+    {
+      "n": "Escetamina",
+      "l": "B1",
+      "i": 33
+    },
+    {
+      "n": "Estazolam",
+      "l": "B1",
+      "i": 34
+    },
+    {
+      "n": "Eszopiclona",
+      "l": "B1",
+      "i": 35
+    },
+    {
+      "n": "Etclorvinol",
+      "l": "B1",
+      "i": 36
+    },
+    {
+      "n": "Etilanfetamina (N-etilanfetamina)",
+      "l": "B1",
+      "i": 37
+    },
+    {
+      "n": "Etinamato",
+      "l": "B1",
+      "i": 38
+    },
+    {
+      "n": "Etizolam",
+      "l": "B1",
+      "i": 39
+    },
+    {
+      "n": "Fenazepam",
+      "l": "B1",
+      "i": 40
+    },
+    {
+      "n": "Fenobarbital",
+      "l": "B1",
+      "i": 41
+    },
+    {
+      "n": "Flualprazolam",
+      "l": "B1",
+      "i": 42
+    },
+    {
+      "n": "Flubromazolam",
+      "l": "B1",
+      "i": 43
+    },
+    {
+      "n": "Fludiazepam",
+      "l": "B1",
+      "i": 44
+    },
+    {
+      "n": "Flunitrazepam",
+      "l": "B1",
+      "i": 45
+    },
+    {
+      "n": "Flunitrazolam",
+      "l": "B1",
+      "i": 46
+    },
+    {
+      "n": "Flurazepam",
+      "l": "B1",
+      "i": 47
+    },
+    {
+      "n": "GBL",
+      "l": "B1",
+      "i": 48
+    },
+    {
+      "n": "GHB - (ácido gama - hidroxibutírico)",
+      "l": "B1",
+      "i": 49
+    },
+    {
+      "n": "Glutetimida",
+      "l": "B1",
+      "i": 50
+    },
+    {
+      "n": "Halazepam",
+      "l": "B1",
+      "i": 51
+    },
+    {
+      "n": "Haloxazolam",
+      "l": "B1",
+      "i": 52
+    },
+    {
+      "n": "Lefetamina",
+      "l": "B1",
+      "i": 53
+    },
+    {
+      "n": "Lemborexante",
+      "l": "B1",
+      "i": 54
+    },
+    {
+      "n": "Loflazepato de etila",
+      "l": "B1",
+      "i": 55
+    },
+    {
+      "n": "Loprazolam",
+      "l": "B1",
+      "i": 56
+    },
+    {
+      "n": "Lorazepam",
+      "l": "B1",
+      "i": 57
+    },
+    {
+      "n": "Lormetazepam",
+      "l": "B1",
+      "i": 58
+    },
+    {
+      "n": "Medazepam",
+      "l": "B1",
+      "i": 59
+    },
+    {
+      "n": "Meprobamato",
+      "l": "B1",
+      "i": 60
+    },
+    {
+      "n": "Mesocarbo",
+      "l": "B1",
+      "i": 61
+    },
+    {
+      "n": "Metilfenobarbital (prominal)",
+      "l": "B1",
+      "i": 62
+    },
+    {
+      "n": "Metiprilona",
+      "l": "B1",
+      "i": 63
+    },
+    {
+      "n": "Midazolam",
+      "l": "B1",
+      "i": 64
+    },
+    {
+      "n": "Modafinila",
+      "l": "B1",
+      "i": 65
+    },
+    {
+      "n": "Nimetazepam",
+      "l": "B1",
+      "i": 66
+    },
+    {
+      "n": "Nitrazepam",
+      "l": "B1",
+      "i": 67
+    },
+    {
+      "n": "Norcanfano (fencanfamina)",
+      "l": "B1",
+      "i": 68
+    },
+    {
+      "n": "Nordazepam",
+      "l": "B1",
+      "i": 69
+    },
+    {
+      "n": "Oxazepam",
+      "l": "B1",
+      "i": 70
+    },
+    {
+      "n": "Oxazolam",
+      "l": "B1",
+      "i": 71
+    },
+    {
+      "n": "Pemolina",
+      "l": "B1",
+      "i": 72
+    },
+    {
+      "n": "Pentazocina",
+      "l": "B1",
+      "i": 73
+    },
+    {
+      "n": "Pentobarbital",
+      "l": "B1",
+      "i": 74
+    },
+    {
+      "n": "Perampanel",
+      "l": "B1",
+      "i": 75
+    },
+    {
+      "n": "Pinazepam",
+      "l": "B1",
+      "i": 76
+    },
+    {
+      "n": "Pipradrol",
+      "l": "B1",
+      "i": 77
+    },
+    {
+      "n": "Pirovalerona",
+      "l": "B1",
+      "i": 78
+    },
+    {
+      "n": "Prazepam",
+      "l": "B1",
+      "i": 79
+    },
+    {
+      "n": "Prolintano",
+      "l": "B1",
+      "i": 80
+    },
+    {
+      "n": "Propilexedrina",
+      "l": "B1",
+      "i": 81
+    },
+    {
+      "n": "Remimazolam",
+      "l": "B1",
+      "i": 82
+    },
+    {
+      "n": "Secbutabarbital",
+      "l": "B1",
+      "i": 83
+    },
+    {
+      "n": "Secobarbital",
+      "l": "B1",
+      "i": 84
+    },
+    {
+      "n": "Temazepam",
+      "l": "B1",
+      "i": 85
+    },
+    {
+      "n": "Tetrazepam",
+      "l": "B1",
+      "i": 86
+    },
+    {
+      "n": "Tiamilal",
+      "l": "B1",
+      "i": 87
+    },
+    {
+      "n": "Tiopental",
+      "l": "B1",
+      "i": 88
+    },
+    {
+      "n": "Triazolam",
+      "l": "B1",
+      "i": 89
+    },
+    {
+      "n": "Tricloroetileno",
+      "l": "B1",
+      "i": 90
+    },
+    {
+      "n": "Triexifenidil",
+      "l": "B1",
+      "i": 91
+    },
+    {
+      "n": "Vinilbital",
+      "l": "B1",
+      "i": 92
+    },
+    {
+      "n": "Zaleplona",
+      "l": "B1",
+      "i": 93
+    },
+    {
+      "n": "Zolpidem",
+      "l": "B1",
+      "i": 94
+    },
+    {
+      "n": "Zopiclona",
+      "l": "B1",
+      "i": 95
+    },
+    {
+      "n": "Aminorex",
+      "l": "B2",
+      "i": 1
+    },
+    {
+      "n": "Anfepramona",
+      "l": "B2",
+      "i": 2
+    },
+    {
+      "n": "Femproporex",
+      "l": "B2",
+      "i": 3
+    },
+    {
+      "n": "Fendimetrazina",
+      "l": "B2",
+      "i": 4
+    },
+    {
+      "n": "Fentermina",
+      "l": "B2",
+      "i": 5
+    },
+    {
+      "n": "Mazindol",
+      "l": "B2",
+      "i": 6
+    },
+    {
+      "n": "Mefenorex",
+      "l": "B2",
+      "i": 7
+    },
+    {
+      "n": "Sibutramina",
+      "l": "B2",
+      "i": 8
+    },
+    {
+      "n": "Acepromazina",
+      "l": "C1",
+      "i": 1
+    },
+    {
+      "n": "Ácido valpróico",
+      "l": "C1",
+      "i": 2
+    },
+    {
+      "n": "Agomelatina",
+      "l": "C1",
+      "i": 3
+    },
+    {
+      "n": "Amantadina",
+      "l": "C1",
+      "i": 4
+    },
+    {
+      "n": "Amissulprida",
+      "l": "C1",
+      "i": 5
+    },
+    {
+      "n": "Amitriptilina",
+      "l": "C1",
+      "i": 6
+    },
+    {
+      "n": "Amoxapina",
+      "l": "C1",
+      "i": 7
+    },
+    {
+      "n": "Aripiprazol",
+      "l": "C1",
+      "i": 8
+    },
+    {
+      "n": "Asenapina",
+      "l": "C1",
+      "i": 9
+    },
+    {
+      "n": "Atomoxetina",
+      "l": "C1",
+      "i": 10
+    },
+    {
+      "n": "Azaciclonol",
+      "l": "C1",
+      "i": 11
+    },
+    {
+      "n": "Beclamida",
+      "l": "C1",
+      "i": 12
+    },
+    {
+      "n": "Benactizina",
+      "l": "C1",
+      "i": 13
+    },
+    {
+      "n": "Benfluorex",
+      "l": "C1",
+      "i": 14
+    },
+    {
+      "n": "Benzidamina",
+      "l": "C1",
+      "i": 15
+    },
+    {
+      "n": "Benzoctamina",
+      "l": "C1",
+      "i": 16
+    },
+    {
+      "n": "Benzoquinamida",
+      "l": "C1",
+      "i": 17
+    },
+    {
+      "n": "Biperideno",
+      "l": "C1",
+      "i": 18
+    },
+    {
+      "n": "Brexpiprazol",
+      "l": "C1",
+      "i": 19
+    },
+    {
+      "n": "Brivaracetam",
+      "l": "C1",
+      "i": 20
+    },
+    {
+      "n": "Bupropiona",
+      "l": "C1",
+      "i": 21
+    },
+    {
+      "n": "Buspirona",
+      "l": "C1",
+      "i": 22
+    },
+    {
+      "n": "Butaperazina",
+      "l": "C1",
+      "i": 23
+    },
+    {
+      "n": "Butriptilina",
+      "l": "C1",
+      "i": 24
+    },
+    {
+      "n": "Canabidiol (CBD)",
+      "l": "C1",
+      "i": 25
+    },
+    {
+      "n": "Captodiamo",
+      "l": "C1",
+      "i": 26
+    },
+    {
+      "n": "Carbamazepina",
+      "l": "C1",
+      "i": 27
+    },
+    {
+      "n": "Caroxazona",
+      "l": "C1",
+      "i": 28
+    },
+    {
+      "n": "Celecoxibe",
+      "l": "C1",
+      "i": 29
+    },
+    {
+      "n": "Cenobamato",
+      "l": "C1",
+      "i": 30
+    },
+    {
+      "n": "Ciclarbamato",
+      "l": "C1",
+      "i": 31
+    },
+    {
+      "n": "Ciclexedrina",
+      "l": "C1",
+      "i": 32
+    },
+    {
+      "n": "Ciclopentolato",
+      "l": "C1",
+      "i": 33
+    },
+    {
+      "n": "Cisaprida",
+      "l": "C1",
+      "i": 34
+    },
+    {
+      "n": "Citalopram",
+      "l": "C1",
+      "i": 35
+    },
+    {
+      "n": "Clomacrano",
+      "l": "C1",
+      "i": 36
+    },
+    {
+      "n": "Clometiazol",
+      "l": "C1",
+      "i": 37
+    },
+    {
+      "n": "Clomipramina",
+      "l": "C1",
+      "i": 38
+    },
+    {
+      "n": "Clorexadol",
+      "l": "C1",
+      "i": 39
+    },
+    {
+      "n": "Clorpromazina",
+      "l": "C1",
+      "i": 40
+    },
+    {
+      "n": "Clorprotixeno",
+      "l": "C1",
+      "i": 41
+    },
+    {
+      "n": "Clotiapina",
+      "l": "C1",
+      "i": 42
+    },
+    {
+      "n": "Clozapina",
+      "l": "C1",
+      "i": 43
+    },
+    {
+      "n": "Dapoxetina",
+      "l": "C1",
+      "i": 44
+    },
+    {
+      "n": "Desflurano",
+      "l": "C1",
+      "i": 45
+    },
+    {
+      "n": "Desipramina",
+      "l": "C1",
+      "i": 46
+    },
+    {
+      "n": "Desvenlafaxina",
+      "l": "C1",
+      "i": 47
+    },
+    {
+      "n": "Deutetrabenazina",
+      "l": "C1",
+      "i": 48
+    },
+    {
+      "n": "Dexetimida",
+      "l": "C1",
+      "i": 49
+    },
+    {
+      "n": "Dexmedetomidina",
+      "l": "C1",
+      "i": 50
+    },
+    {
+      "n": "Dibenzepina",
+      "l": "C1",
+      "i": 51
+    },
+    {
+      "n": "Dimetracrina",
+      "l": "C1",
+      "i": 52
+    },
+    {
+      "n": "Disopiramida",
+      "l": "C1",
+      "i": 53
+    },
+    {
+      "n": "Dissulfiram",
+      "l": "C1",
+      "i": 54
+    },
+    {
+      "n": "Divalproato de sódio",
+      "l": "C1",
+      "i": 55
+    },
+    {
+      "n": "Dixirazina",
+      "l": "C1",
+      "i": 56
+    },
+    {
+      "n": "Donepezila",
+      "l": "C1",
+      "i": 57
+    },
+    {
+      "n": "Doxepina",
+      "l": "C1",
+      "i": 58
+    },
+    {
+      "n": "Droperidol",
+      "l": "C1",
+      "i": 59
+    },
+    {
+      "n": "Duloxetina",
+      "l": "C1",
+      "i": 60
+    },
+    {
+      "n": "Ectiluréia",
+      "l": "C1",
+      "i": 61
+    },
+    {
+      "n": "Emilcamato",
+      "l": "C1",
+      "i": 62
+    },
+    {
+      "n": "Enflurano",
+      "l": "C1",
+      "i": 63
+    },
+    {
+      "n": "Entacapona",
+      "l": "C1",
+      "i": 64
+    },
+    {
+      "n": "Escitalopram",
+      "l": "C1",
+      "i": 65
+    },
+    {
+      "n": "Estiripentol",
+      "l": "C1",
+      "i": 66
+    },
+    {
+      "n": "Etomidato",
+      "l": "C1",
+      "i": 67
+    },
+    {
+      "n": "Etoricoxibe",
+      "l": "C1",
+      "i": 68
+    },
+    {
+      "n": "Etossuximida",
+      "l": "C1",
+      "i": 69
+    },
+    {
+      "n": "Facetoperano",
+      "l": "C1",
+      "i": 70
+    },
+    {
+      "n": "Femprobamato",
+      "l": "C1",
+      "i": 71
+    },
+    {
+      "n": "Fenaglicodol",
+      "l": "C1",
+      "i": 72
+    },
+    {
+      "n": "Fenelzina",
+      "l": "C1",
+      "i": 73
+    },
+    {
+      "n": "Feniprazina",
+      "l": "C1",
+      "i": 74
+    },
+    {
+      "n": "Fenitoina",
+      "l": "C1",
+      "i": 75
+    },
+    {
+      "n": "Flufenazina",
+      "l": "C1",
+      "i": 76
+    },
+    {
+      "n": "Flumazenil",
+      "l": "C1",
+      "i": 77
+    },
+    {
+      "n": "Fluoxetina",
+      "l": "C1",
+      "i": 78
+    },
+    {
+      "n": "Flupentixol",
+      "l": "C1",
+      "i": 79
+    },
+    {
+      "n": "Fluvoxamina",
+      "l": "C1",
+      "i": 80
+    },
+    {
+      "n": "Gabapentina",
+      "l": "C1",
+      "i": 81
+    },
+    {
+      "n": "Galantamina",
+      "l": "C1",
+      "i": 82
+    },
+    {
+      "n": "Haloperidol",
+      "l": "C1",
+      "i": 83
+    },
+    {
+      "n": "Halotano",
+      "l": "C1",
+      "i": 84
+    },
+    {
+      "n": "Hidrato de cloral",
+      "l": "C1",
+      "i": 85
+    },
+    {
+      "n": "Hidroclorbezetilamina",
+      "l": "C1",
+      "i": 86
+    },
+    {
+      "n": "Hidroxidiona",
+      "l": "C1",
+      "i": 87
+    },
+    {
+      "n": "Homofenazina",
+      "l": "C1",
+      "i": 88
+    },
+    {
+      "n": "Imicloprazina",
+      "l": "C1",
+      "i": 89
+    },
+    {
+      "n": "Imipramina",
+      "l": "C1",
+      "i": 90
+    },
+    {
+      "n": "Imipraminóxido",
+      "l": "C1",
+      "i": 91
+    },
+    {
+      "n": "Iproclozida",
+      "l": "C1",
+      "i": 92
+    },
+    {
+      "n": "Isocarboxazida",
+      "l": "C1",
+      "i": 93
+    },
+    {
+      "n": "Isoflurano",
+      "l": "C1",
+      "i": 94
+    },
+    {
+      "n": "Isopropil-crotonil-uréia",
+      "l": "C1",
+      "i": 95
+    },
+    {
+      "n": "Lacosamida",
+      "l": "C1",
+      "i": 96
+    },
+    {
+      "n": "Lamotrigina",
+      "l": "C1",
+      "i": 97
+    },
+    {
+      "n": "Leflunomida",
+      "l": "C1",
+      "i": 98
+    },
+    {
+      "n": "Levetiracetam",
+      "l": "C1",
+      "i": 99
+    },
+    {
+      "n": "Levomepromazina",
+      "l": "C1",
+      "i": 100
+    },
+    {
+      "n": "Levomilnaciprana",
+      "l": "C1",
+      "i": 101
+    },
+    {
+      "n": "Lisurida",
+      "l": "C1",
+      "i": 102
+    },
+    {
+      "n": "Lítio",
+      "l": "C1",
+      "i": 103
+    },
+    {
+      "n": "Loperamida",
+      "l": "C1",
+      "i": 104
+    },
+    {
+      "n": "Loxapina",
+      "l": "C1",
+      "i": 105
+    },
+    {
+      "n": "Lumiracoxibe",
+      "l": "C1",
+      "i": 106
+    },
+    {
+      "n": "Lurasidona",
+      "l": "C1",
+      "i": 107
+    },
+    {
+      "n": "Mavacanteno",
+      "l": "C1",
+      "i": 108
+    },
+    {
+      "n": "Maprotilina",
+      "l": "C1",
+      "i": 109
+    },
+    {
+      "n": "Meclofenoxato",
+      "l": "C1",
+      "i": 110
+    },
+    {
+      "n": "Mefenoxalona",
+      "l": "C1",
+      "i": 111
+    },
+    {
+      "n": "Mefexamida",
+      "l": "C1",
+      "i": 112
+    },
+    {
+      "n": "Memantina",
+      "l": "C1",
+      "i": 113
+    },
+    {
+      "n": "Mepazina",
+      "l": "C1",
+      "i": 114
+    },
+    {
+      "n": "Mesoridazina",
+      "l": "C1",
+      "i": 115
+    },
+    {
+      "n": "Metilnaltrexona",
+      "l": "C1",
+      "i": 116
+    },
+    {
+      "n": "Metilpentinol",
+      "l": "C1",
+      "i": 117
+    },
+    {
+      "n": "Metisergida",
+      "l": "C1",
+      "i": 118
+    },
+    {
+      "n": "Metixeno",
+      "l": "C1",
+      "i": 119
+    },
+    {
+      "n": "Metopromazina",
+      "l": "C1",
+      "i": 120
+    },
+    {
+      "n": "Metoxiflurano",
+      "l": "C1",
+      "i": 121
+    },
+    {
+      "n": "Mianserina",
+      "l": "C1",
+      "i": 122
+    },
+    {
+      "n": "Milnaciprana",
+      "l": "C1",
+      "i": 123
+    },
+    {
+      "n": "Miltefosina",
+      "l": "C1",
+      "i": 124
+    },
+    {
+      "n": "Minaprina",
+      "l": "C1",
+      "i": 125
+    },
+    {
+      "n": "Mirtazapina",
+      "l": "C1",
+      "i": 126
+    },
+    {
+      "n": "Misoprostol",
+      "l": "C1",
+      "i": 127
+    },
+    {
+      "n": "Moclobemida",
+      "l": "C1",
+      "i": 128
+    },
+    {
+      "n": "Molnupiravir",
+      "l": "C1",
+      "i": 129
+    },
+    {
+      "n": "Moperona",
+      "l": "C1",
+      "i": 130
+    },
+    {
+      "n": "Naloxona",
+      "l": "C1",
+      "i": 131
+    },
+    {
+      "n": "Naltrexona",
+      "l": "C1",
+      "i": 132
+    },
+    {
+      "n": "Nefazodona",
+      "l": "C1",
+      "i": 133
+    },
+    {
+      "n": "Nialamida",
+      "l": "C1",
+      "i": 134
+    },
+    {
+      "n": "Nitrito de isobutila",
+      "l": "C1",
+      "i": 135
+    },
+    {
+      "n": "Nitrito de isopentila",
+      "l": "C1",
+      "i": 136
+    },
+    {
+      "n": "Nitrito de isopropila",
+      "l": "C1",
+      "i": 137
+    },
+    {
+      "n": "Nomifensina",
+      "l": "C1",
+      "i": 138
+    },
+    {
+      "n": "Nortriptilina",
+      "l": "C1",
+      "i": 139
+    },
+    {
+      "n": "Noxiptilina",
+      "l": "C1",
+      "i": 140
+    },
+    {
+      "n": "Olanzapina",
+      "l": "C1",
+      "i": 141
+    },
+    {
+      "n": "Opipramol",
+      "l": "C1",
+      "i": 142
+    },
+    {
+      "n": "Oxcarbazepina",
+      "l": "C1",
+      "i": 143
+    },
+    {
+      "n": "Oxibuprocaína (benoxinato)",
+      "l": "C1",
+      "i": 144
+    },
+    {
+      "n": "Oxifenamato",
+      "l": "C1",
+      "i": 145
+    },
+    {
+      "n": "Oxipertina",
+      "l": "C1",
+      "i": 146
+    },
+    {
+      "n": "Paliperidona",
+      "l": "C1",
+      "i": 147
+    },
+    {
+      "n": "Parecoxibe",
+      "l": "C1",
+      "i": 148
+    },
+    {
+      "n": "Paroxetina",
+      "l": "C1",
+      "i": 149
+    },
+    {
+      "n": "Penfluridol",
+      "l": "C1",
+      "i": 150
+    },
+    {
+      "n": "Perfenazina",
+      "l": "C1",
+      "i": 151
+    },
+    {
+      "n": "Pergolida",
+      "l": "C1",
+      "i": 152
+    },
+    {
+      "n": "Periciazina (propericiazina)",
+      "l": "C1",
+      "i": 153
+    },
+    {
+      "n": "Pimozida",
+      "l": "C1",
+      "i": 154
+    },
+    {
+      "n": "Pipamperona",
+      "l": "C1",
+      "i": 155
+    },
+    {
+      "n": "Pipotiazina",
+      "l": "C1",
+      "i": 156
+    },
+    {
+      "n": "Pramipexol",
+      "l": "C1",
+      "i": 157
+    },
+    {
+      "n": "Pregabalina",
+      "l": "C1",
+      "i": 158
+    },
+    {
+      "n": "Primidona",
+      "l": "C1",
+      "i": 159
+    },
+    {
+      "n": "Proclorperazina",
+      "l": "C1",
+      "i": 160
+    },
+    {
+      "n": "Promazina",
+      "l": "C1",
+      "i": 161
+    },
+    {
+      "n": "Propanidina",
+      "l": "C1",
+      "i": 162
+    },
+    {
+      "n": "Propiomazina",
+      "l": "C1",
+      "i": 163
+    },
+    {
+      "n": "Propofol",
+      "l": "C1",
+      "i": 164
+    },
+    {
+      "n": "Protipendil",
+      "l": "C1",
+      "i": 165
+    },
+    {
+      "n": "Protriptilina",
+      "l": "C1",
+      "i": 166
+    },
+    {
+      "n": "Proximetacaina",
+      "l": "C1",
+      "i": 167
+    },
+    {
+      "n": "Quetiapina",
+      "l": "C1",
+      "i": 168
+    },
+    {
+      "n": "Ramelteona",
+      "l": "C1",
+      "i": 169
+    },
+    {
+      "n": "Rasagilina",
+      "l": "C1",
+      "i": 170
+    },
+    {
+      "n": "Reboxetina",
+      "l": "C1",
+      "i": 171
+    },
+    {
+      "n": "Ribavirina",
+      "l": "C1",
+      "i": 172
+    },
+    {
+      "n": "Rimonabanto",
+      "l": "C1",
+      "i": 173
+    },
+    {
+      "n": "Risperidona",
+      "l": "C1",
+      "i": 174
+    },
+    {
+      "n": "Rivastigmina",
+      "l": "C1",
+      "i": 175
+    },
+    {
+      "n": "Rofecoxibe",
+      "l": "C1",
+      "i": 176
+    },
+    {
+      "n": "Ropinirol",
+      "l": "C1",
+      "i": 177
+    },
+    {
+      "n": "Rotigotina",
+      "l": "C1",
+      "i": 178
+    },
+    {
+      "n": "Rufinamida",
+      "l": "C1",
+      "i": 179
+    },
+    {
+      "n": "Selegilina",
+      "l": "C1",
+      "i": 180
+    },
+    {
+      "n": "Sertralina",
+      "l": "C1",
+      "i": 181
+    },
+    {
+      "n": "Sevoflurano",
+      "l": "C1",
+      "i": 182
+    },
+    {
+      "n": "Sulpirida",
+      "l": "C1",
+      "i": 183
+    },
+    {
+      "n": "Sultoprida",
+      "l": "C1",
+      "i": 184
+    },
+    {
+      "n": "Tacrina",
+      "l": "C1",
+      "i": 185
+    },
+    {
+      "n": "Teriflunomida",
+      "l": "C1",
+      "i": 186
+    },
+    {
+      "n": "Tetrabenazina",
+      "l": "C1",
+      "i": 187
+    },
+    {
+      "n": "Tetracaína",
+      "l": "C1",
+      "i": 188
+    },
+    {
+      "n": "Tiagabina",
+      "l": "C1",
+      "i": 189
+    },
+    {
+      "n": "Tianeptina",
+      "l": "C1",
+      "i": 190
+    },
+    {
+      "n": "Tiaprida",
+      "l": "C1",
+      "i": 191
+    },
+    {
+      "n": "Tioproperazina",
+      "l": "C1",
+      "i": 192
+    },
+    {
+      "n": "Tioridazina",
+      "l": "C1",
+      "i": 193
+    },
+    {
+      "n": "Tiotixeno",
+      "l": "C1",
+      "i": 194
+    },
+    {
+      "n": "Tolcapona",
+      "l": "C1",
+      "i": 195
+    },
+    {
+      "n": "Topiramato",
+      "l": "C1",
+      "i": 196
+    },
+    {
+      "n": "Tranilcipromina",
+      "l": "C1",
+      "i": 197
+    },
+    {
+      "n": "Trazodona",
+      "l": "C1",
+      "i": 198
+    },
+    {
+      "n": "Triclofós",
+      "l": "C1",
+      "i": 199
+    },
+    {
+      "n": "Trifluoperazina",
+      "l": "C1",
+      "i": 200
+    },
+    {
+      "n": "Trifluperidol",
+      "l": "C1",
+      "i": 201
+    },
+    {
+      "n": "Trimipramina",
+      "l": "C1",
+      "i": 202
+    },
+    {
+      "n": "Troglitazona",
+      "l": "C1",
+      "i": 203
+    },
+    {
+      "n": "Valdecoxibe",
+      "l": "C1",
+      "i": 204
+    },
+    {
+      "n": "Valproato sódico",
+      "l": "C1",
+      "i": 205
+    },
+    {
+      "n": "Venlafaxina",
+      "l": "C1",
+      "i": 206
+    },
+    {
+      "n": "Veraliprida",
+      "l": "C1",
+      "i": 207
+    },
+    {
+      "n": "Vigabatrina",
+      "l": "C1",
+      "i": 208
+    },
+    {
+      "n": "Vilazodona",
+      "l": "C1",
+      "i": 209
+    },
+    {
+      "n": "Vortioxetina",
+      "l": "C1",
+      "i": 210
+    },
+    {
+      "n": "Ziprasidona",
+      "l": "C1",
+      "i": 211
+    },
+    {
+      "n": "Zotepina",
+      "l": "C1",
+      "i": 212
+    },
+    {
+      "n": "Zuclopentixol",
+      "l": "C1",
+      "i": 213
+    },
+    {
+      "n": "Acitretina",
+      "l": "C2",
+      "i": 1
+    },
+    {
+      "n": "Adapaleno",
+      "l": "C2",
+      "i": 2
+    },
+    {
+      "n": "Bexaroteno",
+      "l": "C2",
+      "i": 3
+    },
+    {
+      "n": "Isotretinoína",
+      "l": "C2",
+      "i": 4
+    },
+    {
+      "n": "Tretinoína",
+      "l": "C2",
+      "i": 5
+    },
+    {
+      "n": "Ftalimidoglutarimida (talidomida)",
+      "l": "C3",
+      "i": 1
+    },
+    {
+      "n": "Lenalidomida",
+      "l": "C3",
+      "i": 2
+    },
+    {
+      "n": "Pomalidomida",
+      "l": "C3",
+      "i": 3
+    },
+    {
+      "n": "Androstanolona",
+      "l": "C5",
+      "i": 1
+    },
+    {
+      "n": "Bolasterona",
+      "l": "C5",
+      "i": 2
+    },
+    {
+      "n": "Boldenona",
+      "l": "C5",
+      "i": 3
+    },
+    {
+      "n": "Cloroxomesterona",
+      "l": "C5",
+      "i": 4
+    },
+    {
+      "n": "Clostebol",
+      "l": "C5",
+      "i": 5
+    },
+    {
+      "n": "Deidroclormetiltestosterona",
+      "l": "C5",
+      "i": 6
+    },
+    {
+      "n": "Drostanolona",
+      "l": "C5",
+      "i": 7
+    },
+    {
+      "n": "Estanolona",
+      "l": "C5",
+      "i": 8
+    },
+    {
+      "n": "Estanozolol",
+      "l": "C5",
+      "i": 9
+    },
+    {
+      "n": "Etilestrenol",
+      "l": "C5",
+      "i": 10
+    },
+    {
+      "n": "Fluoximesterona ou fluoximetiltestosterona",
+      "l": "C5",
+      "i": 11
+    },
+    {
+      "n": "Formebolona",
+      "l": "C5",
+      "i": 12
+    },
+    {
+      "n": "Gestrinona",
+      "l": "C5",
+      "i": 13
+    },
+    {
+      "n": "Mesterolona",
+      "l": "C5",
+      "i": 14
+    },
+    {
+      "n": "Metandienona ou metandrostenolona",
+      "l": "C5",
+      "i": 15
+    },
+    {
+      "n": "Metandranona",
+      "l": "C5",
+      "i": 16
+    },
+    {
+      "n": "Metandriol",
+      "l": "C5",
+      "i": 17
+    },
+    {
+      "n": "Metenolona",
+      "l": "C5",
+      "i": 18
+    },
+    {
+      "n": "Metiltestosterona",
+      "l": "C5",
+      "i": 19
+    },
+    {
+      "n": "Mibolerona",
+      "l": "C5",
+      "i": 20
+    },
+    {
+      "n": "Nandrolona",
+      "l": "C5",
+      "i": 21
+    },
+    {
+      "n": "Noretandrolona",
+      "l": "C5",
+      "i": 22
+    },
+    {
+      "n": "Oxandrolona",
+      "l": "C5",
+      "i": 23
+    },
+    {
+      "n": "Oximesterona",
+      "l": "C5",
+      "i": 24
+    },
+    {
+      "n": "Oximetolona",
+      "l": "C5",
+      "i": 25
+    },
+    {
+      "n": "Prasterona (deidroepiandrosterona - DHEA)",
+      "l": "C5",
+      "i": 26
+    },
+    {
+      "n": "Somapacitana",
+      "l": "C5",
+      "i": 27
+    },
+    {
+      "n": "Somatrogona",
+      "l": "C5",
+      "i": 28
+    },
+    {
+      "n": "Somatropina (hormônio do crescimento humano)",
+      "l": "C5",
+      "i": 29
+    },
+    {
+      "n": "Testosterona",
+      "l": "C5",
+      "i": 30
+    },
+    {
+      "n": "Trembolona",
+      "l": "C5",
+      "i": 31
+    },
+    {
+      "n": "1-boc-4-AP",
+      "l": "D1",
+      "i": 1
+    },
+    {
+      "n": "1-boc-4-piperidona",
+      "l": "D1",
+      "i": 2
+    },
+    {
+      "n": "1-fenil-2-propanona",
+      "l": "D1",
+      "i": 3
+    },
+    {
+      "n": "3,4-MDP-2-P etil glicidato (PMK etil glicidato); éster etílico do ácido 3,4-MDP-2-P metil glicídico",
+      "l": "D1",
+      "i": 4
+    },
+    {
+      "n": "3,4-MDP-2-P metil glicidato (PMK glicidato); éster metílico do ácido 3,4-MDP-2-P metil glicídico",
+      "l": "D1",
+      "i": 5
+    },
+    {
+      "n": "3,4 - Metilendioxifenil-2-propanona",
+      "l": "D1",
+      "i": 6
+    },
+    {
+      "n": "4-AP (N-Fenil-4-piperidinamina)",
+      "l": "D1",
+      "i": 7
+    },
+    {
+      "n": "4-piperidona",
+      "l": "D1",
+      "i": 8
+    },
+    {
+      "n": "Ácido 3,4-MDP-2-P metil glicídico (PMK ácido glicídico)",
+      "l": "D1",
+      "i": 9
+    },
+    {
+      "n": "Ácido antranílico",
+      "l": "D1",
+      "i": 10
+    },
+    {
+      "n": "Ácido fenilacético",
+      "l": "D1",
+      "i": 11
+    },
+    {
+      "n": "Ácido lisérgico",
+      "l": "D1",
+      "i": 12
+    },
+    {
+      "n": "Ácido N-acetilantranílico",
+      "l": "D1",
+      "i": 13
+    },
+    {
+      "n": "Ácido P-2-P metil glicídico (BMK ácido glicídico)",
+      "l": "D1",
+      "i": 14
+    },
+    {
+      "n": "Alfa-fenilacetoacetonitrilo (APAAN)",
+      "l": "D1",
+      "i": 15
+    },
+    {
+      "n": "Alfa-fenilacetoacetamida (APAA)",
+      "l": "D1",
+      "i": 16
+    },
+    {
+      "n": "ANPP ou 1-fenetil-N-fenilpiperidin-4-amina",
+      "l": "D1",
+      "i": 17
+    },
+    {
+      "n": "Diidroergometrina",
+      "l": "D1",
+      "i": 18
+    },
+    {
+      "n": "Diidroergotamina",
+      "l": "D1",
+      "i": 19
+    },
+    {
+      "n": "Efedrina",
+      "l": "D1",
+      "i": 20
+    },
+    {
+      "n": "Ergometrina",
+      "l": "D1",
+      "i": 21
+    },
+    {
+      "n": "Ergotamina",
+      "l": "D1",
+      "i": 22
+    },
+    {
+      "n": "Etafedrina",
+      "l": "D1",
+      "i": 23
+    },
+    {
+      "n": "Helional",
+      "l": "D1",
+      "i": 24
+    },
+    {
+      "n": "Isosafrol",
+      "l": "D1",
+      "i": 25
+    },
+    {
+      "n": "MAPA ou metil alfa-fenilacetoacetato",
+      "l": "D1",
+      "i": 26
+    },
+    {
+      "n": "MMDPPA ou alfa-metil-3,4-metilenodioxifenilpropionamida",
+      "l": "D1",
+      "i": 27
+    },
+    {
+      "n": "Norfentanila",
+      "l": "D1",
+      "i": 28
+    },
+    {
+      "n": "Óleo de sassafrás",
+      "l": "D1",
+      "i": 29
+    },
+    {
+      "n": "Óleo da pimenta longa",
+      "l": "D1",
+      "i": 30
+    },
+    {
+      "n": "Piperidina",
+      "l": "D1",
+      "i": 31
+    },
+    {
+      "n": "Piperonal",
+      "l": "D1",
+      "i": 32
+    },
+    {
+      "n": "Pseudoefedrina",
+      "l": "D1",
+      "i": 33
+    },
+    {
+      "n": "NPP ou N-fenetil-4-piperidinona",
+      "l": "D1",
+      "i": 34
+    },
+    {
+      "n": "Safrol",
+      "l": "D1",
+      "i": 35
+    },
+    {
+      "n": "Acetona",
+      "l": "D2",
+      "i": 1
+    },
+    {
+      "n": "Ácido clorídrico",
+      "l": "D2",
+      "i": 2
+    },
+    {
+      "n": "Ácido sulfúrico",
+      "l": "D2",
+      "i": 3
+    },
+    {
+      "n": "Anidrido acético",
+      "l": "D2",
+      "i": 4
+    },
+    {
+      "n": "Cloreto de etila",
+      "l": "D2",
+      "i": 5
+    },
+    {
+      "n": "Cloreto de metileno/diclorometano",
+      "l": "D2",
+      "i": 6
+    },
+    {
+      "n": "Clorofórmio",
+      "l": "D2",
+      "i": 7
+    },
+    {
+      "n": "Éter etílico",
+      "l": "D2",
+      "i": 8
+    },
+    {
+      "n": "Metil etil cetona",
+      "l": "D2",
+      "i": 9
+    },
+    {
+      "n": "Permanganato de potássio",
+      "l": "D2",
+      "i": 10
+    },
+    {
+      "n": "Sulfato de sódio",
+      "l": "D2",
+      "i": 11
+    },
+    {
+      "n": "Tolueno",
+      "l": "D2",
+      "i": 12
+    },
+    {
+      "n": "Tricloroetileno",
+      "l": "D2",
+      "i": 13
+    },
+    {
+      "n": "Cannabis sativa L.",
+      "l": "E",
+      "i": 1
+    },
+    {
+      "n": "Claviceps paspali Stevens & Hall.",
+      "l": "E",
+      "i": 2
+    },
+    {
+      "n": "Datura suaveolens Willd.",
+      "l": "E",
+      "i": 3
+    },
+    {
+      "n": "Erythroxylum coca Lam.",
+      "l": "E",
+      "i": 4
+    },
+    {
+      "n": "Lophophora williamsii Coult.",
+      "l": "E",
+      "i": 5
+    },
+    {
+      "n": "Mitragyna speciosa",
+      "l": "E",
+      "i": 6
+    },
+    {
+      "n": "Papaver somniferum L.",
+      "l": "E",
+      "i": 7
+    },
+    {
+      "n": "Prestonia amazonica J. F. Macbr.",
+      "l": "E",
+      "i": 8
+    },
+    {
+      "n": "Salvia divinorum",
+      "l": "E",
+      "i": 9
+    },
+    {
+      "n": "2F-VIMINOL",
+      "l": "F1",
+      "i": 1,
+      "s": "2-(DISEC-BUTILAMINO)-1-[1-[(2-FLUOROFENIL)METIL]PIRROL-2-IL]ETANOL"
+    },
+    {
+      "n": "2-METIL-AP-237",
+      "l": "F1",
+      "i": 2,
+      "s": "1-[2-METIL-4-(3-FENIL-2-PROPEN-1-IL)-1-PIPERAZINIL]-1-BUTANONA"
+    },
+    {
+      "n": "3-METILFENTANILA",
+      "l": "F1",
+      "i": 3,
+      "s": "N-(3-METIL-1-(FENETIL-4-PIPERIDIL)PROPIONANILIDA"
+    },
+    {
+      "n": "3-METILTIOFENTANILA",
+      "l": "F1",
+      "i": 4,
+      "s": "N-[3-METIL-1-[2-(2-TIENIL)ETIL]-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "4-FLUOROISOBUTIRFENTANIL",
+      "l": "F1",
+      "i": 5,
+      "s": "N-(4-FLUOROFENIL)-N-(1-FENILETILPIPERIDIN-4-IL)ISOBUTIRAMIDA"
+    },
+    {
+      "n": "7-HIDROXIMITRAGININA",
+      "l": "F1",
+      "i": 6,
+      "s": "METIL (E)-2-[(2S,3S,7AS,12BS)-3-ETIL-7A-HIDROXI-8-METOXI-2,3,4,6,7,12B-HEXAHIDRO-1H-INDOLO[2,3-A]QUINOLIZIN-2-YL]-3-METOXIPROP-2-ENOATO"
+    },
+    {
+      "n": "ACETIL-ALFA-METILFENTANILA",
+      "l": "F1",
+      "i": 7,
+      "s": "N-[1-(ALFA-METILFENETIL)-4-PIPERIDIL]ACETANILIDA"
+    },
+    {
+      "n": "ACETILFENTANIL",
+      "l": "F1",
+      "i": 8,
+      "s": "N-[1-(2-FENILETIL)-4-PIPERIDIL]-N-FENILACETAMIDA"
+    },
+    {
+      "n": "ACETORFINA",
+      "l": "F1",
+      "i": 9,
+      "s": "3-O-ACETILTETRAHIDRO-7-ALFA-(1-HIDROXI-1-METILBUTIL)-6,14-ENDOETENO-ORIPAVINA"
+    },
+    {
+      "n": "ACRILOILFENTANIL",
+      "l": "F1",
+      "i": 10,
+      "s": "N-FENIL-N-[1-(2-FENILETIL)PIPERIDIN-4-IL]PROP-2-ENAMIDA"
+    },
+    {
+      "n": "AH-7921",
+      "l": "F1",
+      "i": 11,
+      "s": "3,4-DICLORO-N-{[1-(DIMETILAMINO)CICLO-HEXIL] METIL}BENZAMIDA"
+    },
+    {
+      "n": "ALFA-METILFENTANILA",
+      "l": "F1",
+      "i": 12,
+      "s": "N-[1-(ALFA-METILFENETIL)-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "ALFA-METILTIOFENTANILA",
+      "l": "F1",
+      "i": 13,
+      "s": "N-[1-[1-METIL-2-(2-TIENIL)ETIL]-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "BETA-HIDROXI-3-METILFENTANILA",
+      "l": "F1",
+      "i": 14,
+      "s": "N-[1-(BETA-HIDROXIFENETIL)-3-METIL-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "BETA-HIDROXIFENTANILA",
+      "l": "F1",
+      "i": 15,
+      "s": "N-[1-(BETA-HIDROXIFENETIL)-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "BRORFINA",
+      "l": "F1",
+      "i": 16,
+      "s": "1-[1-[1-(4-BROMOFENIL)ETIL]-PIPERIDIN-4-IL}-1,3-DIHIDRO-2H-BENZIMIDAZOL-2-ONA"
+    },
+    {
+      "n": "BUTIRFENTANIL",
+      "l": "F1",
+      "i": 17,
+      "s": "BUTIRIL FENTANIL; N-(1-FENETILPIPERIDIN-4-IL)-N-FENILBUTIRAMIDA"
+    },
+    {
+      "n": "BUTONITAZENO",
+      "l": "F1",
+      "i": 18,
+      "s": "2-[2-[(4-BUTOXIFENIL)METIL]-5-NITROBENZIMIDAZOL-1-IL]-N , N - DIETILETANAMINA"
+    },
+    {
+      "n": "CARFENTANIL",
+      "l": "F1",
+      "i": 19,
+      "s": "4-CARBOMETOXIFENTANIL; METIL-FENILETIL-4-(N-FENILPROPIONAMIDA)PIPERIDINA-4-CARBOXILATO"
+    },
+    {
+      "n": "CETOBEMIDONA",
+      "l": "F1",
+      "i": 20,
+      "s": "4-META-HIDROXIFENIL-1-METIL-4-PROPIONILPIPERIDINA"
+    },
+    {
+      "n": "CICLOPROPILFENTANIL",
+      "l": "F1",
+      "i": 21,
+      "s": "N-FENIL-N-[1-(2-FENILETIL)PIPERIDIN-4-IL] CICLOPROPANOCARBOXAMIDA"
+    },
+    {
+      "n": "COCAÍNA",
+      "l": "F1",
+      "i": 22,
+      "s": "ÉSTER METÍLICO DA BENZOILECGONINA"
+    },
+    {
+      "n": "CROTONILFENTANIL",
+      "l": "F1",
+      "i": 23,
+      "s": "(2E)-N-FENIL-N-[1-(2-FENILETIL)PIPERIDIN-4-IL]BUT-2-ENAMIDA"
+    },
+    {
+      "n": "DESOMORFINA",
+      "l": "F1",
+      "i": 24,
+      "s": "DIIDRODEOXIMORFINA"
+    },
+    {
+      "n": "DIIDROETORFINA",
+      "l": "F1",
+      "i": 25,
+      "s": "7,8-DIIDRO-7-ALFA-[1-(R)-HIDROXI-1-METILBUTIL]-6,14-ENDO-ETANOTETRAHIDROORIPAVINA"
+    },
+    {
+      "n": "DIMETOCAÍNA",
+      "l": "F1",
+      "i": 26,
+      "s": "[3-(DIETILAMINO)-2,2-DIMETILPROPIL] 4-AMINOBENZOATO"
+    },
+    {
+      "n": "ECGONINA",
+      "l": "F1",
+      "i": 27,
+      "s": "(-)-3-HIDROXITROPANO-2-CARBOXILATO"
+    },
+    {
+      "n": "ETAZENO",
+      "l": "F1",
+      "i": 28,
+      "s": "2-[(4-ETOXIFENIL)METIL]-N,N-DIETIL-1H-BENZIMIDAZOL-1-ETANAMINA"
+    },
+    {
+      "n": "ETONITAZEPINA",
+      "l": "F1",
+      "i": 29,
+      "s": "2-[(4-ETOXIFENIL)METIL]-5-NITRO-1-(2-PIRROLIDIN-1-ILETIL)-1-H-BENZOIMIDAZOL"
+    },
+    {
+      "n": "ETONITAZEPIPNA",
+      "l": "F1",
+      "i": 30,
+      "s": "N-PIPERIDINIL ETONITAZENO; 2-[(4-ETOXIFENIL)METIL]-5-NITRO-1-(2-PIPERIDIN-1-IL-ETIL)-1H-BENZIMIDAZOL"
+    },
+    {
+      "n": "ETORFINA",
+      "l": "F1",
+      "i": 31,
+      "s": "TETRAHIDRO-7-ALFA-(1-HIDROXI-1-METILBUTIL)-6,14-ENDOETENO-ORIPAVINA"
+    },
+    {
+      "n": "FURANILFENTANIL",
+      "l": "F1",
+      "i": 32,
+      "s": "N-(1-FENILETILPIPERIDIN-4-IL)-N-FENILFURAN-2-CARBOXAMIDA"
+    },
+    {
+      "n": "HEROÍNA",
+      "l": "F1",
+      "i": 33,
+      "s": "DIACETILMORFINA"
+    },
+    {
+      "n": "ISOTONITAZENO",
+      "l": "F1",
+      "i": 34,
+      "s": "N,N-DIETIL-2-(2-(4-ISOPROPOXIBENZIL)-5-NITRO-1HBENZO[D]IMIDAZOL-1-IL)ETAN-1-AMINA"
+    },
+    {
+      "n": "MDPV",
+      "l": "F1",
+      "i": 35,
+      "s": "1-(1,3-BENZODIOXOL-5-IL)-2-(PIRROLIDIN-1-IL)-1-PENTANONA"
+    },
+    {
+      "n": "METONITAZENO",
+      "l": "F1",
+      "i": 36,
+      "s": "N,N-DIETIL-2-{2-[(4-METOXIFENIL)METIL]-5-NITRO-1HBENZIMIDAZOL-1-IL}ETAN-1-AMINA"
+    },
+    {
+      "n": "METOXIACETILFENTANIL",
+      "l": "F1",
+      "i": 37,
+      "s": "2-METOXI-N-FENIL-N-[1-(2-FENILETIL)-4-PIPERIDINIL]ACETAMIDA"
+    },
+    {
+      "n": "MITRAGININA",
+      "l": "F1",
+      "i": 38,
+      "s": "METIL (E)-2-[(2S,3S,12BS)-3-ETIL-8-METOXI-1,2,3,4,6,7,12,12B-OCTAHIDROINDOLO[2,3-A]QUINOLIZIN-2-YL]-3-METOXIPROP-2-ENOATO"
+    },
+    {
+      "n": "MPPP",
+      "l": "F1",
+      "i": 39,
+      "s": "1-METIL-4-FENIL-4-PROPIONATO DE PIPERIDINA (ÉSTER)"
+    },
+    {
+      "n": "MT-45",
+      "l": "F1",
+      "i": 40,
+      "s": "1-CICLOHEXIL-4-(1,2-DIFENILETIL)PIPERAZINA"
+    },
+    {
+      "n": "N-DESETIL ETONITAZENO",
+      "l": "F1",
+      "i": 41,
+      "s": "2-[2-[(4-ETOXIFENIL)METIL]-5-NITROBENZIMIDAZOL-1-IL]-N-ETILETANAMINA"
+    },
+    {
+      "n": "N,N-DIMETILAMINO ETONITAZENO",
+      "l": "F1",
+      "i": 42,
+      "s": "2-[2-(4-ETOXIBENZIL)-5-NITRO-1H-BENZIMIDAZOL-1-IL]-N,N-DIMETILETILAMINA"
+    },
+    {
+      "n": "NORISOTONITAZENO",
+      "l": "F1",
+      "i": 43,
+      "s": "N-DESETIL ISOTONITAZENO; N-ETIL-2-[(4-(1-METILETOXIFENIL)METIL]-5-NITRO-1H-BENZIMIDAZOL-1-ETANAMIDA"
+    },
+    {
+      "n": "METONITAZEPINA",
+      "l": "F1",
+      "i": 44,
+      "s": "N-PIRROLIDINO METONITAZENO; 2-[(4-METOXIFENIL)METIL]-5-NITRO-1-(2-PIRROLIDIN-1-ILETIL)BENZIMIDAZOL"
+    },
+    {
+      "n": "OCFENTANIL",
+      "l": "F1",
+      "i": 45,
+      "s": "N-(2-FLUOROFENIL)-2-METOXI-N-[1-(2-FENILETIL)PIPERIDIN-4-IL]ACETAMIDA"
+    },
+    {
+      "n": "ORTO-FLUOROFENTANIL",
+      "l": "F1",
+      "i": 46,
+      "s": "2-FLUOROFENTANIL; N-(2-FLUOROFENIL)-N-[1-(2-FENILETIL)-4-PIPERIDINIL]PROPANAMIDA"
+    },
+    {
+      "n": "PARA-FLUOROBUTIRFENTANIL",
+      "l": "F1",
+      "i": 47,
+      "s": "4-FLUOROBUTIRILFENTANIL; 4F-BF; N- (4-FLUOROFENIL) -N- [1-(2-FENILETIL) PIPERIDIN-4-IL] BUTANAMIDA)"
+    },
+    {
+      "n": "PARA-FLUOROFENTANILA",
+      "l": "F1",
+      "i": 48,
+      "s": "4'-FLUORO-N-(1-FENETIL-4-PIPERIDIL])PROPIONANILIDA"
+    },
+    {
+      "n": "PEPAP",
+      "l": "F1",
+      "i": 49,
+      "s": "1-FENETIL-4-FENIL-4-ACETATO DE PIPERIDINA (ÉSTER)"
+    },
+    {
+      "n": "PROTODESNITAZENO",
+      "l": "F1",
+      "i": 50,
+      "s": "N,N-DIETIL-2-[(4-PROPOXIFENIL)METIL]-1H-BENZIMIDAZOL-1-ETANAMINA"
+    },
+    {
+      "n": "PROTONITAZENO",
+      "l": "F1",
+      "i": 51,
+      "s": "N,N-DIETIL-5-NITRO-2-[(4-PROPOXIFENIL)METIL]-1H-BENZIMIDAZOL-1- ETANAMINA"
+    },
+    {
+      "n": "PROTONITAZEPINA",
+      "l": "F1",
+      "i": 52,
+      "s": "N-PIRROLIDINO PROTONITAZENO; 2-[(4-PROPOXIFENIL)METIL]-5-NITRO-1-(2-PIRROLIDIN-1-IL-ETIL)-1H-BENZIMIDAZOL"
+    },
+    {
+      "n": "TETRAHIDROFURANILFENTANIL",
+      "l": "F1",
+      "i": 53,
+      "s": "N-(1-FENILETILPIPERIDIN-4-IL)-N-FENILTETRAHIDROFURAN-2-CARBOXAMIDA"
+    },
+    {
+      "n": "TIOFENTANILA",
+      "l": "F1",
+      "i": 55,
+      "s": "N-[1-[2-(TIENIL)ETIL]-4-PIPERIDIL]PROPIONANILIDA"
+    },
+    {
+      "n": "U-47700",
+      "l": "F1",
+      "i": 55,
+      "s": "3,4-DICLORO-N-((1S,2S)-2-(DIMETILAMINO)CICLOHEXIL)-N-METILBENZAMIDA"
+    },
+    {
+      "n": "VALERILFENTANIL",
+      "l": "F1",
+      "i": 56,
+      "s": "N-FENIL-N-[1-(2-FENILETIL)PIPERIDIN-4- IL]PENTANAMIDA"
+    },
+    {
+      "n": "(+) – LISÉRGIDA",
+      "l": "F2",
+      "i": 1,
+      "s": "LSD; LSD-25; 9,10-DIDEHIDRO-N,N-DIETIL-6-METILERGOLINA-8BETA-CARBOXAMIDA"
+    },
+    {
+      "n": "1-(1,2-DIFENILETIL)PIRROLIDINA",
+      "l": "F2",
+      "i": 2
+    },
+    {
+      "n": "1B-LSD",
+      "l": "F2",
+      "i": 3,
+      "s": "1-BUTIRIL-LSD; DIETILAMIDA DO ÁCIDO N-BUTIRIL-LISÉRGICO; (6AR,9R)-4-BUTANOIL-N,N-DIETIL-7-METIL-6,6A,8,9-TETRAHIDROINDOLO[4,3-FG]QUINOLINA-9-CARBOXAMIDA"
+    },
+    {
+      "n": "1cP-LSD",
+      "l": "F2",
+      "i": 4,
+      "s": "1-CICLOPROPIONIL LSD; DIETILAMIDA DO ÁCIDO N1-(CICLOPROPILOMETANOIL)-LISÉRGICO; (6AR, 9R)-4-(CICLOPROPANOCARBONIL)-N,N-DIETIL-7-METIL-6,6A,8,9-TETRAHIDROINDOLO[4,3-FG]QUINOLINA-9-CARBOXAMIDA"
+    },
+    {
+      "n": "1P-LSD",
+      "l": "F2",
+      "i": 5,
+      "s": "1-PROPIONIL-LSD; 1-DIETILAMIDA DO ÁCIDO PROPIONIL-LISÉRGICO; (6AR,9R)-N,N-DIETIL-7-METIL-4-PROPANOIL-6,6A,8,9-TETRAHIDROINDOLO[4,3-FG]QUINOLINA-9-CARBOXAMIDA"
+    },
+    {
+      "n": "2C-B",
+      "l": "F2",
+      "i": 6,
+      "s": "4-BROMO-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-C",
+      "l": "F2",
+      "i": 7,
+      "s": "4-CLORO-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-D",
+      "l": "F2",
+      "i": 8,
+      "s": "4-METIL-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-E",
+      "l": "F2",
+      "i": 9,
+      "s": "4-ETIL-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-F",
+      "l": "F2",
+      "i": 10,
+      "s": "4-FLUOR-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-I",
+      "l": "F2",
+      "i": 11,
+      "s": "4-IODO-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-T-2",
+      "l": "F2",
+      "i": 12,
+      "s": "4-ETIL-TIO-2,5-DIMETOXIFENILETILAMINA"
+    },
+    {
+      "n": "2C-T-7",
+      "l": "F2",
+      "i": 13,
+      "s": "2,5-DIMETOXI-4-PROPILTIOFENILETILAMINA (2C-T-7)"
+    },
+    {
+      "n": "2-MeO-DIFENIDINA",
+      "l": "F2",
+      "i": 14,
+      "s": "1-(1-(2-METOXIFENIL)-2-FENILETIL)PIPERIDINA; MXP; METOXIFENIDINA"
+    },
+    {
+      "n": "2-FLUORODESCLOROCETAMINA",
+      "l": "F2",
+      "i": 15,
+      "s": "2-(2-FLUOROFENIL)-2-(METILAMINO)CICLOHEXAN-1-ONA"
+    },
+    {
+      "n": "3-CLOROMETCATINONA",
+      "l": "F2",
+      "i": 16,
+      "s": "3-CMC; 1-(3-CLOROFENIL)-2-(METILAMINO)PROPAN-1-ONA"
+    },
+    {
+      "n": "3-FLUOROFENMETRAZINA",
+      "l": "F2",
+      "i": 17,
+      "s": "2-(3-FLUOROFENIL)-3-METILMORFOLINA; 3-FPM"
+    },
+    {
+      "n": "3-MeO-PCP",
+      "l": "F2",
+      "i": 18,
+      "s": "3-METOXIFENCICLIDINA; 1-[1-(3-METOXIFENIL)CICLOHEXIL]PIPERIDINA"
+    },
+    {
+      "n": "3-MMC",
+      "l": "F2",
+      "i": 19,
+      "s": "3-METILMETCATINONA; 2-(METILAMINO)-1-(3-METILFENIL)-1-PROPANONA"
+    },
+    {
+      "n": "4-AcO-DET",
+      "l": "F2",
+      "i": 20,
+      "s": "4-ACETOXI-N,N- DIETILTRIPTAMINA; 3-[2-(DIETILAMINO)ETIL]-1H-INDOL-4-IL ACETATO"
+    },
+    {
+      "n": "4-AcO-DMT",
+      "l": "F2",
+      "i": 21,
+      "s": "4-ACETOXI-N,N-DIMETILTRIPTAMINA"
+    },
+    {
+      "n": "4-AcO-MET",
+      "l": "F2",
+      "i": 22,
+      "s": "4-ACETOXI-N-METIL-N-ETILTRIPTAMINA"
+    },
+    {
+      "n": "4-BROMOMETCATINONA",
+      "l": "F2",
+      "i": 23,
+      "s": "4-BMC; BREFEDRONA; 1-(4-BROMOFENIL)-2-(METILAMINO)PROPAN-1-ONA"
+    },
+    {
+      "n": "4-Cl-ALFA-PVP",
+      "l": "F2",
+      "i": 24,
+      "s": "1-(4-CLOROFENIL)-2-(PIRROLIDIN-1-IL)PENTAN-1-ONA"
+    },
+    {
+      "n": "4-CLOROMETCATINONA",
+      "l": "F2",
+      "i": 25,
+      "s": "CLEFEDRONA; 4-CMC; 1-(4-CLOROFENIL)-2-(METILAMINO)PROPAN-1-ONA"
+    },
+    {
+      "n": "4-FA",
+      "l": "F2",
+      "i": 26,
+      "s": "4-FLUOROANFETAMINA; 1-(4-FLUOROFENIL) PROPAN-2-AMINA"
+    },
+    {
+      "n": "4-FLUOROMETCATINONA",
+      "l": "F2",
+      "i": 27,
+      "s": "FLEFEDRONA; 4-FMC; 1-(4-FLUOROFENIL)-2-(METILAMINO)PROPAN-1-ONA"
+    },
+    {
+      "n": "4-F-MDMB-BINACA",
+      "l": "F2",
+      "i": 28,
+      "s": "4F-MDMB-BUTINACA; METIL 2-{[1-(4-FLUOROBUTIL)-1H-INDAZOL-3-CARBONIL]AMINO}-3,3-DIMETILBUTANOATO"
+    },
+    {
+      "n": "4-HO-DET",
+      "l": "F2",
+      "i": 29,
+      "s": "4-HIDROXI-N,N- DIETILTRIPTAMINA; CZ 74; ETOCINA; 3-[2-(DIETILAMINO)ETIL]-1H-INDOL-4-OL"
+    },
+    {
+      "n": "4-HO-MIPT",
+      "l": "F2",
+      "i": 30,
+      "s": "3-{2-[METIL(PROPAN-2-IL)AMINO]ETIL}-1H-INDOL-4-OL; 4-HIDROXI-N-ISOPROPIL-N-METILTRIPTAMINA"
+    },
+    {
+      "n": "4-MEAPP",
+      "l": "F2",
+      "i": 31,
+      "s": "2-(ETILAMINO)-1-(4-METILFENIL)-1-PENTANONA; 4-METIL-ALFA-ETILAMINOPENTIOFENONA; N-ETIL-4'-METILNORPENTEDRONA"
+    },
+    {
+      "n": "4-MEC",
+      "l": "F2",
+      "i": 32,
+      "s": "4- METILETILCATINONA; 2-(ETILAMINA)-1-(4-METILFENIL)-PROPAN-1-ONA"
+    },
+    {
+      "n": "4-METILAMINOREX",
+      "l": "F2",
+      "i": 33,
+      "s": "(±)-CIS-2-AMINO-4-METIL-5-FENIL-2-OXAZOLINA"
+    },
+    {
+      "n": "4-MTA",
+      "l": "F2",
+      "i": 34,
+      "s": "4-METILTIOANFETAMINA"
+    },
+    {
+      "n": "4,4'- DMAR",
+      "l": "F2",
+      "i": 35,
+      "s": "4,4'-DIMETILAMINOREX; 4-METIL-5-(4-METILFENIL)-4,5-DIHIDRO-1,3-OXAZOL-2-AMINA"
+    },
+    {
+      "n": "5-APB",
+      "l": "F2",
+      "i": 36,
+      "s": "1-(BENZOFURAN-5-IL)PROPAN-2-AMINA"
+    },
+    {
+      "n": "5-APDB",
+      "l": "F2",
+      "i": 37,
+      "s": "1-(2,3-DIHIDROBENZOFURAN-5-IL)PROPAN-2-AMINA"
+    },
+    {
+      "n": "5C-MDA-19",
+      "l": "F2",
+      "i": 38,
+      "s": "BZO-POXIZID; PENTIL MDA-19; (2Z)-2-(1,2-DIHIDRO-2-OXO-1-PENTIL-3H-INDOL-3-ILIDENO)HIDRAZIDA ÁCIDO BENZÓICO"
+    },
+    {
+      "n": "5-EAPB",
+      "l": "F2",
+      "i": 39,
+      "s": "1-(BENZOFURAN-5-IL)-N-ETILPROPAN-2-AMINA"
+    },
+    {
+      "n": "5F-AB-PFUPPYCA",
+      "l": "F2",
+      "i": 40,
+      "s": "5F-3,5-AB-PFUPPYCA; N-(1-AMINO-3-METIL-1-OXOBUTAN-2-IL)-1-(5-FLUOROPENTIL)-3-(4-FLUOROFENIL)-1H-PIRAZOL-5-CARBOXAMIDA"
+    },
+    {
+      "n": "5F-ADB",
+      "l": "F2",
+      "i": 41,
+      "s": "METIL-S-2-[1-(5-FLUOROPENTIL)-1H-INDAZOL-3-CARBOXAMIDO]-3,3-DIMETILBUTANOATO"
+    },
+    {
+      "n": "5F-AKB48",
+      "l": "F2",
+      "i": 42,
+      "s": "5F-APINACA; N-(1-ADAMANTIL)-1-(5-FLUOROPENTIL)INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "5F-AMB-PINACA",
+      "l": "F2",
+      "i": 43,
+      "s": "5F-AMB; 5F-MMB-PINACA; METIL 2-{[1-(5-FLUOROPENTIL)-1H-INDAZOL-3-CARBONIL]AMINO}-3- METILBUTANOATO"
+    },
+    {
+      "n": "5F-MDA-19",
+      "l": "F2",
+      "i": 44,
+      "s": "5-FLUORO BZO-POXIZID; 5-FLUOROPENTIL MDA-19; (Z)-N'-(1- (5-FLUOROPENTIL)-2-OXOINDOLIN-3-ILIDENO)BENZOHIDRAZIDA"
+    },
+    {
+      "n": "5F-MDMB-PICA",
+      "l": "F2",
+      "i": 45,
+      "s": "5F-MDMB-2201; METIL 2-{[1-(5-FLUOROPENTIL)-1HINDOL-3-CARBONIL]AMINO}-3,3-DIMETILBUTANOATO"
+    },
+    {
+      "n": "5F-PB-22",
+      "l": "F2",
+      "i": 46,
+      "s": "QUINOLIN-8-IL 1-(5-FLUOROPENTIL)-1H-INDOL-3-CARBOXILATO"
+    },
+    {
+      "n": "5-IAI",
+      "l": "F2",
+      "i": 47,
+      "s": "2,3-DIHIDRO-5-IODO-1H-INDENO-2-AMINA"
+    },
+    {
+      "n": "5-MAPDB",
+      "l": "F2",
+      "i": 48,
+      "s": "1-(2,3-DIHIDROBENZOFURAN-5-IL)-N-METILPROPAN-2-AMINA"
+    },
+    {
+      "n": "5-MeO-AMT",
+      "l": "F2",
+      "i": 49,
+      "s": "5-METOXI-ALFA-METILTRIPTAMINA"
+    },
+    {
+      "n": "5-MeO-DALT",
+      "l": "F2",
+      "i": 50,
+      "s": "N-[2-(5-METOXI-1H-INDOL-3-IL)ETIL]-N-(PROP-2-EN-1-IL)PROP-2-EN-1-AMINA; 5-METÓXI-N,N-DIALILTRIPTAMINA"
+    },
+    {
+      "n": "5-MeO-DIPT",
+      "l": "F2",
+      "i": 51,
+      "s": "5-METOXI-N,N-DIISOPROPILTRIPTAMINA"
+    },
+    {
+      "n": "5-MeO-DMT",
+      "l": "F2",
+      "i": 52,
+      "s": "5-METOXI-N,N-DIMETILTRIPTAMINA"
+    },
+    {
+      "n": "5-MeO-MIPT",
+      "l": "F2",
+      "i": 53,
+      "s": "5-METOXI-N,N-METIL ISOPROPILTRIPTAMINA"
+    },
+    {
+      "n": "25B-NBOH",
+      "l": "F2",
+      "i": 54,
+      "s": "2-({[2-(4-BROMO-2,5-DIMETOXIFENIL)ETIL]AMINO}METIL)FENOL"
+    },
+    {
+      "n": "25B-NBOMe",
+      "l": "F2",
+      "i": 55,
+      "s": "2-(4-BROMO-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25C-NBF",
+      "l": "F2",
+      "i": 56,
+      "s": "2-(4-CLORO-2,5-DIMETOXIFENIL)-N-(2-FLUOROBENZIL)ETANAMINA"
+    },
+    {
+      "n": "25C-NBOH",
+      "l": "F2",
+      "i": 57,
+      "s": "2-({[2-(4-CLORO-2,5-DIMETOXIFENIL)ETIL]AMINO}METIL)FENOL"
+    },
+    {
+      "n": "25C-NBOMe",
+      "l": "F2",
+      "i": 58,
+      "s": "2-(4-CLORO-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25D-NBOMe",
+      "l": "F2",
+      "i": 59,
+      "s": "2-(4-METIL-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25E-NBOH",
+      "l": "F2",
+      "i": 60,
+      "s": "2-({[2-(4-ETIL-2,5-DIMETOXIFENIL)ETIL]AMINO}METIL)FENOL"
+    },
+    {
+      "n": "25E-NBOMe",
+      "l": "F2",
+      "i": 61,
+      "s": "2-(4-ETIL-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25H-NBOH",
+      "l": "F2",
+      "i": 62,
+      "s": "2-({[2,5-DIMETOXIFENIL)ETIL]AMINO}METIL)FENOL"
+    },
+    {
+      "n": "25H-NBOMe",
+      "l": "F2",
+      "i": 63,
+      "s": "2-(2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25I-NBF",
+      "l": "F2",
+      "i": 64,
+      "s": "CIMBI-21; 2C-I-NBF; N-(2-FLUOROBENZIL)-2-(4-IODO-2,5-DIMETOXIFENIL)ETAN-1-AMINA"
+    },
+    {
+      "n": "25I-NBOH",
+      "l": "F2",
+      "i": 65,
+      "s": "2CI-NBOH; 2-({[2-(4-IODO-2,5-DIMETOXIFENIL)ETIL]AMINO}METIL)FENOL"
+    },
+    {
+      "n": "25I-NBOMe",
+      "l": "F2",
+      "i": 66,
+      "s": "2-(4-IODO-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25N-NBOMe",
+      "l": "F2",
+      "i": 67,
+      "s": "2-(4-NITRO-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25P-NBOMe",
+      "l": "F2",
+      "i": 68,
+      "s": "2-(4-PROPIL-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25T2-NBOMe",
+      "l": "F2",
+      "i": 69,
+      "s": "2-(4-TIOETIL-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25T4-NBOMe",
+      "l": "F2",
+      "i": 70,
+      "s": "2-[4-(1-METIL-TIOETIL)-2,5-DIMETOXI-FENIL]-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "25T7-NBOMe",
+      "l": "F2",
+      "i": 71,
+      "s": "2-(4-TIOPROPIL-2,5-DIMETOXI-FENIL)-N-[(2-METOXIFENIL)METIL]ETANOAMINA"
+    },
+    {
+      "n": "30C-NBOMe",
+      "l": "F2",
+      "i": 72,
+      "s": "C30-NBOME; 2-(4-CLORO-2,5-DIMETOXIFENIL)-N-(3,4,5-TRIMETOXIBENZIL)ETAN-1-AMINA"
+    },
+    {
+      "n": "AB-CHMINACA",
+      "l": "F2",
+      "i": 73,
+      "s": "N-(1-AMINO-3-METIL-1-OXOBUTAN-2-IL)-1-(CICLOHEXILMETIL)-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "AB-FUBINACA",
+      "l": "F2",
+      "i": 74,
+      "s": "N-[1-AMINO-3-METIL-1-OXOBUTAN-2-IL]-1-[(4-FLUOROFENIL)METIL]-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "AB-PINACA",
+      "l": "F2",
+      "i": 75,
+      "s": "N-[(2S)-1-AMINO-3-METIL-1-OXOBUTAN-2-IL]-1-PENTIL-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "ADB-5Br-INACA",
+      "l": "F2",
+      "i": 76,
+      "s": "(S)-N-(1- AMINO-3,3- DIMETIL-1- OXOBUTAN-2- IL)-5-BROMO- 1H-INDAZOL- 3-CARBOXAMIDA"
+    },
+    {
+      "n": "ADB-BUTINACA",
+      "l": "F2",
+      "i": 77,
+      "s": "N-[1-(AMINOCARBONIL)-2,2-DIMETILPROPIL]-1-BUTIL-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "ADB-CHMINACA",
+      "l": "F2",
+      "i": 78,
+      "s": "MAB-CHMINACA; N-(-1-AMINO-3,3-DIMETIL-1-OXOBUTAN-2-IL)-1- (CICLOHEXILMETIL)-1-H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "ADB-FUBIATA",
+      "l": "F2",
+      "i": 79,
+      "s": "AD-18; FUB-ACADB; 2-[[2-[1-[(4-FLUOROFENIL)METIL]INDOL-3-IL]ACETIL]AMINO]-3,3- DIMETIL-BUTANAMIDA"
+    },
+    {
+      "n": "ADB-FUBINACA",
+      "l": "F2",
+      "i": 80,
+      "s": "N-(1-AMINO-3,3-DIMETIL-1-OXOBUTAN-2-IL)-1-(4-FLUOROBENZIL)-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "ADB-INACA",
+      "l": "F2",
+      "i": 81,
+      "s": "N-[(1S)-1-(AMINOCARBONIL)-2,2-DIMETILPROPIL]-1H-INDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "ALD-52",
+      "l": "F2",
+      "i": 82,
+      "s": "1-ACETIL-LSD; DIETILAMIDA DO ÁCIDO 1-ACETIL-LISÉRGICO; (6AR,9R)-4-ACETIL-N,N-DIETIL-7-METIL-6,6A,8,9-TETRAHIDROINDOLO[4,3-FG]QUINOLINA-9-CARBOXAMIDA"
+    },
+    {
+      "n": "ALFA-D2PV",
+      "l": "F2",
+      "i": 83,
+      "s": "1,2-DIFENIL-2-(PIRROLIDIN-1-IL)ETAN-1-ONA"
+    },
+    {
+      "n": "ALFA-EAPP",
+      "l": "F2",
+      "i": 84,
+      "s": "ALFA-ETILAMINOPENTIOFENONA; 2-(ETILAMINO)-1-FENILPENTAN-1-ONA"
+    },
+    {
+      "n": "ALFA-PHP",
+      "l": "F2",
+      "i": 85,
+      "s": "1-FENIL-2-(PIRROLIDIN-1-IL)HEXAN-1-ONA"
+    },
+    {
+      "n": "ALFA-PIHP",
+      "l": "F2",
+      "i": 86,
+      "s": "ALFA-PIRROLIDINOISOHEZANOFENONA; 4-METIL-1-FENIL-2-(PIRROLIDIN-1-IL)PENTAN-1-ONA"
+    },
+    {
+      "n": "ALFA-PVP",
+      "l": "F2",
+      "i": 87,
+      "s": "1-FENIL-2-(PIRROLIDIN-1-IL)PENTAN-1-ONA"
+    },
+    {
+      "n": "AKB48",
+      "l": "F2",
+      "i": 88,
+      "s": "APINACA; N-ADAMANTIL-1-PENTILINDAZOL-3-CARBOXAMIDA"
+    },
+    {
+      "n": "AM-2201",
+      "l": "F2",
+      "i": 89,
+      "s": "(1-(5-FLUOROPENTIL)-1H-INDOL-3-IL)-1-NAFTALENIL- METANONA"
+    },
+    {
+      "n": "AMT",
+      "l": "F2",
+      "i": 90,
+      "s": "ALFA-METILTRIPTAMINA"
+    },
+    {
+      "n": "BENZOFETAMINA",
+      "l": "F2",
+      "i": 91,
+      "s": "N-BENZIL-N,ALFA-DIMETILFENETILAMINA"
+    },
+    {
+      "n": "BETACETO-DMBDB",
+      "l": "F2",
+      "i": 92,
+      "s": "DIBUTILONA; METILBUTILONA; BK-DMBDB; BK-MMBDB; 1-BENZO[D] [1,3]DIOXOL-5-IL)-2-(DIMETILAMINO)BUTAN-1-ONA"
+    },
+    {
+      "n": "BROLANFETAMINA",
+      "l": "F2",
+      "i": 93,
+      "s": "DOB; (±)-4-BROMO-2,5-DIMETOXI-ALFA-METILFENETILAMINA"
+    },
+    {
+      "n": "BZO-4en-POXIZID",
+      "l": "F2",
+      "i": 94,
+      "s": "(Z)-N'-(2-OXO-1-(PENT-4-EN-1-IL)INDOLIN-3-ILIDENO)BENZOHIDRAZIDA"
+    },
+    {
+      "n": "BZO-CHMOXIZID",
+      "l": "F2",
+      "i": 95,
+      "s": "(Z)-N'-(1-(CICLOHEXILMETIL)-2-OXOINDOLIN-3-ILIDENO)BENZOHIDRAZIDA"
+    },
+    {
+      "n": "BZO-HEPOXIZID",
+      "l": "F2",
+      "i": 96,
+      "s": "(Z)-N'-(1- HEPTIL-2- OXOINDOLIN-3- ILIDENO)BENZO HIDRAZIDA"
+    },
+    {
+      "n": "BZP",
+      "l": "F2",
+      "i": 97,
+      "s": "1-BENZILPIPERAZINA"
+    },
+    {
+      "n": "CATINONA",
+      "l": "F2",
+      "i": 98,
+      "s": "(-)-(S)-2-AMINOPROPIOFENONA"
+    },
+    {
+      "n": "CH-PIATA",
+      "l": "F2",
+      "i": 99,
+      "s": "N-CICLOHEXIL-2-(1-PENTIL-1H-INDOL-3-IL)ACETAMIDA"
+    },
+    {
+      "n": "CLOBENZOREX",
+      "l": "F2",
+      "i": 100,
+      "s": "N-[(2-CLOROFENIL)METIL]-1-FENILPROPAN-2-AMINA"
+    },
+    {
+      "n": "CUMYL-4-CN-BINACA",
+      "l": "F2",
+      "i": 101,
+      "s": "SGT-78; 4-CN-CUMYL-BINACA; CUMYL-CB-PINACA; CUMYL-CYBINACA; 4-CYANO CUMYL-BUTINACA; 1-(4-CIANOBUTIL)-N-(1-METIL-1-FENILETIL)-1H-INDAZOL-3- CARBOXAMIDA"
+    },
+    {
+      "n": "CUMYL-PEGACLONE",
+      "l": "F2",
+      "i": 102,
+      "s": "5-PENTIL-2-(2-FENILPROPAN-2-IL)-2,5-DIHIDRO-1HPIRIDO[4,3-B]INDOL-1-ONA"
+    },
+    {
+      "n": "DESALQUILGIDAZEPAM",
+      "l": "F2",
+      "i": 103,
+      "s": "7-BROMO-5-FENIL-2,3-DI-HIDRO-1H-1,4-BENZODIAZEPIN-2-ONA"
+    },
+    {
+      "n": "DET",
+      "l": "F2",
+      "i": 104,
+      "s": "3-[2-(DIETILAMINO)ETIL]INDOL"
+    },
+    {
+      "n": "DIFENIDINA",
+      "l": "F2",
+      "i": 105,
+      "s": "1-(1,2-DIFENILETIL)PIPERIDINA; DEP"
+    },
+    {
+      "n": "DIIDRO-LSD",
+      "l": "F2",
+      "i": 106,
+      "s": "(8B)-N,N-DIETIL-6-METIL-9,10-DIDEHIDRO-2,3-DIHIDROERGOLINA-8-CARBOXAMIDA"
+    },
+    {
+      "n": "DIMETILONA",
+      "l": "F2",
+      "i": 107,
+      "s": "BK-MDDMA; BK-DMBDP; 1-(BENZO[D][1,3]DIOXOL-5-IL)-2-(DIMETILAMINO)PROPAN-1-ONA"
+    },
+    {
+      "n": "DIPENTILONA",
+      "l": "F2",
+      "i": 108,
+      "s": "1-(1,3-BENZODIOXOL-5-IL)-2-(DIMETILAMINO)PENTAN-1-ONA"
+    },
+    {
+      "n": "DMA",
+      "l": "F2",
+      "i": 109,
+      "s": "(±)-2,5-DIMETOXI-ALFA-METILFENETILAMINA"
+    },
+    {
+      "n": "DMAA",
+      "l": "F2",
+      "i": 110,
+      "s": "1,3-DIMETILAMILAMINA; 4-METILHEXAN-2-AMINA"
+    },
+    {
+      "n": "DMBA",
+      "l": "F2",
+      "i": 111,
+      "s": "1,3-DIMETILBUTILAMINA; 4-METILPENTAN-2-AMINA"
+    },
+    {
+      "n": "DMHP",
+      "l": "F2",
+      "i": 112,
+      "s": "3-(1,2-DIMETILHEPTIL)-7,8,9,10-TETRAHIDRO-6,6,9-TRIMETIL-6H-DIBENZO[B,D]PIRANO-1-OL"
+    },
+    {
+      "n": "DMT",
+      "l": "F2",
+      "i": 113,
+      "s": "3-[2-(DIMETILAMINO)ETIL] INDOL ; N,N-DIMETILTRIPTAMINA"
+    },
+    {
+      "n": "DOC",
+      "l": "F2",
+      "i": 114,
+      "s": "4-CLORO-2,5-DIMETOXIANFETAMINA"
+    },
+    {
+      "n": "DOET",
+      "l": "F2",
+      "i": 115,
+      "s": "(±)–4-ETIL-2,5-DIMETOXI-ALFA-METILFENETILAMINA"
+    },
+    {
+      "n": "DOI",
+      "l": "F2",
+      "i": 116,
+      "s": "4-IODO-2,5-DIMETOXIANFETAMINA"
+    },
+    {
+      "n": "EAM-2201",
+      "l": "F2",
+      "i": 117,
+      "s": "(1-(5-FLUOROPENTIL)-1H-INDOL-3-IL)-(4-ETIL-1-NAFTALENIL)-METANONA"
+    },
+    {
+      "n": "ERGINA",
+      "l": "F2",
+      "i": 118,
+      "s": "LSA (AMIDA DO ÁCIDO D-LISÉRGICO)"
+    },
+    {
+      "n": "ETICICLIDINA",
+      "l": "F2",
+      "i": 119,
+      "s": "PCE ; N-ETIL-1-FENILCICLOHEXILAMINA"
+    },
+    {
+      "n": "ETILFENIDATO",
+      "l": "F2",
+      "i": 120,
+      "s": "ACETATO DE ETIL-2-FENIL-2-(PIPERIDIN-2-IL)"
+    },
+    {
+      "n": "ETILONA",
+      "l": "F2",
+      "i": 121,
+      "s": "BK-MDEA; MDEC; 1-(1,3-BENZODIOXOL-5-IL)-2-(ETILAMINO)-1-PROPANONA"
+    },
+    {
+      "n": "ETRIPTAMINA",
+      "l": "F2",
+      "i": 122,
+      "s": "3-(2-AMINOBUTIL)INDOL"
+    },
+    {
+      "n": "EUTILONA",
+      "l": "F2",
+      "i": 123,
+      "s": "1-(1,3-BENZODIOXOL-5-IL)-2-(ETILAMINO)BUTAN-1-ONA"
+    },
+    {
+      "n": "FUB-AMB",
+      "l": "F2",
+      "i": 124,
+      "s": "AMB-FUBINACA; MMB-FUBINACA; METIL (2S)-2-[[1-[(4-FLUOROFENIL)METIL]INDAZOL-3-CARBONIL]AMINO]-3- METILBUTANOATO"
+    },
+    {
+      "n": "HEXAIDROCANABINOL",
+      "l": "F2",
+      "i": 125,
+      "s": "6,6,9-TRIMETIL-3-PENTIL-6A,7,8,9,10,10A-HEXAHIDROBENZO[C]CROMEN-1-OL"
+    },
+    {
+      "n": "ISOPROPILBENZILAMINA",
+      "l": "F2",
+      "i": 126,
+      "s": "N-BENZILPROPAN-2-AMINA"
+    },
+    {
+      "n": "JWH-018",
+      "l": "F2",
+      "i": 127,
+      "s": "1-NAFTALENIL-(1-PENTIL-1H-INDOL-3-IL)-METANONA"
+    },
+    {
+      "n": "JWH-071",
+      "l": "F2",
+      "i": 128,
+      "s": "(1-ETIL-1H-INDOL-3-IL)-1-NAFTALENIL-METANONA"
+    },
+    {
+      "n": "JWH-072",
+      "l": "F2",
+      "i": 129,
+      "s": "(1-PROPILINDOL-3-IL)NAFTALEN-1-IL-METANONA"
+    },
+    {
+      "n": "JWH-073",
+      "l": "F2",
+      "i": 130,
+      "s": "NAFTALEN-1-IL(1-BUTILINDOL-3-IL) METANONA"
+    },
+    {
+      "n": "JWH-081",
+      "l": "F2",
+      "i": 131,
+      "s": "4-METOXINAFTALEN-1-IL-(1-PENTILINDOL-3-IL)METANONA"
+    },
+    {
+      "n": "JWH-098",
+      "l": "F2",
+      "i": 132,
+      "s": "(4-METOXI1-NAFTALENIL)(2-METIL-1- PENTIL-1H-INDOL-3-IL) METANONA"
+    },
+    {
+      "n": "JWH-122",
+      "l": "F2",
+      "i": 133,
+      "s": "4-METILNAFTALEN-1-IL-(1-PENTILINDOL-3-IL) METANONA"
+    },
+    {
+      "n": "JWH-210",
+      "l": "F2",
+      "i": 134,
+      "s": "4-ETILNAFTALEN-1-IL-(1-PENTILINDOL-3-IL) METANONA"
+    },
+    {
+      "n": "JWH-250",
+      "l": "F2",
+      "i": 135,
+      "s": "2-(2-METOXIFENIL)-1-(1-PENTIL-1-INDOL-3-IL) ETANONA"
+    },
+    {
+      "n": "JWH-251",
+      "l": "F2",
+      "i": 136,
+      "s": "2-(2-METILFENIL)-1-(1-PENTIL-1H-INDOL-3-IL) ETANONA"
+    },
+    {
+      "n": "JWH-252",
+      "l": "F2",
+      "i": 137,
+      "s": "1-(2-METIL-1-PENTILINDOL-3-IL)-2-(2-METILFENIL) ETANONA"
+    },
+    {
+      "n": "JWH-253",
+      "l": "F2",
+      "i": 138,
+      "s": "1-(2-METIL-1-PENTIL-1H-INDOL-3-IL)-2-(3-METOXI-FENIL) ETANONA"
+    },
+    {
+      "n": "LEVOMETANFETAMINA",
+      "l": "F2",
+      "i": 139,
+      "s": "L-METANFETAMINA"
+    },
+    {
+      "n": "MAM-2201",
+      "l": "F2",
+      "i": 140,
+      "s": "(1-(5-FLUOROPENTIL)-1H-INDOL-3-IL](4-METIL-1-NAFTALENIL)-METANONA"
+    },
+    {
+      "n": "MAM-2201 N-(4-HIDROXIPENTIL)",
+      "l": "F2",
+      "i": 141,
+      "s": "[1-(5-FLUORO-4-HIDROXIPENTIL)-1H-INDOL-3-IL](4-METIL-1-NAFTALENIL)METANONA"
+    },
+    {
+      "n": "MAM-2201 N-(5-CLOROPENTIL)",
+      "l": "F2",
+      "i": 142,
+      "s": "[1-(5-CLOROPENTIL)-1H-INDOL-3-IL](4-METIL-1-NAFTALENIL)METANONA"
+    },
+    {
+      "n": "MDMB-4EN-PINACA",
+      "l": "F2",
+      "i": 143,
+      "s": "(S)-3,3-DIMETIL-2-(1-(PENT-4-EN-1-IL)-1HINDAZOL-3-CARBOXAMIDO)BUTANOATO"
+    },
+    {
+      "n": "MDMB-5Br-INACA",
+      "l": "F2",
+      "i": 144,
+      "s": "METIL(S)-2-(5-BROMO-1H-INDAZOL-3-CARBOXAMIDO)-3,3-DIMETILBUTANOATO"
+    },
+    {
+      "n": "MDMB-INACA",
+      "l": "F2",
+      "i": 145,
+      "s": "2-(1H-INDAZOL-3-CARBONILAMINO)-3,3-DIMETIL-BUTANOATO DE METILA"
+    },
+    {
+      "n": "mCPP",
+      "l": "F2",
+      "i": 146,
+      "s": "1-(3-CLOROFENIL)PIPERAZINA"
+    },
+    {
+      "n": "MDA-19",
+      "l": "F2",
+      "i": 147,
+      "s": "BZO-HEXOXIZID; N'-(1-HEXYL-2-OXOINDOLIN-3-ILIDENO)BENZOHIDRAZIDA; N-(1-HEXIL-2-HIDROXIINDOL-3-YL)IMINOBENZAMIDA"
+    },
+    {
+      "n": "MDAI",
+      "l": "F2",
+      "i": 148,
+      "s": "5,6-METILENODIOXI-2-AMINOINDANO"
+    },
+    {
+      "n": "MDE",
+      "l": "F2",
+      "i": 149,
+      "s": "MDEA; N-ETIL MDA; (±)-N-ETIL-ALFA-METIL-3,4-(METILENEDIOXI)FENETILAMINA"
+    },
+    {
+      "n": "MDMA",
+      "l": "F2",
+      "i": 150,
+      "s": "(±)-N,ALFA-DIMETIL-3,4-(METILENODIOXI)FENETILAMINA; 3,4 METILENODIOXIMETANFETAMINA"
+    },
+    {
+      "n": "MECLOQUALONA",
+      "l": "F2",
+      "i": 151,
+      "s": "3-(O-CLOROFENIL)-2-METIL-4(3H)-QUINAZOLINONA"
+    },
+    {
+      "n": "MEFEDRONA",
+      "l": "F2",
+      "i": 152,
+      "s": "2-METILAMINO-1-(4-METILFENIL)-PROPAN-1-ONA"
+    },
+    {
+      "n": "MESCALINA",
+      "l": "F2",
+      "i": 153,
+      "s": "3,4,5-TRIMETOXIFENETILAMINA"
+    },
+    {
+      "n": "METALILESCALINA",
+      "l": "F2",
+      "i": 154,
+      "s": "2-[3,5-DIMETOXI-4-(2-METILPROP-2-ENOXI)FENIL]ETANAMINA"
+    },
+    {
+      "n": "METANFETAMINA",
+      "l": "F2",
+      "i": 155
+    },
+    {
+      "n": "METAQUALONA",
+      "l": "F2",
+      "i": 156,
+      "s": "2-METIL-3-O-TOLIL-4(3H)-QUINAZOLINONA"
+    },
+    {
+      "n": "METCATINONA",
+      "l": "F2",
+      "i": 157,
+      "s": "2-(METILAMINO)-1-FENILPROPAN-1-ONA"
+    },
+    {
+      "n": "METILONA",
+      "l": "F2",
+      "i": 158,
+      "s": "BK-MDMA; MDMC; 1-(1,3-BENZODIOXOL-5-IL)-2-(METILAMINO)-1- PROPANONA"
+    },
+    {
+      "n": "METIOPROPAMINA",
+      "l": "F2",
+      "i": 159,
+      "s": "N-METIL-1-TIOFEN-2-ILPROPAN-2-AMINA"
+    },
+    {
+      "n": "MMDA",
+      "l": "F2",
+      "i": 160,
+      "s": "5-METOXI-ALFA-METIL-3,4-(METILENODIOXI)FENETILAMINA"
+    },
+    {
+      "n": "MXE",
+      "l": "F2",
+      "i": 161,
+      "s": "METOXETAMINA; 2-(ETILAMINO)-2-(3-METOXIFENIL)-CICLOHEXANONA"
+    },
+    {
+      "n": "N-ACETIL-3,4-MDMC",
+      "l": "F2",
+      "i": 162,
+      "s": "N-ACETIL-3,4-METILENODIOXIMETCATINONA; N-ACETILMETILONA; N-[2-(1,3-BENZODIOXOL-5-IL)-1-METIL-2-OXOETIL]-N-METIL-ACETAMIDA"
+    },
+    {
+      "n": "N-ETILCATINONA",
+      "l": "F2",
+      "i": 163,
+      "s": "2-(ETILAMINA)-1-FENILPROPAN-1-ONA"
+    },
+    {
+      "n": "N-ETILHEXEDRONA",
+      "l": "F2",
+      "i": 164,
+      "s": "2-(ETILAMINO)-1-FENILHEXAN-1-ONA; HEXEN; NEH"
+    },
+    {
+      "n": "N-ETILPENTILONA",
+      "l": "F2",
+      "i": 165,
+      "s": "EFILONA; N-ETILNORPENTILONA;1-(2H-1,3-BENZODIOXOL-5-IL)-2-(ETILAMINO)PENTAN-1-ONA; 1-(BENZO[D][1,3]DIOXOL-5-IL)-2-(ETILAMINO)PENTAN-1-ONA"
+    },
+    {
+      "n": "NMDMSB",
+      "l": "F2",
+      "i": 166,
+      "s": "1-NAFTIL 3-(DIMETILSULFAMOIL)-4-METIL-BENZOATO"
+    },
+    {
+      "n": "PARAHEXILA",
+      "l": "F2",
+      "i": 167,
+      "s": "3-HEXIL-7,8,9,10-TETRAHIDRO-6,6,9-TRIMETIL-6H-DIBENZO[B,D]PIRANO-1-OL"
+    },
+    {
+      "n": "PENTEDRONA",
+      "l": "F2",
+      "i": 168,
+      "s": "2-(METILAMINO)-1-FENIL-PENTAN-1-ONA"
+    },
+    {
+      "n": "PENTILONA",
+      "l": "F2",
+      "i": 169,
+      "s": "BK-MBDP; BK-MBDP; BK-METIL-K; 1-(BENZO[D][1,3]DIOXOL-5-IL)-2-(METILAMINO)PENTAN-1-ONA"
+    },
+    {
+      "n": "PMA",
+      "l": "F2",
+      "i": 170,
+      "s": "P-METOXI-ALFA-METILFENETILAMINA"
+    },
+    {
+      "n": "PMMA",
+      "l": "F2",
+      "i": 171,
+      "s": "PARA-METOXIMETANFETAMINA; [1-(4-METOXIFENIL)PROPANO-2-IL](METIL)AZANO]"
+    },
+    {
+      "n": "PSILOCIBINA",
+      "l": "F2",
+      "i": 172,
+      "s": "FOSFATO DIIDROGENADO DE 3-[2-(DIMETILAMINOETIL)]INDOL-4-ILO"
+    },
+    {
+      "n": "PSILOCINA",
+      "l": "F2",
+      "i": 173,
+      "s": "PSILOTSINA ; 3-[2-(DIMETILAMINO)ETIL]INDOL-4-OL"
+    },
+    {
+      "n": "RH-34",
+      "l": "F2",
+      "i": 174,
+      "s": "3-(2-((2-METOXIBENZIL)AMINO)ETIL)QUINAZOLINA-2,4(1H,3H)-DIONA"
+    },
+    {
+      "n": "ROLICICLIDINA",
+      "l": "F2",
+      "i": 175,
+      "s": "PHP; PCPY; 1-(1-FENILCICLOHEXIL)PIRROLIDINA"
+    },
+    {
+      "n": "SALVINORINA A",
+      "l": "F2",
+      "i": 176,
+      "s": "METIL(2S,4AR,6AR,7R,9S,10AS,10BR)-9-ACETOXI-2-(3-FURIL)-6A,10B-DIMETIL-4,10-DIOXODODECAHIDRO-2H-BENZO[F]ISOCROMENO-7-CARBOXILATO"
+    },
+    {
+      "n": "STP",
+      "l": "F2",
+      "i": 177,
+      "s": "DOM ; 2,5-DIMETOXI-ALFA,4-DIMETILFENETILAMINA"
+    },
+    {
+      "n": "TENANFETAMINA",
+      "l": "F2",
+      "i": 178,
+      "s": "MDA; ALFA-METIL-3,4-(METILENODIOXI)FENETILAMINA"
+    },
+    {
+      "n": "TENOCICLIDINA",
+      "l": "F2",
+      "i": 179,
+      "s": "TCP ; 1-[1-(2-TIENIL)CICLOHEXIL]PIPERIDINA"
+    },
+    {
+      "n": "TETRAHIDROCANNABINOL",
+      "l": "F2",
+      "i": 180,
+      "s": "THC"
+    },
+    {
+      "n": "TH-PVP",
+      "l": "F2",
+      "i": 181,
+      "s": "2-(PIRROLIDIN-1-IL)-1-(5,6,7,8-TETRAHIDRONAFTALEN-2-IL)PENTAN-1-ONA"
+    },
+    {
+      "n": "TMA",
+      "l": "F2",
+      "i": 182,
+      "s": "(±)-3,4,5-TRIMETOXI-ALFA-METILFENETILAMINA"
+    },
+    {
+      "n": "TFMPP",
+      "l": "F2",
+      "i": 183,
+      "s": "1-(3-TRIFLUORMETILFENIL)PIPERAZINA"
+    },
+    {
+      "n": "UR-144",
+      "l": "F2",
+      "i": 184,
+      "s": "(1-PENTIL-1H-INDOL-3-IL)(2,2,3,3-TETRAMETILCICLOPROPIL)-METANONA"
+    },
+    {
+      "n": "XLR-11",
+      "l": "F2",
+      "i": 185,
+      "s": "5F-UR-144; [1-(5-FLUOROPENTIL)-1H-INDOL-3-IL](2,2,3,3-TETRAMETILCICLOPROPIL)-METANONA"
+    },
+    {
+      "n": "ZIPEPROL",
+      "l": "F2",
+      "i": 186,
+      "s": "ALFA-(ALFA-METOXIBENZIL)-4-(BETA-METOXIFENETIL)-1-PIPERAZINAETANOL"
+    },
+    {
+      "n": "Fenilpropanolamina ou norefedrina",
+      "l": "F3",
+      "i": 1
+    },
+    {
+      "n": "Dexfenfluramina",
+      "l": "F4",
+      "i": 1
+    },
+    {
+      "n": "Dinitrofenol",
+      "l": "F4",
+      "i": 2
+    },
+    {
+      "n": "Estricnina",
+      "l": "F4",
+      "i": 3
+    },
+    {
+      "n": "Etretinato",
+      "l": "F4",
+      "i": 4
+    },
+    {
+      "n": "Fenibut",
+      "l": "F4",
+      "i": 5
+    },
+    {
+      "n": "Lindano",
+      "l": "F4",
+      "i": 6
+    },
+    {
+      "n": "Terfenadina",
+      "l": "F4",
+      "i": 7
+    }
+  ],
+  "adendos": {
+    "A1": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros (exceto os isômeros dextrometorfano, (+)3-metoxi-N-metilmorfinan, e o Dextrorfano, (+) 3-hidroxi-N-metilmorfinan), das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros (exceto os isômeros dextrometorfano, (+)3-metoxi-N-metilmorfinan, e o Dextrorfano, (+) 3-hidroxi-N-metilmorfinan), das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) preparações à base de difenoxilato, contendo por unidade posológica, não mais que 2,5 miligramas de difenoxilato calculado como base, e uma quantidade de sulfato de atropina equivalente a, pelo menos, 1,0% da quantidade de difenoxilato, ficam sujeitas a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA \". 3) preparações à base de ópio, contendo até 5 miligramas de morfina anidra por mililitros, ou seja, até 50 miligramas de ópio, ficam sujeitas a prescrição da RECEITA DE CONTROLE ESPECIAL, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA \". 4) fica proibida a comercialização e manipulação de todos os medicamentos que contenham ópio e seus derivados sintéticos e cloridrato de difenoxilato e suas associações, nas formas farmacêuticas líquidas ou em xarope para uso pediátrico (Portaria SVS/MS n.º 106 de 14 de setembro de 1994 - DOU 19/9/94). 5) preparações medicamentosas na forma farmacêutica de comprimidos de liberação controlada à base de oxicodona, contendo não mais que 40 miligramas dessa substância, por unidade posológica, ficam sujeitas a prescrição em RECEITA DE CONTROLE ESPECIAL, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 6) excetua-se dos controles referentes a esta Lista o isômero proscrito alfa-PVP, que está relacionado na Lista \"F2\" deste regulamento. 7) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 8) preparações medicamentosas na forma farmacêutica adesivos transdérmicos contendo buprenorfina em matriz polimérica adesiva, ou seja, sem reservatório de substância ativa, ficam sujeitas a prescrição em RECEITA DE CONTROLE ESPECIAL em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 9) a importação e a exportação de padrões analíticos à base das substâncias butorfanol, morinamida, tapentadol e viminol, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais, éteres, ésteres e isômeros, assim como dos sais de éteres, de ésteres e de isômeros, das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 10) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "A2": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) preparações à base de acetildiidrocodeína, codeína, diidrocodeína, etilmorfina, folcodina, nicodicodina, norcodeína, inclusive as misturadas a um ou mais componentes, em que a quantidade de entorpecentes não exceda 100 miligramas por unidade posológica, e em que a concentração não ultrapasse a 2,5% nas preparações de formas indivisíveis ficam sujeitas prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 3) preparações à base de tramadol, inclusive as misturadas a um ou mais componentes, em que a quantidade não exceda 100 miligramas de tramadol por unidade posológica ficam sujeitas a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 4) preparações à base de dextropropoxifeno, inclusive as misturadas a um ou mais componentes, em que a quantidade de entorpecente não exceda 100 miligramas por unidade posológica e em que a concentração não ultrapasse 2,5% nas preparações indivisíveis, ficam sujeitas a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 5) preparações à base de nalbufina, inclusive as misturadas a um ou mais componentes, em que a quantidade não exceda 10 miligramas de cloridrato de nalbufina por unidade posológica ficam sujeitas a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 6) preparações à base de propiram, inclusive as misturadas a um ou mais componentes, contendo não mais que 100 miligramas de propiram por unidade posológica e associados, no mínimo, a igual quantidade de metilcelulose, ficam sujeitas a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula deverão apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 7) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 8) a importação e a exportação de padrões analíticos à base das substâncias nalbufina e tramadol, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais, éteres, ésteres e isômeros, assim como dos sais de éteres, de ésteres e de isômeros, das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 9) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "A3": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) ficam sujeitos aos controles referentes a esta Lista os medicamentos registrados na Anvisa que possuam em sua formulação derivados de Cannabis sativa , em concentração de no máximo 30 mg de tetrahidrocannabinol (THC) por mililitro e 30 mg de canabidiol por mililitro. 3) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 4) a importação e a exportação de padrões analíticos à base das substâncias clorfentermina, fenfluramina, lisdexanfetamina, metilsinefrina e tanfetamina, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais, éteres, ésteres e isômeros, assim como dos sais de éteres, de ésteres e de isômeros, das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 5) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 6) os controles desta Lista se aplicam à substância dronabinol somente quando obtida sinteticamente e desde que não estejam presentes outros componentes sujeitos a controle especial, ainda que na forma de impurezas. 7) (Excluído) 8) (Excluído) 9) (Excluído) 10) estão sujeitos aos controles desta Lista os produtos de Cannabis regularizados nos termos da Resolução da Diretoria Colegiada - RDC nº 1.015, de 2 de fevereiro de 2026 , ou de norma que venha a substituí-la, os medicamentos à base de Cannabis registrados na Anvisa, os produtos veterinários à base de Cannabis com finalidade medicinal regularizados junto ao Ministério da Agricultura e Pecuária (MAPA), bem como o material vegetal, o extrato, o fitofármaco CBD e o produto intermediário a granel e na embalagem primária obtidos da espécie vegetal Cannabis sativa L. destinados à fabricação destes. 11) estão sujeitos aos controles desta Lista a importação e a distribuição da espécie vegetal Cannabis sativa L., do extrato, do fitofármaco CBD, do produto intermediário a granel e na embalagem primária obtidos a partir desta espécie vegetal, para fins de pesquisa, desenvolvimento e fabricação de insumo farmacêutico, de produtos de Cannabis e de medicamentos, bem como a exportação destes. 12) os produtos de Cannabis regularizados nos termos da Resolução da Diretoria Colegiada - RDC nº 1.015, de 2 de fevereiro de 2026 , ou de norma que venha a substituí-la, que apresentem teor de tetrahidrocanabinol (THC) menor ou igual a 0,2%, estão sujeitos à prescrição em Receita de Controle Especial.",
+    "B1": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) os medicamentos que contenham fenobarbital, metilfenobarbital (prominal), barbital e barbexaclona, ficam sujeitos a prescrição da Receita de Controle Especial, em 2 (duas) vias e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 3) em relação ao controle do cloreto de etila: 3.1. fica proibido o uso do cloreto de etila para fins médicos, bem como a sua utilização sob a forma de aerosol, aromatizador de ambiente ou de qualquer outra forma que possibilite o seu uso indevido. 3.2. o controle e a fiscalização da substância cloreto de etila, ficam submetidos ao Órgão competente do Ministério da Justiça e Segurança Pública, de acordo com a Lei nº 10.357 de 27/12/2001 , Decreto nº 4.262 de 10/06/2002 e Portaria MJSP nº 240, de 12/03/2019 . 4) (Excluído) 5) (Excluído) 6) fica proibido o uso humano de cloreto de metileno/diclorometano e de tricloroetileno, por via oral ou inalação. 7) quando utilizadas exclusivamente para fins industriais legítimos, as substâncias cloreto de metileno/diclorometano e tricloroetileno estão excluídas dos controles referentes a esta Lista, estando submetidas apenas aos controles impostos pela Lista D2 deste Regulamento (controle do Ministério da Justiça e Segurança Pública). 8) excetua-se dos controles referentes a esta Lista, o isômero proscrito TH-PVP, que está relacionado na Lista \"F2\" deste regulamento. 9) os medicamentos que contenham perampanel ficam sujeitos à prescrição em Receita de Controle Especial, em 2 (duas) vias, e os dizeres de rotulagem e bula devem apresentar a seguinte frase: \"VENDA SOB PRESCRIÇÃO MÉDICA - SÓ PODE SER VENDIDO COM RETENÇÃO DA RECEITA\". 10) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 11) a importação e a exportação de padrões analíticos à base das substâncias alfaxalona, aprobarbital, armodafinila, barbexaclona, cetamina, clorazepam, escetamina, eszopiclona, flunitrazolam, GBL, lemborexante, modafinila, perampanel, prolintano, propilexedrina, remimazolam, tiamilal, tiopental, triexifenidil, zaleplona e zopiclona, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais, éteres, ésteres e isômeros, assim como dos sais de éteres, de ésteres e de isômeros, das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 12) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 13) (Excluído) 14) A dispensação e o uso dos medicamentos contendo as substâncias cetamina e escetamina só serão permitidos em estabelecimentos de saúde. 15) O medicamento contendo a substância escetamina em spray para uso por via nasal deve ser administrado em estabelecimentos de saúde sob observação de um profissional de saúde e o paciente deve ser monitorado até ser considerado clinicamente estável e pronto para deixar o estabelecimento. 16) os medicamentos que contenham carisoprodol estão sujeitos à VENDA SOB PRESCRIÇÃO SEM RETENÇÃO DE RECEITA.",
+    "B2": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) excetua-se dos controles referentes a esta Lista, o isômero proscrito metanfetamina que está relacionado na Lista \"F2\" deste regulamento. 3) excetuam-se dos controles referentes a esta Lista, os isômeros proscritos 4-MEC, 5-MAPDB e pentedrona, que estão relacionados na Lista \"F2\" deste regulamento. 4) excetua-se das disposições legais deste Regulamento Técnico a substância DEET (N, N-dietil-3-metilbenzamida). 5) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 6) A importação e a exportação de padrões analíticos à base de sibutramina, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais, éteres, ésteres e isômeros, assim como dos sais de éteres, de ésteres e de isômeros, da substância citada, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 7) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "C1": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 1.3. o disposto nos itens 1.1 e 1.2 não se aplica a substância canabidiol. 2) os medicamentos à base da substância loperamida ficam sujeitos a VENDA SOB PRESCRIÇÃO MÉDICA SEM RETENÇÃO DE RECEITA. 3) fica proibido a comercialização e manipulação de todos os medicamentos que contenham loperamida ou em associações, nas formas farmacêuticas líquidas ou em xarope para uso pediátrico ( Portaria SVS/MS n.º 106 de 14 de setembro de 1994 - DOU 19/9/94). 4) só será permitida a compra e uso do medicamento contendo a substância misoprostol em estabelecimentos hospitalares devidamente cadastrados junto a Autoridade Sanitária para este fim; 5) os medicamentos à base da substância tetracaína ficam sujeitos a: (a) VENDA SEM PRESCRIÇÃO MÉDICA - quando tratar-se de preparações farmacêuticas de uso tópico odontológico, não associadas a qualquer outro princípio ativo; (b) VENDA COM PRESCRIÇÃO MÉDICA SEM A RETENÇÃO DE RECEITA - quando tratar-se de preparações farmacêuticas de uso tópico otorrinolaringológico, especificamente para Colutórios e Soluções utilizadas no tratamento de Otite Externa e (c) VENDA SOB PRESCRIÇÃO MÉDICA COM RETENÇÃO DE RECEITA - quando tratar-se de preparações farmacêuticas de uso tópico oftalmológico. 6) excetuam-se das disposições legais deste Regulamento Técnico as substâncias dissulfiram, lítio (metálico e seus sais) e hidrato de cloral, quando, comprovadamente, forem utilizadas para outros fins, que não as formulações medicamentosas, e, portanto, não estão sujeitos ao controle e fiscalização previstos nas Portarias SVS/MS n.º 344/98 e nº. 6/99 . 7) excetuam-se das disposições legais deste Regulamento Técnico os medicamentos à base de benzidamina cujas formas farmacêuticas sejam: pó para preparação extemporânea, solução ginecológica, spray, pastilha drops, colutório, pasta dentifrícia e gel. 8) fica proibido o uso de nitrito de isobutila, de nitrito de isopentila e de nitrito de isopropila para fins médicos, bem como a utilização destes como aromatizador de ambiente ou de qualquer outra forma que possibilite o seu uso indevido. 9) excetua-se das disposições legais deste Regulamento Técnico, o nitrito de isobutila, o nitrito de isopentila e o nitrito de isopropila quando utilizados exclusivamente para fins industriais legítimos. 10) excetua-se das disposições legais deste Regulamento Técnico a substância prometazina. 11) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 12) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 13) os controles desta Lista se aplicam à substância canabidiol somente quando obtida sinteticamente e desde que não estejam presentes outros componentes sujeitos a controle especial, ainda que na forma de impurezas. 14) excetuam-se das disposições legais da Resolução da Diretoria Colegiada - RDC nº 22, de 29 de abril de 2014 , ou norma que vier a substitui-la, no tocante à transmissão de dados para o Sistema Nacional de Gerenciamento de Produtos Controlados (SNGPC), os medicamentos contendo a substância molnupiravir que possuam, exclusivamente, Autorização temporária de Uso Emergencial (AUE). Neste caso, a movimentação e o controle do estoque do medicamento devem ser mantidos apenas por meio de livro de registro do estabelecimento, pelos prazos previstos na Portaria SVS/MS nº 344/98 ou norma que vier a substitui-la. 15) está sujeita aos controles desta Lista a espécie vegetal Cannabis sativa L. que comprovadamente produza teor de tetrahidrocanabinol (THC) menor ou igual a 0,3%, nos termos do Adendo 13 da Lista E.",
+    "C2": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) os medicamentos de uso tópico contendo as substâncias desta Lista ficam sujeitos a VENDA SOB PRESCRIÇÃO MÉDICA SEM RETENÇÃO DE RECEITA. 3) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 4) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "C3": "1) ficam também sob controle, todos os sais e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 3) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 4) o controle das substâncias lenalidomida e pomalidomida e dos medicamentos que as contenham deve ser realizado mediante o atendimento dos requisitos constantes da RDC nº 191, de 11 de dezembro de 2017 , ou norma que vier a substitui-la.",
+    "C5": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) os medicamentos de uso tópico contendo as substâncias desta Lista ficam sujeitos a VENDA SOB PRESCRIÇÃO MÉDICA SEM RETENÇÃO DE RECEITA. 3) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 4) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 5) excetua-se das disposições legais deste Regulamento Técnico a substância salicilato de butil octil.",
+    "D1": "1) ficam também sob controle, todos os sais das substâncias enumeradas acima, sempre que seja possível a sua existência; 2) ficam também sob controle as substâncias: mesilato de diidroergotamina, tartarato de diidroergotamina, maleato de ergometrina, tartarato de ergometrina e tartarato de ergotamina. 3) excetuam-se do controle estabelecido nas Portarias SVS/MS n.º 344/98 e 6/99 as formulações não medicamentosas que contêm as substâncias desta Lista quando se destinarem a outros seguimentos industriais. 4) óleo de pimenta longa é obtido da extração das folhas e dos talos finos da Piper hispidinervum C.DC., planta nativa da Região Norte do Brasil. 5) ficam também sob controle todos os isômeros ópticos da substância APAAN, sempre que seja possível sua existência. 6) a importação e a exportação de padrões analíticos à base de diidroergometrina, diidroergotamina e etafedrina, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 7) quando utilizada exclusivamente para fins industriais legítimos, a substância helional está excluída dos controles estabelecidos pela Portaria SVS/MS nº 344/98. 8) ficam também sob controle desta Lista os ésteres propílico, isopropílico, butílico, isobutílico, sec-butílico e terc-butílico do ácido 3,4-MDP-2-P metil glicídico. 9) ficam também sob controle desta Lista os ésteres metílico, etílico, propílico, isopropílico, butílico, isobutílico, sec-butílico e terc-butílico do ácido P-2-P metil glicídico. 10) óleos contendo safrol com concentração individual igual ou inferior a 4% (quatro por cento), quando utilizados para fins industriais ou científicos legítimos, estão isentos da fixação de Cota de Importação, de Autorização de Importação e de Autorização de Exportação, previstas na Resolução da Diretoria Colegiada - RDC nº 659, de 30 de março de 2022 e em suas atualizações.",
+    "D2": "1) os produtos e insumos químicos desta Lista estão sujeitos a controle da Polícia Federal, de acordo com a Lei nº 10.357 de 27/12/2001 , o Decreto nº 4.262 de 10/06/2002 e a Portaria MJSP nº 204, de 21/10/2022 , ou normas que vierem a substituí-las. 2) o insumo químico ou substância clorofórmio está proibido para uso em medicamentos. 3) quando os insumos desta Lista forem utilizados para fins de fabricação de produtos sujeitos a vigilância sanitária, as empresas devem atender a legislação sanitária específica.",
+    "E": "1) ficam proibidas a importação, a exportação, o comércio, a manipulação e o uso dos itens enumerados acima. 2) ficam também sob controle, todas as substâncias obtidas a partir dos itens enumerados acima, bem como os sais, isômeros, ésteres e éteres destas substâncias. 3) a planta Lophophora williamsii Coult. é comumente conhecida como cacto peyote. 4) excetua-se do controle estabelecido nas Portarias SVS/MS n.º 344/98 e 6/99 , a importação de semente de dormideira (Papaver somniferum L.) quando, comprovadamente, for utilizada com finalidade alimentícia, devendo, portanto, atender legislação sanitária específica. 5) excetuam-se dos controles referentes a esta Lista a substância canabidiol obtida sinteticamente, que está relacionada na Lista \"C1\" deste regulamento, e a substância dronabinol obtida sinteticamente, que está relacionada na Lista \"A3\" deste regulamento. 6) excetua-se das disposições legais deste Regulamento Técnico a substância papaverina, bem como as formulações que a contenham, desde que estas não possuam outras substâncias sujeitas ao controle especial da Portaria SVS/MS nº 344/98 . 7) fica permitida a importação de Produto derivado de Cannabis, por pessoa física, para uso próprio, mediante prescrição de profissional legalmente habilitado, para tratamento de saúde, aplicando-se os requisitos estabelecidos pela Resolução da Diretoria Colegiada - RDC nº 660, de 30 de março de 2022 , ou norma que vier a substitui-la. 8) excetuam-se dos controles referentes a esta Lista os medicamentos registrados na Anvisa que possuam em sua formulação derivados de Cannabis sativa , em concentração de no máximo 30 mg de tetrahidrocannabinol (THC) por mililitro e 30 mg de canabidiol por mililitro, desde que sejam atendidas as exigências desta Resolução. 9) excetuam-se dos controles referentes a esta Lista os isômeros das substâncias obtidas a partir dos itens enumerados acima não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. 10) (Excluído) 11) (Excluído) 12) fica permitida a prescrição por profissionais médicos-veterinários, legalmente habilitados pelo Conselho Federal de Medicina Veterinária, com a finalidade medicinal, para uso exclusivamente veterinário, de medicamentos e produtos de Cannabis com Autorização Sanitária, devidamente regularizados para comercialização em território nacional, mediante retenção de receituário de controle especial, nos termos da legislação vigente e do Decreto nº 5.053, de 22 de abril de 2004. 13) excetua-se dos controles referentes a esta Lista, nos termos da Resolução da Diretoria Colegiada - RDC nº 1.013, de 30 de janeiro de 2026 , a espécie vegetal Cannabis sativa L. que comprovadamente produza teor de tetrahidrocanabinol (THC) menor ou igual a 0,3%, a qual está sujeita aos controles da Lista C1. 14) as substâncias e os produtos obtidos da espécie vegetal Cannabis sativa L. com qualquer teor de tetrahidrocanabinol (THC) estão sujeitos aos controles desta Lista, ressalvados os casos de autorização regulamentar ou legal. 15) excetua-se da proibição de que trata esta Lista, nos termos da Resolução da Diretoria Colegiada - RDC nº 1.012, de 30 de janeiro de 2026 , o cultivo da espécie vegetal Cannabis sativa L. com teor de tetrahidrocanabinol (THC) superior a 0,3%, quando destinado exclusivamente a fins de pesquisa e a ambientes regulatórios experimentais devidamente autorizados pela Agência Nacional de Vigilância Sanitária - Anvisa. 16) excetuam-se dos controles referentes a esta Lista os produtos de Cannabis regularizados nos termos da Resolução da Diretoria Colegiada - RDC nº 1.015, de 2 de fevereiro de 2026 , ou de norma que vier a substituí-la, os medicamentos à base de Cannabis registrados na Anvisa, os produtos veterinários à base de Cannabis com finalidade medicinal regularizados junto ao Ministério da Agricultura e Pecuária (MAPA), bem como o material vegetal, o extrato, o fitofármaco CBD e o produto intermediário a granel e na embalagem primária obtidos da espécie vegetal Cannabis sativa L. destinados à fabricação destes, os quais estão sujeitos aos controles da Lista A3. 17) excetuam-se dos controles referentes a esta Lista a importação e a distribuição da espécie vegetal Cannabis sativa L., do extrato, do fitofármaco CBD, do produto intermediário a granel e na embalagem primária, obtidos a partir dessa espécie vegetal, para fins de pesquisa, desenvolvimento e fabricação de insumo farmacêutico, de produtos de Cannabis e de medicamentos, bem como a exportação desses itens, sendo aplicáveis os controles da Lista A3. LISTA - F LISTA DAS SUBSTÂNCIAS DE USO PROSCRITO NO BRASIL",
+    "F1": "1) ficam também sob controle: 1.1. os sais, éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência; 1.2. os sais de éteres, ésteres e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 1.3. todos os ésteres e derivados da substância ecgonina que sejam transformáveis em ecgonina e cocaína. 2) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 3) exclui-se da proibição o uso médico-veterinário das substâncias carfentanil e etorfina, desde que devidamente autorizado pelo Ministério da Agricultura, Pecuária e Abastecimento e atendidos os demais requisitos de controle estabelecidos pelas legislações vigentes. 4) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "F2": "1) ficam também sob controle: 1.1. sempre que seja possível a sua existência, todos os sais e isômeros das substâncias desta Lista. 1.2. os seguintes isômeros e suas variantes estereoquímicas da substância tetrahidrocannabinol: 7,8,9,10-tetrahidro-6,6,9-trimetil-3-pentil-6H-dibenzo[b,d]pirano-1-ol (9R,10aR)-8,9,10,10a-tetrahidro-6,6,9-trimetil-3-pentil-6H-dibenzo[b,d]pirano-1-ol (6aR,9R,10aR)-6a,9,10,10a-tetrahidro-6,6,9-trimetil-3-pentil-6H-dibenzo[b,d]pirano-1-ol (6aR,10aR)-6a,7,10,10a-tetrahidro-6,6,9-trimetil-3-pentil-6H-dibenzo[b,d]pirano-1-ol 6a,7,8,9-tetrahidro-6,6,9-trimetil-3-pentil-6H-dibenzo[b,d]pirano-1-ol (6aR,10aR)-6a,7,8,9,10,10a-hexahidro-6,6-dimetil-9-metileno-3-pentil-6H-dibenzo[b,d]pirano-1-ol 2) excetua-se dos controles referentes a esta Lista, o isômero fentermina que está relacionado na Lista \"B2\" deste Regulamento. 3) excetua-se dos controles referentes a esta lista a substância canabidiol, que está relacionada na Lista \"C1\" deste Regulamento. 4) excetua-se das disposições legais deste Regulamento Técnico a substância ropivacaína. 5) excetua-se dos controles referentes a esta Lista a substância milnaciprana, que está relacionada na Lista \"C1\" deste Regulamento. 6) excetuam-se dos controles referentes a esta Lista os medicamentos registrados na Anvisa que possuam em sua formulação a substância tetrahidrocannabinol (THC), desde que sejam atendidas as exigências a serem regulamentadas previamente à concessão do registro. 7) excetuam-se dos controles referentes a esta Lista os isômeros das substâncias classificadas nos itens \"b\", \"c\" ou \"d\", desde que esses isômeros não se enquadrem em nenhuma das classes estruturais descritas nos referidos itens e nem sejam isômeros de substâncias descritas nominalmente no item \"a\" desta Lista. 8) excetuam-se dos controles referentes aos itens \"b\", \"c\" e \"d\" quaisquer substâncias que estejam descritas nominalmente nas listas deste Regulamento 9) excetua-se dos controles referentes a esta Lista o isômero metazocina, que está relacionado na Lista \"A1\" deste Regulamento. 10) excetua-se das disposições legais deste Regulamento Técnico a substância mepivacaína. 11) excetua-se dos controles referentes a esta Lista o isômero fendimetrazina, que está relacionado na Lista \"B2\" deste regulamento. 12) excetua-se das disposições legais deste Regulamento Técnico a substância DEET (N,N-dietil-3-metilbenzamida). 13) excetua-se dos controles referentes a esta Lista o isômero pentazocina, que está relacionado na Lista \"B1\" deste Regulamento. 14) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste Regulamento. 15) excetuam-se dos controles referentes a esta Lista as substâncias componentes de medicamentos registrados na Anvisa que se enquadrem nos itens \"b\", \"c\" ou \"d\", bem como os medicamentos que as contenham. 16) A importação e a exportação de padrões analíticos à base das substâncias 1-(1,2-DIFENILETIL)PIRROLIDINA, 1B-LSD, 1cP-LSD, 1P-LSD, 2C-C, 2C-D, 2C-E, 2C-F, 2C-I, 2C-T-2, 2C-T-7, 2-MEO-DIFENIDINA, 3-FLUOROFENMETRAZINA, 3-MeO-PCP, 4-AcO-DET; 4-AcO-DMT, 4AcO-MET, 4-BROMOMETCATINONA, 4-Cl-ALFA-PVP, 4-CLOROMETCATINONA, 4-FLUOROMETCATINONA, 4-HO-DET, 4-HO-MIPT, 4-MEAPP, 5-APB, 5-APDB, 5C-MDA-19, 5-EAPB, 5F-AB-PFUPPYCA, 5F-MDA-19, 5-IAI, 5-MAPDB, 5-MeO-AMT, 5-MeO-DALT, 5-MeO-DIPT, 5-MeO-DMT, 5-MeO-MIPT, 25B-NBOH, 25C-NBF, 25C-NBOH, 25D-NBOME, 25E-NBOH, 25E-NBOME, 25H-NBOH, 25H-NBOME, 25I-NBF, 25I-NBOH, 25N-NBOME, 25P-NBOME, 25T2-NBOME, 25T4-NBOME, 25T7-NBOME, 30C-NBOME, ADB-5Br-INACA, ADB-FUBIATA, ADB-INACA, AKB48, ALD-52, ALFA-EAPP, ALFA-D2PV, AMT, BETACETO-DMBDB, BZO-4en-POXIZID, BZO-CHMOXIZID, BZO-HEPOXIZID, CH-PIATA, CLOBENZOREX, DESALQUILGIDAZEPAM, DIIDRO-LSD, DIFENIDINA, DIMETILONA, DMAA, DMBA, DOC, DOI, EAM-2201, ERGINA, JWH-071, JWH-072, JWH-081, JWH-098, JWH-122, JWH-210, JWH-250, JWH-251, JWH-252, JWH-253, MAM-2201, MAM-2201 N-(4-HIDROXIPENTIL), MAM-2201 N-(5-CLOROPENTIL), MCPP, MDA-19, MDAI, MDMB-5Br-INACA, MDMB-INACA, METALILESCALINA, N-ACETIL-3,4-MDMC, N-ETILCATINONA, N-ETILHEXEDRONA, NMDMSB, PENTILONA, RH-34, SALVINORINA A, TH-PVP e TFMPP, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais e isômeros das substâncias citadas, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 17) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "F3": "1) ficam também sob controle todos os sais e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 3) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham.",
+    "F4": "1) ficam também sob controle todos os sais e isômeros das substâncias enumeradas acima, sempre que seja possível a sua existência. 2) fica autorizado o uso de lindano como padrão analítico para fins laboratoriais ou monitoramento de resíduos ambientais, conforme legislação específica. 3) excetuam-se dos controles referentes a esta Lista os isômeros relacionados nominalmente em outra Lista deste regulamento. 4) A importação e a exportação de padrões analíticos à base de substâncias constantes desta Lista, em que a quantidade do ativo sujeito a controle especial não exceda 500 mg por unidade, não requer Autorização de Importação e Autorização de Exportação, respectivamente. O disposto neste adendo também se aplica aos padrões analíticos à base dos sais e isômeros das substâncias, a menos que sejam explicitamente excetuados ou constantes de listas de controle mais restrito e desde que a quantidade do ativo sujeito a controle especial não ultrapasse o limite especificado. 5) excetuam-se dos controles referentes a esta Lista os isômeros não listados nominalmente e que sejam componentes de medicamentos registrados na Anvisa, bem como os medicamentos que os contenham. PUB D.O.U., 13/07/2026 - Seção 1 Este texto não substitui a Publicação Oficial. Carregando..."
+  },
+  "limite": "Índice dos itens nominalmente listados; não abrange automaticamente sais, isômeros, classes estruturais, adendos e exceções por formulação."
+}

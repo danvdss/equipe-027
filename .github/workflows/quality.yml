@@ -26,7 +26,7 @@ jobs:
       - name: Preparar arquivos públicos
         run: |
           mkdir public
-          cp enhancements.js growth.js growth-data.js renewal.js auth.js supabase.min.js index.html style.css theme.css design.css dashboard-cards.css lab-details.js shortcuts.js occupational-portal.js app.js care.js workflow.js notes.js prenatal.js implante.js diu.js receituario.html controlados.html controlados.js rx-workflow.js rx-workflow.css html2canvas.min.js public/
+          cp enhancements.js growth.js growth-data.js renewal.js auth.js supabase.min.js index.html style.css theme.css design.css dashboard-cards.css lab-details.js shortcuts.js occupational-portal.js app.js care.js workflow.js notes.js prenatal.js implante.js diu.js receituario.html controlados.html controlados.css controlados.js controlados-dados.json rx-workflow.js rx-workflow.css html2canvas.min.js public/
           mkdir -p public/ot-embedded
           cp ot-embedded/projeto-to-embedded.js ot-embedded/bundle-manifest.json public/ot-embedded/
       - uses: actions/upload-pages-artifact@v3

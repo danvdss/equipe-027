@@ -1,1 +1,79 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Equipe 027 · Medicamentos controlados</title><link rel="stylesheet" href="style.css"><style>body{background:#090d16;color:#f4f7fd;font-family:system-ui}main{max-width:900px;margin:auto;padding:24px}.box{background:#151d2b;border:1px solid #354258;border-radius:16px;padding:20px;margin:14px 0}input,select{padding:13px;background:#0c1320;color:#fff;border:1px solid #64748b;border-radius:9px;width:100%;box-sizing:border-box}.fields{display:grid;grid-template-columns:2fr 1fr;gap:12px}.result{border-top:1px solid #354258;padding:14px 0}.warning{border-left:4px solid #e8b461;padding:12px;background:#2d241a}a{color:#a6ccff}@media(max-width:600px){.fields{grid-template-columns:1fr}}</style></head><body><main><a href="index.html">← Voltar à Equipe 027</a><h1>Medicamentos controlados</h1><p>Consulta experimental de substâncias sujeitas a controle especial.</p><section class="box"><div class="fields"><label>Pesquisar princípio ativo<input id="query" type="search" placeholder="Ex.: clonazepam"></label><label>Lista<select id="filter"><option value="">Todas</option><option>A1</option><option>A2</option><option>A3</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option><option>C3</option><option>C5</option></select></label></div><p id="count" aria-live="polite"></p><div id="results"></div></section><section class="box"><p class="warning"><strong>Protótipo demonstrativo: não utilizar para prescrição.</strong> A ausência de resultados não significa ausência de controle. A classificação, os adendos e as exigências de receita devem ser conferidos na norma vigente, inclusive por apresentação.</p><a target="_blank" rel="noopener noreferrer" href="https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados/lista-substancias">Consultar a relação oficial da Anvisa</a></section></main><script src="controlados.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#090e19">
+  <meta name="description" content="Consulta das listas de substâncias controladas da RDC Anvisa nº 1.036/2026.">
+  <title>Medicamentos controlados · Equipe 027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="controlados.css?v=2026.11.23" rel="stylesheet">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar" aria-label="Navegação">
+      <a class="brand" href="index.html" aria-label="Voltar à plataforma Equipe 027">
+        <span class="brand-symbol" aria-hidden="true">✚</span>
+        <span><strong>EQUIPE 027</strong><small>Prontuário e ferramentas clínicas</small></span>
+      </a>
+      <a class="back" href="index.html"><span aria-hidden="true">←</span> Voltar ao painel</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <span class="eyebrow"><span class="live-dot"></span> BASE NORMATIVA · BRASIL</span>
+          <h1>Medicamentos <em>controlados.</em></h1>
+          <p class="hero-copy">Encontre substâncias por nome, sinônimo e lista. Identifique visualmente a <strong>categoria geral de receituário</strong> e consulte os adendos que podem alterar a regra.</p>
+          <div class="hero-tags">
+            <span class="tag">RDC Anvisa nº 1.036/2026</span>
+            <span class="tag">Anexo I · Portaria 344/1998</span>
+            <span class="tag">Publicado em 13 jul. 2026</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="rx-symbol">Rx</div><span class="hero-orbit orbit-one"></span><span class="hero-orbit orbit-two"></span></div>
+      </section>
+
+      <div class="summary-grid" aria-label="Visão geral do catálogo">
+        <div class="summary-card"><span class="summary-label">Registros nominais</span><strong id="totalCount">—</strong><small>Substâncias e itens indexados</small></div>
+        <div class="summary-card"><span class="summary-label">Listas normativas</span><strong>16</strong><small>De A1 até F4</small></div>
+        <div class="summary-card"><span class="summary-label">Fonte</span><strong class="summary-norm">RDC 1.036</strong><small>Atualização de julho/2026</small></div>
+      </div>
+
+      <section class="legend-panel" aria-labelledby="legend-title">
+        <div class="section-heading"><div><span class="section-kicker">LEGENDA VISUAL</span><h2 id="legend-title">Tipos de receita e controle</h2></div><span class="minor-note">As cores identificam a regra geral da lista</span></div>
+        <div class="legend" id="legend"></div>
+      </section>
+
+      <section class="search-panel" aria-labelledby="search-title">
+        <div class="section-heading"><div><span class="section-kicker">CATÁLOGO DE SUBSTÂNCIAS</span><h2 id="search-title">Consultar a relação</h2></div><span class="minor-note" id="indexStatus" role="status">Carregando a base...</span></div>
+        <div class="search-form">
+          <label class="search-field"><span>Nome ou sinônimo</span><span class="search-input-wrap"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="search" type="search" autocomplete="off" placeholder="Ex.: clonazepam, tramadol, lisdexanfetamina..." aria-label="Pesquisar substância ou sinônimo"></span></label>
+          <label class="field"><span>Lista</span><select id="listFilter"><option value="">Todas as listas</option></select></label>
+          <label class="field"><span>Tipo de controle</span><select id="typeFilter"><option value="">Todos os tipos</option></select></label>
+        </div>
+        <div class="result-toolbar"><p id="resultCount" aria-live="polite">Preparando resultados...</p><button class="clear" id="clearFilters" type="button">Limpar filtros</button></div>
+        <div id="results" class="results" aria-label="Resultados da busca"></div>
+        <div class="load-more-wrap"><button id="loadMore" class="load-more" type="button" hidden>Mostrar mais resultados</button></div>
+      </section>
+
+      <section class="notice-panel">
+        <div class="notice-symbol" aria-hidden="true">!</div>
+        <div><h2>Consulta normativa, não orientação automática de prescrição</h2>
+          <p>A classificação acima indica a <strong>regra geral de cada lista</strong>. Dose, concentração, apresentação, via de administração, tipo de produto e adendos podem determinar exigência diferente. A ausência de um nome não significa ausência de controle: a norma também abrange sais, isômeros e classes estruturais.</p>
+          <p>A base é uma fotografia da RDC nº 1.036/2026; antes de utilizar uma informação na assistência, confira a norma vigente e o medicamento específico.</p>
+          <div class="notice-links">
+            <a id="sourceLink" href="https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados/lista-substancias" target="_blank" rel="noopener noreferrer">Relação oficial da Anvisa ↗</a>
+            <a href="https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/controlados" target="_blank" rel="noopener noreferrer">Normas e orientações ↗</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer><span>Equipe 027 · Base documental referenciada na Anvisa</span><span>RDC nº 1.036/2026 · Atualização de 13/07/2026</span></footer>
+  </div>
+  <script src="controlados.js?v=2026.11.23" defer></script>
+</body>
+</html>
