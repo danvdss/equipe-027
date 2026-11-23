@@ -761,7 +761,7 @@ function addLab(values = {}) {
 }
 function dashboard() {
   const cards = [
-    ["controlados", "℞", "Medicamentos controlados", "Pesquisar substâncias, listas e receituário."],
+    ["controlados", "RX", "Medicamentos controlados", "Pesquisar substâncias, listas e receituário."],
     ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["cervical", "", "Citopatológico / DNA-HPV", "Coleta, achados, amostra e retorno."],
     ["child", "", "Puericultura", "Crescimento, desenvolvimento, triagens e cuidado infantil."],

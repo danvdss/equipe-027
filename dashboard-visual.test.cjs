@@ -81,7 +81,7 @@ test("dashboard motion, focus and mobile styles are accessible and published", (
   assert.match(css, /@media\s*\(max-width:\s*600px\)/);
   assert.match(css, /@keyframes module-symbol-float/);
   assert.match(css, /@keyframes module-reveal/);
-  assert.match(html, /dashboard-cards\.css\?v=2026\.11\.22/);
+  assert.match(html, /dashboard-cards\.css\?v=2026\.11\.23/);
   assert.match(workflow, /design\.css dashboard-cards\.css/);
 });
 

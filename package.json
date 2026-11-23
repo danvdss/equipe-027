@@ -1,7 +1,7 @@
 {
   "name": "equipe-027",
   "private": true,
-  "version": "2026.11.22",
+  "version": "2026.11.23",
   "scripts": {
     "test": "node --test quality.test.cjs auth.test.cjs occupational.test.cjs growth.test.cjs enhancements.test.cjs readiness.test.cjs occupational-portal.test.cjs prepare-private-to.test.cjs pages-bundle.test.cjs dashboard-visual.test.cjs",
     "check": "node check.cjs",
