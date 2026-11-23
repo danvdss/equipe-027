@@ -6,7 +6,7 @@ const vm = require("node:vm");
 const { JSDOM } = require("jsdom");
 
 const modules = [
-  "general", "cervical", "child", "occupational", "renewal",
+  "controlados", "general", "cervical", "child", "occupational", "renewal",
   "has", "dm", "both", "prenatal", "implante", "diu", "lab", "rx",
 ];
 
@@ -31,7 +31,7 @@ function setup(t) {
   return { window, run };
 }
 
-test("all 13 dashboard cards have individual representative icons and existing routes", (t) => {
+test("all 14 dashboard cards have individual representative icons and existing routes", (t) => {
   const { window } = setup(t);
   const cards = [...window.document.querySelectorAll(".cards .module-card")];
   assert.equal(cards.length, modules.length);

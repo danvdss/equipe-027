@@ -301,6 +301,7 @@ const modules = [
   ["diu", "DIU"],
   ["lab", "Exames"],
   ["rx", "Receituário"],
+  ["controlados", "Medicamentos controlados"],
 ];
 const titles = {
   occupational: "Terapia Ocupacional",
@@ -597,6 +598,7 @@ const iconPaths = {
   implante: "M7 17L17 7 M5 19l2-2 M17 7l2-2 M4 16l4 4 M16 4l4 4",
   lab: "M9 3h6 M10 3v7l-6 9q-1 2 2 2h12q3 0 2-2l-6-9V3 M7 15h10",
   rx: "M6 21V3h6a5 5 0 010 10H6 M11 13l8 8 M19 13l-8 8",
+  controlados: "M4 4h16v16H4z M8 9h8 M12 6v6 M8 16h8",
   history: "M3 11a9 9 0 119 10 M3 4v7h7 M12 7v5l3 2",
 };
 function uiIcon(id) {
@@ -625,6 +627,7 @@ function collect() {
   drafts[page] = d;
 }
 function navigate(p) {
+  if (p === "controlados") { window.location.href = "controlados.html"; return; }
   if (page === "occupational" && otPortal?.currentView() === "projeto" && !otPortal.leave()) return;
   if (page !== "occupational" && p === "occupational") otPortal?.resetView();
   collect();
@@ -758,6 +761,7 @@ function addLab(values = {}) {
 }
 function dashboard() {
   const cards = [
+    ["controlados", "℞", "Medicamentos controlados", "Pesquisar substâncias, listas e receituário."],
     ["general", "✚", "Evolução geral", "Estado geral, avaliação e condutas."],
     ["cervical", "", "Citopatológico / DNA-HPV", "Coleta, achados, amostra e retorno."],
     ["child", "", "Puericultura", "Crescimento, desenvolvimento, triagens e cuidado infantil."],
