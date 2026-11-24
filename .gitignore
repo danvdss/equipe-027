@@ -9,3 +9,6 @@ ot-embedded/*
 # Local-only preview fixture
 ot-dev-preview.html
 ot-visual-preview.png
+
+# Local generated test report
+/test-results.txt

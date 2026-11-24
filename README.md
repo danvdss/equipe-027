@@ -1,8 +1,8 @@
 # EQUIPE 027
 
-> **Situação em 18/11/2026:** versão técnica publicada, **homologação institucional pendente**. A entrada atual usa Supabase Auth por usuário e senha; as descrições de credencial compartilhada local abaixo são históricas e não representam o código atual. Consulte [ACCESS.md](ACCESS.md) e [PLANO-CONCLUSAO.md](PLANO-CONCLUSAO.md) antes do uso assistencial.
+> **Situação em 18/11/2026:** versão técnica publicada, **homologação institucional pendente**. A entrada atual usa Supabase Auth por usuário e senha; as descrições de credencial compartilhada local abaixo são históricas e não representam o código atual. Consulte [ACCESS.md](ACCESS.md) e [ROADMAP.md](ROADMAP.md) antes do uso assistencial.
 
-**Versão técnica atual: 2026.11.22.** Consulte [ROADMAP-ATUALIZADO.md](ROADMAP-ATUALIZADO.md) para a revisão de 21/11/2026, com 12 entregas em 6 fases e pendências de homologação. Editor único, revisão opcional e gráficos inicialmente minimizados. Consulte [REVISAO-2026-10.md](REVISAO-2026-10.md) para mudanças, testes e limites. As seções datadas abaixo registram o histórico e podem descrever comportamentos substituídos.
+**Versão técnica atual: 2026.11.23.** Consulte [ROADMAP.md](ROADMAP.md), planejamento único oficial de desenvolvimento, qualidade e TCR. Editor único, revisão opcional e gráficos inicialmente minimizados. Consulte [REVISAO-2026-10.md](REVISAO-2026-10.md) para mudanças, testes e limites. As seções datadas abaixo registram o histórico e podem descrever comportamentos substituídos.
 
 Ferramenta estática para apoiar registros clínicos multiprofissionais, registros LAB e preencher o receituário de Lagarto/SE.
 

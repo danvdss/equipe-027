@@ -1,0 +1,161 @@
+# EQUIPE-027 — Roadmap oficial único
+**Versão:** 2.0 | **Data:** 23/11/2026 | **Base auditada:** main, b4f65eb, produto 2026.11.23
+**Planejamento:** por dependências e critérios de aceite, sem prazos fixos.
+**Estado:** desenvolvimento técnico; homologação assistencial e autorização de pesquisa não presumidas.
+
+Este é o único documento normativo de planejamento. Consolida o ROADMAP-ATUALIZADO.md, PLANO-CONCLUSAO.md e o roadmap de adequação ao TCR v1.0 enviado em 23/11/2026. Relatórios de auditoria, homologação, fontes e histórico permanecem evidências, não roadmaps concorrentes. Não apagar dados históricos nem alterações locais de outras cópias.
+
+## 1. Objetivos e limites
+Desenvolver incrementalmente uma plataforma de apoio à elaboração de registros clínicos multiprofissionais na APS, com experiência visual profissional, narrativas coesas, manutenção simples e avaliação de usabilidade em tarefas simuladas como produto técnico-tecnológico de TCR. Preservar edição manual, rascunhos independentes, todos os módulos, autenticação, exportações e impressão. Não substituir prontuário, decisão clínica ou validação profissional. Pesquisa exclusivamente com casos fictícios; separar pesquisa e assistência. Nunca inferir diagnósticos, normalidade, consentimento, orientações, prescrições ou condutas não informadas.
+
+## 2. Diagnóstico inicial e inventário
+A inspeção da cópia principal identificou HTML estático com JavaScript modular, Supabase Auth, GitHub Pages e pipeline de checagem, testes e verificação do bundle privado de TO. O app.js concentra cerca de 102 KB; receituario.html 269 KB; style.css 54 KB; design.css 18 KB; dashboard-cards.css 10 KB. O índice carrega 16 scripts locais e três folhas de estilo; design.css e rx-workflow.css importam theme.css. Há uma fonte Google externa. O catálogo de controlados é carregado por página própria, com JSON, CSS, JS, teste e script gerador. Os arquivos vendorizados supabase.min.js e html2canvas.min.js são dependências de execução, não lixo. growth-sources.json é fonte rastreável de crescimento e requisito de teste. measure.cjs é ferramenta histórica de medição, não asset público.
+- [x] Identificar cópia principal e verificar sincronização com origin/main; preservar outros worktrees/clones com alterações locais.
+- [x] Inventariar arquivos versionados, entradas HTML, scripts de pacote e manifesto de publicação.
+- [x] Identificar concorrência documental dos dois roadmaps antigos.
+- [x] Conferir referências estáticas dos arquivos JS/CSS/HTML/JSON/CJS na raiz: todos os arquivos próprios consultados têm função identificada em execução, testes, documentação ou automação. Não houve remoção de código nesta passagem. Baseline: 34 arquivos próprios verificados; 137/137 testes aprovados em 23/11/2026, Node 24.22.3.
+- [ ] Completar grafo estático e dinâmico de dependências (includes, imports, URLs, rotas, globals, eventos, assets, scripts, CI, testes e bundle TO).
+- [ ] Classificar cada arquivo: execução, dados/fonte, teste, automação, documentação/evidência, gerado, obsoleto comprovado ou incerto.
+- [ ] Medir tamanho bruto/transferido, tarefas longas, JS/CSS não utilizado por rota, renderizações, rede, memória e custo de interação em aparelhos reais.
+- [x] Executar npm audit --omit=dev: 0 vulnerabilidades conhecidas nas dependências de produção reportadas pelo registro npm nesta consulta; não inclui arquivos vendorizados, código próprio ou configuração remota.
+- [x] Verificar manifesto do bundle TO: 923594 bytes de cliente, fonte af9088309a09.
+- [ ] Verificar segredos e vulnerabilidades sem imprimir credenciais; revisar dependências e licenças. Auditar configuração efetiva do Supabase em etapa autorizada.
+- [x] Remover relatório local antigo test-results.txt (versão 2026.11.22, 134 testes) e ignorar sua regeneração; não era arquivo versionado nem asset.
+- [ ] Registrar remoções com razão, dependências consultadas, testes e commit reversível. Nunca excluir por ausência de referência textual isolada.
+- [x] Consolidar os dois planejamentos anteriores neste arquivo e atualizar os links de README; remover os documentos concorrentes da árvore ativa, mantendo o histórico no Git.
+- [ ] Reconciliar documentação histórica e README com a versão atual; preservar ACCESS, HOMOLOGACAO, AUDITORIA-TEXTOS, fontes, relatórios e testes.
+**Aceite:** inventário rastreável, baseline registrada, ausência de referências quebradas, testes aprovados, relatório de riscos e exclusões. Não remover bibliotecas, cenários ou fontes usadas.
+
+## 3. Organização da execução
+| Fase | Entrega | Dependência |
+|---|---|---|
+| 0 | Auditoria, limpeza, governança e escopo científico | nenhuma |
+| 1 | Design system, navegação, acessibilidade e desempenho | 0 |
+| 2 | Revisão integral de textos e fluxos clínicos | 0; em paralelo com 1 |
+| 3 | Segurança, privacidade e regressão clínica | 0–2; controles transversais desde 0 |
+| 4 | Ambiente de pesquisa isolado | 0–3 |
+| 5 | Cenários fictícios, tarefas, instrumentos | 4 |
+| 6 | Métricas, dados e relatórios | 5 |
+| 7 | Validação técnica, piloto e coleta autorizada | 0–6 |
+| 8 | Consolidação e defesa do TCR | 7 |
+
+P0: segurança, privacidade, regressões, integridade textual e bloqueadores antes da coleta. P1: entrega científica e melhorias essenciais de experiência. P2: melhorias opcionais. Distribuir trabalho de forma equilibrada entre interface, arquitetura/dados, qualidade/segurança e método/validação conforme capacidade e dependências. Cada item tem responsável, evidência, teste, status e risco. Concluir uma fase por vez com testes integrados; manter testes rápidos em mudanças críticas. Nenhum item é concluído por mera geração de código.
+
+## 4. Fase 0 — saneamento e diagnóstico científico
+- [ ] Estabelecer inventário de módulos/rotas e matriz requisito → tarefa → indicador → evidência em docs/tcr/ESCOPO-E-REQUISITOS.md.
+- [ ] Confirmar com orientação acadêmica modalidade do TCR, recorte APS multiprofissional ou especialidade, população, inclusão/exclusão, recrutamento e método de análise.
+- [ ] Selecionar 2–4 fluxos representativos, sem limitar o aprimoramento dos demais.
+- [ ] Documentar política de versões, riscos, critérios de conclusão, arquitetura atual e dependências.
+- [ ] Aplicar limpeza apenas a itens comprovados obsoletos; manter histórico no Git; não reescrever histórico nem remover outros clones.
+**Aceite:** baseline reproduzível, escopo coerente, matriz e inventário, nenhum arquivo necessário removido.
+
+## 5. Fase 1 — revisão integral de design, fluidez e desempenho
+Diagnóstico de código: paleta central em theme.css, múltiplas camadas sobrepostas, gradientes e animações em dois arquivos de cards, cor de foco hardcoded em design.css, tamanhos mínimos de cards de cerca de 200–260 px, login com animação contínua, fonte externa Onest coexistindo com declaração Inter, páginas de controlados e receituário com CSS específico. O render() de app.js também substitui app.innerHTML; medir custo, restauração de foco e eventos antes de modificar. São pontos de revisão, não falhas visuais comprovadas sem navegador.
+- [x] Executar baseline em Brave/Chromium local com Playwright isolado (sem alterar dependências versionadas): mobile-browser.cjs interrompido por contexto de execução destruído durante navegação (linha 31); theme-browser.cjs falhou na expectativa de foco workspace-main (linha 75). Nenhum dos dois ensaios foi aprovado.
+- [ ] P0: reproduzir e corrigir as duas falhas, adaptar testes à rota de controlados, que usa window.location.href antes de collect(), e investigar possível perda de rascunhos em memória ao sair/voltar; não presumir causa sem reprodução. Testar catálogo isolado, retorno, autenticação e foco por teclado.
+- [ ] Capturar baseline de login, dashboard, módulos, editor, controlados, TO e impressão com dados fictícios em desktop e mobile; mapear fluxo e fricção.
+- [ ] Consolidar tokens semânticos de fundo, superfície, texto, destaque, estados, borda, foco, tipografia, espaçamento, raios e sombras; preservar impressão independente.
+- [ ] Manter estética escura clínica com tons neutros azul-petróleo e verde discreto; gradientes moderados e cores específicas apenas quando distinguem módulo/estado. Unificar fonte com fallback local; evitar dependência de rede desnecessária.
+- [ ] Remodelar dashboard bento responsivo, hierarquia de módulos, títulos e descrições concisas, atalhos úteis e busca/navegação previsíveis. Preservar todas as rotas e ícones reconhecíveis.
+- [ ] Padronizar login, navegação, cabeçalhos, formulários, botões, cards, tabelas, modais, toasts, estados vazios, carregamento, erro, sucesso e offline; evitar modais e cliques redundantes.
+- [ ] Usar progressão de campos condicionais, seções recolhíveis sem apagar dados, painel de exames inicialmente minimizado e opção com resultado inicialmente selecionada quando aplicável; manter motivo, modalidade, conduta e avaliação médica explícitos.
+- [ ] Aprimorar editor: prévia narrativa legível, ações copiar/revisar/limpar claramente distintas, comparação antes de substituir texto manual, foco estável, proteção de rascunhos.
+- [ ] Integrar visualmente o catálogo controlados (pesquisa por substância, indicação da lista e receita com cor e texto, fonte e versão normativa verificáveis, sem presumir que toda apresentação tem a mesma regra); harmonizar TO e receituário sem quebrar bundle/ impressão.
+- [ ] Reduzir CSS duplicado após auditoria de cascata; carregar módulos sob demanda quando comprovado seguro, otimizar scripts próprios e efeitos custosos; evitar refatoração massiva ou alteração do bundle privado sem processo de origem.
+- [ ] Usar transições discretas de 120–200 ms quando apropriado; preferir transform/opacity; remover animações decorativas contínuas se prejudicarem desempenho; respeitar prefers-reduced-motion.
+- [ ] Testar viewport 320/360/390/768/1024/1440 px, teclado virtual, zoom até 200%, rotação, navegação por teclado, leitores de tela, contraste, foco, alvos de toque e mensagens não dependentes só de cor. Adotar WCAG 2.2 AA como meta de engenharia, sem alegar conformidade sem auditoria.
+- [ ] Medir antes/depois com condições comparáveis: LCP, INP, CLS, tamanho transferido, tarefas longas e navegação/edição; metas orientativas LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1, a confirmar em campo; não inventar resultados.
+**Aceite:** fluxos principais sem regressão, visual consistente, sem cortes/rolagem horizontal indevida, sem perda de foco, evidências antes/depois e desempenho medido. Testar em Android/Chrome, iPhone/Safari e desktop reais quando disponíveis.
+
+## 6. Fase 2 — auditoria textual, coerência e fidelidade clínica
+Escopo: 100% dos textos visíveis e gerados: login, navegação, descrições, títulos, labels, placeholders, alertas, ajuda, validações, mensagens de rede, exportações, impressão, relatório e todos os modelos clínicos. Inventariar origem (arquivo/função), variante, condições, saída esperada, revisão técnica, revisão profissional e teste. Usar AUDITORIA-TEXTOS.md como evidência anterior, não como aprovação atual.
+- [ ] Catalogar textos por módulo e remover inconsistências terminológicas, ortografia, acentuação, concordância, pontuação, abreviações, redundâncias e rótulos técnicos indevidos.
+- [ ] Criar guia de redação pt-BR: linguagem objetiva, respeitosa, impessoal quando cabível e profissionalmente neutra; distinguir relato, observação, avaliação, intervenção, resposta e plano; respeitar sequência temporal e modalidade/local explicitamente selecionados.
+- [ ] Revisar composição narrativa por regras de módulo, com conectivos naturais, parágrafos contínuos e transição harmônica. Evitar lista mecânica de campos ou frases truncadas. Preservar medidas, datas, unidades, fontes, nomes de medicamentos e texto livre sem mudança semântica.
+- [ ] Revisar geral, HAS, DM, HAS+DM, exames (solicitação/avaliação), renovação, receituário, pré-natal, puericultura, citopatológico/DNA-HPV, DIU, Implanon, TO ambulatorial e hospitalar (UTI, Eixo Crítico, Pediatria, Clínica Médica/Cirúrgica, Katz/MIF e sinais vitais antes/depois quando registrados), controlados e qualquer módulo novo identificado.
+- [ ] Verificar combinações de campos vazios, completos, incompatíveis, negativos/positivos, opcionais, repetidos, números zero, datas inválidas e procedimentos interrompidos. Exibir divergências para revisão sem apagar conteúdo ou preencher informação inventada.
+- [ ] Assegurar que solicitação não seja descrita como avaliação/realização, relato não seja convertido em achado confirmado e pedido de renovação não implique prescrição; condutas, consentimento, exame normal, orientação e avaliação médica só se informados.
+- [ ] Preservar edição manual, cópia exata, histórico temporário, rascunhos separados e confirmação antes de sobrescrever.
+- [ ] Criar corpus de cenários fictícios e golden tests de saída por módulo, com asserções de ausência de inferências, dados omitidos, duplicações e contradições. Testar casos-limite, alterações de modo e retorno ao rascunho.
+- [ ] Revisar terminologia clínica e protocolos locais com profissionais habilitados; registrar fonte, versão, data, responsável, ressalvas e decisão. Não usar serviço externo para enviar texto clínico; não automatizar interpretação clínica.
+**Exemplo fictício:** “Paciente comparece à unidade para solicitar exames de rotina. Registra-se a solicitação dos exames informados. Foi orientado retorno à unidade para continuidade do cuidado.” Somente afirmar comparecimento, solicitação efetiva e orientação se explicitamente registrados. Se apenas pediu exames, escrever “solicita”; não presumir atendimento médico.
+**Aceite:** catálogo completo, casos fictícios aprovados tecnicamente, sem fatos inferidos ou perda de dados, leitura fluida e revisão profissional documentada antes de uso assistencial.
+
+## 7. Fase 3 — segurança, privacidade e qualidade clínica
+- [ ] Auditar Supabase real: autorização, Edge Function username-login, acesso individual, política de senhas, rotação se necessária, abuso, recuperação, expiração/revogação, logout, perda de rede e sessões. Não expor credenciais.
+- [ ] Verificar memória/armazenamento, clipboard, impressão, logs, exportações, equipamentos compartilhados, retenção, eliminação, incidente e responsabilidades de privacidade. Revisar LGPD institucionalmente.
+- [ ] Validar faixas laboratoriais ilustrativas, unidades, métodos, idade, jejum, gestação e fonte do laudo; sem diagnóstico automático. Revisar todos os modelos e instrumentos, condições de uso e impressão física.
+- [ ] Executar npm run check, npm test, npm run verify:to, testes de navegador e smoke de publicação aplicáveis; ampliar CI e regressões para novas funcionalidades.
+- [ ] Verificar disponibilidade/versão do catálogo controlados com fonte oficial e condições de receituário; não inferir exceções normativas. Atualizações versionadas e testadas.
+- [ ] Registrar riscos, gravidade, reprodução, correção, evidência e reteste; teste positivo e negativo de permissões; documentar bloqueadores de homologação.
+**Aceite:** nenhuma falha bloqueadora conhecida nos percursos selecionados; segurança e privacidade revisadas por responsáveis; publicação versionada e reversível. Homologação assistencial depende de termo institucional separado.
+
+## 8. Fase 4 — ambiente de pesquisa / simulação
+- [ ] Criar entrada e banner persistente “SIMULAÇÃO — DADOS FICTÍCIOS — NÃO UTILIZAR EM ATENDIMENTO REAL”.
+- [ ] Segregar rotas, configuração, estado, rascunhos, exportações e dados; limpar entre cenários e participantes, na saída e em falhas de conexão; testar isolamento.
+- [ ] Marcar/desabilitar impressão e exportação de simulação conforme protocolo; não exigir dados/credenciais de pacientes.
+- [ ] Começar com dados fictícios em memória; armazenamento persistente somente se protocolo e segurança autorizarem. Não duplicar autenticação/modelos; autorização efetiva no servidor se houver backend.
+**Aceite:** isolamento verificado, zero mistura de resultados, clínica preservada, fluxo de dados documentado.
+
+## 9. Fase 5 — cenários, tarefas e instrumentos
+- [ ] Criar banco fictício versionado: ID, versão, módulo, objetivo, dados, instrução uniforme, critério de sucesso. Incluir interrupção/retorno se pertinente.
+- [ ] Elaborar checklist de observador, erros críticos/omissões/preferências, ajuda e gabarito de fidelidade documental revisado por profissionais.
+- [ ] Fluxo participante: instruções → tarefas → questionário → encerramento → limpeza. Código pseudônimo; não solicitar nome, CPF, CNS, prontuário ou e-mail sem justificativa aprovada.
+- [ ] Selecionar SUS validada em português e condições de uso adequadas, se confirmada; registrar fonte, licença, versão e regras; itens incompletos sem imputação.
+- [ ] Questionário complementar próprio claramente identificado, feedback opcional sem dados pessoais, mensagens neutras; consentimento conforme protocolo, não substituído por termos de uso.
+**Aceite:** aplicação reproduzível por dois avaliadores, regras de sucesso/erro anteriores à coleta, instrumentos e casos validados metodologicamente.
+
+## 10. Fase 6 — indicadores e relatórios
+- [ ] Definir previamente taxa de conclusão (concluídas/iniciadas ×100), tempo (fim−início com pausa definida), erros por categoria, ajuda, SUS conforme versão autorizada e distribuição de percepção.
+- [ ] Cronômetro com início/pausa/fim; não capturar digitação ou clipboard. Versionar sistema, cenários, instrumentos e regras.
+- [ ] Modelo mínimo: research_session (ID, versão, cenário, horários necessários), task_result (tempos, conclusão, ajuda, erros), usability_response (versão, respostas, escore válido), feedback opcional e study_release imutável.
+- [ ] Separar dados brutos e agregados; painel descritivo com n e faltantes; exportar CSV/JSON adequado ao destinatário, pseudonimizado/anonimizado conforme protocolo; revisar texto livre antes de exportação pública.
+- [ ] Definir acesso, retenção, backup, eliminação e autorização no servidor se persistir; testar permissões e cálculo com dataset fictício e conferência independente.
+**Aceite:** resultados reproduzíveis, nenhuma coleta desnecessária, dados faltantes e exclusões transparentes.
+
+## 11. Enquadramento científico e fases 7–8
+Título de trabalho: Desenvolvimento e avaliação de uma plataforma digital de apoio aos registros clínicos e à organização do processo de trabalho na Atenção Primária à Saúde.
+Pergunta: como profissionais avaliam usabilidade e adequação funcional do Equipe-027 em tarefas simuladas de registro clínico na APS?
+Objetivo: desenvolver, aprimorar e avaliar usabilidade e adequação funcional em cenários simulados; levantar necessidades, descrever arquitetura e salvaguardas, construir cenários, medir conclusão/tempo/erros, investigar percepção e documentar limitações.
+Delineamento preliminar: pesquisa metodológica de desenvolvimento tecnológico, potencialmente métodos mistos; confirmar com orientador. Sem comparação controlada, não alegar superioridade ao fluxo usual; se comparativo, definir equivalência, treinamento, ordem, amostragem e análise.
+### Fase 7 — validação e estudo
+- [ ] Confirmar autorizações éticas/institucionais pertinentes antes de recrutamento e coleta, treinamento, versões e instrumentos.
+- [ ] Executar piloto autorizado, documentar dificuldades e ajustes; congelar versão, cenários, instrumentos, dicionário, plano de análise e exclusões antes da coleta principal.
+- [ ] Aplicar roteiro uniforme; verificar perdas, duplicidades e inconsistências sem alterar respostas; analisar dados reais conforme protocolo; registrar limitações, amostragem, treinamento e efeito de aprendizagem.
+**Aceite:** rastreabilidade entre cada resultado, cenário e versão, sem conclusão causal indevida.
+### Fase 8 — entrega acadêmica
+- [ ] Manual de uso/avaliador, arquitetura, fluxo de dados, histórico e capturas fictícias.
+- [ ] Métodos, resultados reais, discussão, limitações, relatório técnico, versão demonstrável, material de defesa; citações conforme ABNT NBR 10520 e demais normas aplicáveis.
+- [ ] Entregar pacote congelado e evidências verificáveis; distinguir implementado, validado, proposto e não avaliado.
+**Aceite:** objetivos, métodos, dados e conclusões coerentes; percurso reproduzível; nenhuma liberação assistencial implícita.
+
+## 12. Requisitos do módulo de pesquisa
+| ID | Requisito | Evidência |
+|---|---|---|
+| TCR-RF-01 | Identificação persistente da simulação | navegação |
+| TCR-RF-02 | Cenários fictícios versionados | reprodução |
+| TCR-RF-03 | Reinício limpo | isolamento |
+| TCR-RF-04 | Checklist de observação | ficha |
+| TCR-RF-05 | Instrumento de usabilidade | respostas válidas/incompletas |
+| TCR-RF-06 | Código pseudônimo e versão | registro |
+| TCR-RF-07 | Tempo e conclusão | casos de controle |
+| TCR-RF-08 | Indicadores | cálculo independente |
+| TCR-RF-09 | Exportação | revisão de campos |
+| TCR-RF-10 | Painel agregado | totais conferidos |
+| TCR-RF-11 | Perfis se exigidos | autorização servidor |
+| TCR-RF-12 | Relatório de versão/incidentes | release |
+Requisitos transversais: privacidade, segurança, usabilidade, acessibilidade, confiabilidade, manutenibilidade. Documentos de evidência em docs/tcr: escopo, protocolo, cenários, instrumentos/licenças, dicionário, gestão de dados, matriz de validação, histórico e resultados. Não criar roadmaps adicionais.
+
+## 13. Portões de decisão
+- [ ] A: escopo metodológico aprovado (objetivos, módulos, métricas, protocolo).
+- [ ] B: ambiente isolado seguro para piloto, cenários fictícios e regressões aprovadas.
+- [ ] C: autorizações éticas e institucionais pertinentes, instrumentos e consentimento adequados.
+- [ ] D: após piloto autorizado, ajustes registrados, versão congelada e plano de análise definido; coleta principal autorizada.
+- [ ] E: dados e resultados rastreáveis, relatório e versão demonstrável arquivados.
+
+## 14. Riscos e definição de pronto
+Escopo excessivo → 2–4 fluxos; mudanças durante coleta → congelamento; uso de dados reais → isolamento; coleta sem autorização → gates; acesso indevido → auditoria e testes negativos; instrumento inadequado → validação; causalidade indevida → desenho adequado; regressão → testes; exposição em exportação → minimização; remoção equivocada → inventário e Git; alteração semântica → golden tests e revisão profissional.
+Entrega concluída somente com requisito implementado, teste automatizado e manual aplicável, ausência de regressão conhecida, documentação, evidência, riscos residuais e distinção entre conclusão técnica, validação profissional, aptidão para pesquisa e homologação assistencial. Não declarar aprovação ética ou institucional por automação.
+
+## 15. Decisões e próximo ciclo
+Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/licenças, amostragem, persistência, autorizações e condições de assistência. Primeiro completar Fase 0 e baseline; executar Fases 1 e 2 em frentes equilibradas e controles da Fase 3 desde o início. Só então desenvolver pesquisa isolada e avançar aos gates. Manter este arquivo atualizado após cada fase; não criar um novo planejamento concorrente.

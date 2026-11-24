@@ -1,5 +1,7 @@
 # ATENÇÃO — PLANO SUPERADO PELA REFORMULAÇÃO SEM PRONTUÁRIO
 
+> Registro histórico de integração. O planejamento vigente e os novos critérios de aceite estão exclusivamente no [ROADMAP.md](../ROADMAP.md).
+
 Este planejamento de persistência longitudinal não deve ser executado. A decisão mais recente determina que o Projeto-TO **não terá cadastro, prontuário nem armazenamento de pacientes**. Consultar [REWORK-TO-SEM-PACIENTES.md](REWORK-TO-SEM-PACIENTES.md). O texto histórico abaixo permanece para rastreabilidade.
 
 ---
