@@ -25,6 +25,7 @@ A publicação deve usar GitHub Actions. O fluxo `.github/workflows/quality.yml`
 
 - [ROADMAP.md](ROADMAP.md): planejamento único.
 - [Inventário técnico](docs/tcr/INVENTARIO-TECNICO.md) e [baseline de desempenho](docs/tcr/BASELINE-DESEMPENHO.md): evidências de engenharia.
+- [Auditoria complementar](docs/tcr/AUDITORIA-COMPLEMENTAR.md): dependências, histórico, direitos e riscos residuais.
 - [Avisos de terceiros](THIRD-PARTY-NOTICES.md): licenças das dependências distribuídas; não atribuem licença ao código próprio.
 - ETAPA-01 a ETAPA-06, AUDITORIA-TEXTOS, CRESCIMENTO, REVISAO-2026-10 e HOMOLOGACAO são documentos históricos. ACCESS mantém os limites operacionais; aprovação institucional continua pendente.
 

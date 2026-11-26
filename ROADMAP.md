@@ -14,14 +14,17 @@ A inspeção da cópia principal identificou HTML estático com JavaScript modul
 - [x] Inventariar arquivos versionados, entradas HTML, scripts de pacote e manifesto de publicação.
 - [x] Identificar concorrência documental dos dois roadmaps antigos.
 - [x] Conferir referências estáticas dos arquivos JS/CSS/HTML/JSON/CJS na raiz: todos os arquivos próprios consultados têm função identificada em execução, testes, documentação ou automação. Não houve remoção de código nesta passagem. Baseline: 34 arquivos próprios verificados; 137/137 testes aprovados em 23/11/2026, Node 24.22.3.
-- [ ] Completar grafo estático e dinâmico de dependências (includes, imports, URLs, rotas, globals, eventos, assets, scripts, CI, testes e bundle TO).
+- [x] Gerar inventário estático e dinâmico de dependências do host: includes, imports, URLs, rotas, candidatos a globals, eventos, assets, scripts, CI, testes e interface do bundle TO. Evidências: INVENTARIO-TECNICO.md e GRAFO-DEPENDENCIAS.json.
+- [ ] Complementar resolução lexical/dinâmica e composição fina dos bundles; não interpretar ausência de cobertura como código morto.
 - [x] Classificar cada arquivo: 80 arquivos da base classificados, mais três novos artefatos; evidência em docs/tcr/INVENTARIO-TECNICO.md (26/11/2026). Nenhuma exclusão adicional justificada.
-- [ ] Medir tamanho bruto/transferido, tarefas longas, JS/CSS não utilizado por rota, renderizações, rede, memória e custo de interação em aparelhos reais.
+- [x] Medir baseline local sintético: tamanhos brutos/gzip estimados, tarefas longas, cobertura acumulada JS/CSS, renderizações, heap e navegação; BASELINE-DESEMPENHO.md.
+- [ ] Completar transferência real, cobertura por rota/interação e custo de interação em aparelhos físicos; depende de ambiente e aparelhos disponíveis.
 - [x] Executar npm audit --omit=dev: 0 vulnerabilidades conhecidas nas dependências de produção reportadas pelo registro npm nesta consulta; não inclui arquivos vendorizados, código próprio ou configuração remota.
 - [x] Verificar manifesto do bundle TO: 923594 bytes de cliente, fonte af9088309a09.
-- [ ] Verificar segredos e vulnerabilidades sem imprimir credenciais; revisar dependências e licenças. Auditar configuração efetiva do Supabase em etapa autorizada.
+- [x] Executar triagem local de segredos (árvore e histórico main), npm audit, avisos de produção e auditoria preliminar de fontes e instrumentos; AUDITORIA-COMPLEMENTAR.md.
+- [ ] Confirmar direitos de distribuição dos instrumentos/ativos, licença própria, revogação histórica e configuração efetiva do Supabase com responsáveis autorizados; revisão profunda na Fase 3. Não declarar segurança ou licença integral.
 - [x] Remover relatório local antigo test-results.txt (versão 2026.11.22, 134 testes) e ignorar sua regeneração; não era arquivo versionado nem asset.
-- [ ] Registrar remoções com razão, dependências consultadas, testes e commit reversível. Nunca excluir por ausência de referência textual isolada.
+- [x] Registrar remoções com razão, dependências consultadas, testes e referência de recuperação quando versionadas. Evidência: docs/tcr/AUDITORIA-COMPLEMENTAR.md; b575558 removeu os dois roadmaps concorrentes; test-results.txt era local e não recuperável pelo Git. Nenhuma nova remoção.
 - [x] Consolidar os dois planejamentos anteriores neste arquivo e atualizar os links de README; remover os documentos concorrentes da árvore ativa, mantendo o histórico no Git.
 - [x] Reconciliar a função documental de README e evidências históricas com o planejamento vigente; preservar ACCESS, HOMOLOGACAO, AUDITORIA-TEXTOS, fontes, relatórios e testes. Marcadores de historicidade e links para evidências atuais, 26/11/2026.
 **Aceite:** inventário rastreável, baseline registrada, ausência de referências quebradas, testes aprovados, relatório de riscos e exclusões. Não remover bibliotecas, cenários ou fontes usadas.
@@ -181,3 +184,8 @@ Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/l
 - Permanecem abertos grafo exaustivo, cobertura por rota/interação, desempenho físico e rede real, licenças de fontes/instrumentos, histórico de segredos e configuração remota autorizada; escopo acadêmico e licença própria dependem dos responsáveis.
 
 - Regressão integrada: npm run check, npm run verify:to e npm test concluídos com saída 0; 137/137 testes aprovados.
+
+### Fechamento da auditoria local — 26/11/2026
+- Grafo: 52 arquivos, 33 referências locais, 121 candidatos globais, eventos em 22 entradas, zero destinos locais ausentes no levantamento. Histórico main: 87 commits e 477 blobs examinados, zero correspondências nos padrões selecionados.
+- Fontes Onest/Inter OFL 1.1; MIF e demais instrumentos inventariados, direitos não presumidos. Registro de remoções e limites em docs/tcr/AUDITORIA-COMPLEMENTAR.md.
+- Auditoria local documentada e reproduzível, sem alterações clínicas. Gate integral da Fase 0 permanece condicionado aos itens abertos das seções 2 e 4. Preparação de Fase 1 somente com autorização explícita para paralelizar pendências externas; não implica homologação.

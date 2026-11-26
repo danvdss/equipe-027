@@ -111,3 +111,5 @@ Versão definida em package.json/Care e cache de HTML; validar check, test, veri
 - tests/performance-browser.cjs e BASELINE-DESEMPENHO.md: instrumentação e resultados sintéticos em dois viewports.
 - scripts/audit-local.cjs: triagem heurística local sem imprimir valores; 84 arquivos textuais rastreados, zero correspondências nos padrões selecionados. Supabase UMD 2.117.1 equivale ao instalado após normalização de finais de linha e espaços externos; não é byte a byte idêntico.
 - Sem verificação exaustiva do histórico Git, segredos arbitrários, configuração remota, fontes/instrumentos clínicos ou cadeia completa dos bundles. Não remover ativos por ausência de cobertura.
+
+- Complemento: GRAFO-DEPENDENCIAS.json, AUDITORIA-COMPLEMENTAR.md, scripts/dependency-graph.cjs e scripts/audit-history.cjs (evidência/instrumentação, não ativos publicados).

@@ -1,0 +1,995 @@
+{
+  "files": 52,
+  "edges": [
+    {
+      "from": "check.cjs",
+      "to": "package.json",
+      "kind": "require"
+    },
+    {
+      "from": "controlados.html",
+      "to": "controlados.css",
+      "kind": "link"
+    },
+    {
+      "from": "controlados.html",
+      "to": "controlados.js",
+      "kind": "script"
+    },
+    {
+      "from": "controlados.js",
+      "to": "controlados-dados.json",
+      "kind": "fetch"
+    },
+    {
+      "from": "controlados.test.cjs",
+      "to": "controlados-dados.json",
+      "kind": "require"
+    },
+    {
+      "from": "design.css",
+      "to": "theme.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "index.html",
+      "to": "style.css",
+      "kind": "link"
+    },
+    {
+      "from": "index.html",
+      "to": "design.css",
+      "kind": "link"
+    },
+    {
+      "from": "index.html",
+      "to": "dashboard-cards.css",
+      "kind": "link"
+    },
+    {
+      "from": "index.html",
+      "to": "care.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "workflow.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "notes.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "prenatal.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "implante.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "diu.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "lab-details.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "shortcuts.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "renewal.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "supabase.min.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "auth.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "growth-data.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "growth.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "occupational-portal.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "app.js",
+      "kind": "script"
+    },
+    {
+      "from": "index.html",
+      "to": "enhancements.js",
+      "kind": "script"
+    },
+    {
+      "from": "pages-bundle.test.cjs",
+      "to": "prepare-private-to.cjs",
+      "kind": "require"
+    },
+    {
+      "from": "prepare-private-to.test.cjs",
+      "to": "prepare-private-to.cjs",
+      "kind": "require"
+    },
+    {
+      "from": "receituario.html",
+      "to": "rx-workflow.css",
+      "kind": "link"
+    },
+    {
+      "from": "receituario.html",
+      "to": "html2canvas.min.js",
+      "kind": "script"
+    },
+    {
+      "from": "receituario.html",
+      "to": "rx-workflow.js",
+      "kind": "script"
+    },
+    {
+      "from": "release.cjs",
+      "to": "package.json",
+      "kind": "require"
+    },
+    {
+      "from": "rx-workflow.css",
+      "to": "theme.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "verify-pages-to.cjs",
+      "to": "prepare-private-to.cjs",
+      "kind": "require"
+    }
+  ],
+  "missing": [],
+  "globals": [
+    {
+      "from": "app.js",
+      "to": "notes.js",
+      "symbol": "Narrative"
+    },
+    {
+      "from": "app.js",
+      "to": "workflow.js",
+      "symbol": "Flow"
+    },
+    {
+      "from": "app.js",
+      "to": "auth.js",
+      "symbol": "Access"
+    },
+    {
+      "from": "app.js",
+      "to": "notes.js",
+      "symbol": "Notes"
+    },
+    {
+      "from": "app.js",
+      "to": "lab-details.js",
+      "symbol": "LabDetails"
+    },
+    {
+      "from": "app.js",
+      "to": "prenatal.js",
+      "symbol": "Prenatal"
+    },
+    {
+      "from": "app.js",
+      "to": "implante.js",
+      "symbol": "Implante"
+    },
+    {
+      "from": "app.js",
+      "to": "diu.js",
+      "symbol": "DIU"
+    },
+    {
+      "from": "app.js",
+      "to": "renewal.js",
+      "symbol": "Renewal"
+    },
+    {
+      "from": "app.js",
+      "to": "shortcuts.js",
+      "symbol": "Shortcuts"
+    },
+    {
+      "from": "app.js",
+      "to": "growth.js",
+      "symbol": "GrowthCharts"
+    },
+    {
+      "from": "app.js",
+      "to": "workflow.js",
+      "symbol": "LiveReview"
+    },
+    {
+      "from": "app.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "logged"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "drafts"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "history"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "extraCount"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "page"
+    },
+    {
+      "from": "auth.js",
+      "to": "workflow.js",
+      "symbol": "Flow"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "destroyReceituario"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "app"
+    },
+    {
+      "from": "auth.js",
+      "to": "app.js",
+      "symbol": "render"
+    },
+    {
+      "from": "care.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "care.js",
+      "to": "app.js",
+      "symbol": "Occupational"
+    },
+    {
+      "from": "care.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "care.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "care.js",
+      "to": "app.js",
+      "symbol": "modules"
+    },
+    {
+      "from": "controlados.js",
+      "to": "app.js",
+      "symbol": "$"
+    },
+    {
+      "from": "controlados.js",
+      "to": "app.js",
+      "symbol": "render"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "outputPanel"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "diu.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "diu.js",
+      "to": "notes.js",
+      "symbol": "Narrative"
+    },
+    {
+      "from": "enhancements.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "enhancements.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "enhancements.js",
+      "to": "app.js",
+      "symbol": "restore"
+    },
+    {
+      "from": "growth.js",
+      "to": "growth-data.js",
+      "symbol": "GrowthReference"
+    },
+    {
+      "from": "growth.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "outputPanel"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "implante.js",
+      "to": "notes.js",
+      "symbol": "Narrative"
+    },
+    {
+      "from": "implante.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "lab-details.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "lab-details.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "lab-details.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "lab-details.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "lab-details.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "page"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "notes.js",
+      "to": "app.js",
+      "symbol": "unique"
+    },
+    {
+      "from": "notes.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "occupational-portal.js",
+      "to": "auth.js",
+      "symbol": "Access"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "drafts"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "workflow.js",
+      "symbol": "Flow"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "notes.js",
+      "symbol": "Notes"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "chips"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "app.js",
+      "symbol": "outputPanel"
+    },
+    {
+      "from": "prenatal.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "drafts"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "chips"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "outputPanel"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "toast"
+    },
+    {
+      "from": "renewal.js",
+      "to": "workflow.js",
+      "symbol": "Flow"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "renewal.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "renewal.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "rx-workflow.js",
+      "to": "app.js",
+      "symbol": "$"
+    },
+    {
+      "from": "rx-workflow.js",
+      "to": "app.js",
+      "symbol": "restore"
+    },
+    {
+      "from": "rx-workflow.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "shortcuts.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "shortcuts.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "shortcuts.js",
+      "to": "app.js",
+      "symbol": "page"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "page"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "join"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "Occupational"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "ChildCare"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "Cervical"
+    },
+    {
+      "from": "workflow.js",
+      "to": "prenatal.js",
+      "symbol": "PrenatalExams"
+    },
+    {
+      "from": "workflow.js",
+      "to": "renewal.js",
+      "symbol": "Renewal"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "field"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "sentence"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "esc"
+    },
+    {
+      "from": "workflow.js",
+      "to": "care.js",
+      "symbol": "Care"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "compose"
+    },
+    {
+      "from": "workflow.js",
+      "to": "notes.js",
+      "symbol": "Narrative"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "saveHistory"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "collect"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "toast"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "generate"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "copy"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "drafts"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "render"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "history"
+    },
+    {
+      "from": "workflow.js",
+      "to": "auth.js",
+      "symbol": "Access"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "extraCount"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "destroyReceituario"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "logged"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "login"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "section"
+    },
+    {
+      "from": "workflow.js",
+      "to": "app.js",
+      "symbol": "titles"
+    }
+  ],
+  "events": [
+    {
+      "file": "app.js",
+      "events": [
+        "addEventListener:change",
+        "addEventListener:click",
+        "addEventListener:input",
+        "addEventListener:pagehide",
+        "addEventListener:pageshow"
+      ]
+    },
+    {
+      "file": "auth.js",
+      "events": [
+        "addEventListener:abort",
+        "removeEventListener:abort"
+      ]
+    },
+    {
+      "file": "auth.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "controlados.js",
+      "events": [
+        "addEventListener:DOMContentLoaded",
+        "addEventListener:click",
+        "addEventListener:dynamic"
+      ]
+    },
+    {
+      "file": "controlados.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "diu.js",
+      "events": [
+        "addEventListener:change"
+      ]
+    },
+    {
+      "file": "enhancements.js",
+      "events": [
+        "Event:change",
+        "Event:input",
+        "addEventListener:DOMContentLoaded",
+        "addEventListener:change",
+        "addEventListener:equipe027:new-encounter",
+        "addEventListener:input",
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "enhancements.test.cjs",
+      "events": [
+        "Event:DOMContentLoaded",
+        "Event:equipe027:new-encounter",
+        "Event:input",
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "growth.js",
+      "events": [
+        "addEventListener:change",
+        "addEventListener:close",
+        "addEventListener:input"
+      ]
+    },
+    {
+      "file": "growth.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "implante.js",
+      "events": [
+        "addEventListener:change"
+      ]
+    },
+    {
+      "file": "measure.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "notes.js",
+      "events": [
+        "Event:input",
+        "addEventListener:change",
+        "addEventListener:input",
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "occupational-portal.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "occupational.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "prenatal.js",
+      "events": [
+        "addEventListener:change",
+        "addEventListener:click",
+        "addEventListener:input"
+      ]
+    },
+    {
+      "file": "quality.test.cjs",
+      "events": [
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "receituario.html",
+      "events": [
+        "addEventListener:change",
+        "addEventListener:click",
+        "addEventListener:input"
+      ]
+    },
+    {
+      "file": "renewal.js",
+      "events": [
+        "addEventListener:input"
+      ]
+    },
+    {
+      "file": "rx-workflow.js",
+      "events": [
+        "addEventListener:beforeunload",
+        "addEventListener:close",
+        "addEventListener:input",
+        "dispatchEvent:dynamic",
+        "postMessage:dynamic"
+      ]
+    },
+    {
+      "file": "tests/mobile-browser.cjs",
+      "events": [
+        "Event:resize",
+        "dispatchEvent:dynamic"
+      ]
+    },
+    {
+      "file": "workflow.js",
+      "events": [
+        "Event:change",
+        "Event:equipe027:new-encounter",
+        "Event:input",
+        "addEventListener:beforeunload",
+        "addEventListener:change",
+        "addEventListener:close",
+        "addEventListener:compositionend",
+        "addEventListener:compositionstart",
+        "addEventListener:focusin",
+        "addEventListener:focusout",
+        "addEventListener:input",
+        "addEventListener:keydown",
+        "addEventListener:message",
+        "addEventListener:resize",
+        "addEventListener:scroll",
+        "dispatchEvent:dynamic"
+      ]
+    }
+  ],
+  "externalDomains": [
+    "bvsms.saude.gov.br",
+    "cdn.who.int",
+    "danvdss.github.io",
+    "departamentos.cardiol.br",
+    "diretriz.diabetes.org.br",
+    "doi.org",
+    "drive.google.com",
+    "equipe.test",
+    "esppe.saude.pe.gov.br",
+    "example.test",
+    "*.supabase.co",
+    "fonts.googleapis.com",
+    "fonts.gstatic.com",
+    "kdigo.org",
+    "lagarto.mms.inf.br",
+    "linhasdecuidado.saude.gov.br",
+    "medlineplus.gov",
+    "mocacognition.com",
+    "ninho.inca.gov.br",
+    "saude.lagarto.se.gov.br",
+    "saude.se.gov.br",
+    "sbn.org.br",
+    "www.fcm.unicamp.br",
+    "www.gov.br",
+    "www.inca.gov.br",
+    "www.kidney.org",
+    "www.mchatscreen.com",
+    "www.pearsonassessments.com",
+    "www.pedicat.com",
+    "www.portal.cardiol.br",
+    "www.saude.df.gov.br",
+    "www.scielo.br",
+    "www.thecopm.ca",
+    "www.w3.org",
+    "www.who.int"
+  ],
+  "limitations": "Static candidates, not resolved lexical scope or dynamic dispatch; excludes vendor/private bundle internals, template HTML and computed paths. Cross-check runtime inventory; do not delete on absence."
+}
