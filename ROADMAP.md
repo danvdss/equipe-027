@@ -166,3 +166,9 @@ Entrega concluída somente com requisito implementado, teste automatizado e manu
 - Fase 0: matriz, inventário e proposta de fluxos entregues. Fechamento integral ainda condicionado a escopo acadêmico aprovado, cobertura fina de dependências, baseline de desempenho/dispositivos reais e revisão de segredos/licenças/documentação histórica (seção 2). Não presumir homologação. Próxima tarefa técnica: concluir essas verificações; não avançar gate acadêmico sem autorização.
 
 Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/licenças, amostragem, persistência, autorizações e condições de assistência. Primeiro completar Fase 0 e baseline; executar Fases 1 e 2 em frentes equilibradas e controles da Fase 3 desde o início. Só então desenvolver pesquisa isolada e avançar aos gates. Manter este arquivo atualizado após cada fase; não criar um novo planejamento concorrente.
+
+### Evidências complementares — 26/11/2026
+- npm audit --omit=dev: zero vulnerabilidades reportadas, 10 dependências de produção segundo metadados do npm.
+- Baseline DOM simulado (mediana/p95 ms): geral 11.63/15.18; renovação 13.27/17.08; pré-natal 23.92/31.74; puericultura 37.65/44.25; TO 19.41/25.67. Script measure.cjs apresentou erro assíncrono após imprimir métricas; resultados preliminares, não aceite.
+- Licenças: avisos originais de dependências de produção instaladas e versões conferidas com lockfiles de Equipe-027 e Projeto-TO (origem af9088309a09) reunidos em THIRD-PARTY-NOTICES.md e incluídos no manifesto de publicação CI. html2canvas mantém aviso MIT no arquivo. Inventário conservador, não SBOM exaustiva.
+- Pendentes: licença do código próprio por decisão do titular, verificação de ativos/fontes e instrumentos, composição exata dos bundles, segredos e configuração remota; baseline em dispositivos reais e correção do script de medição. Fase 0 permanece aberta.
