@@ -49,7 +49,7 @@ const Shortcuts = (() => {
       "beforeend",
       '<div class="shortcut-grid">' + links() + "</div>",
     );
-    if (page === "home") main.querySelector(".intro").after(node);
+    if (page === "home") (main.querySelector(".dashboard-search") || main.querySelector(".intro")).after(node);
     else main.querySelector(".heading").after(node);
   }
   return { mount };
