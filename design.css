@@ -276,3 +276,12 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   #clinical > .panel,.result .panel {padding:var(--ui-space-3);}
   .fields {gap:var(--ui-space-3);}
 }
+
+@media screen {
+  #ot-embedded-root:has(> .ot-hub-unavailable) { min-height: auto; background: var(--ui-card); }
+  #rx-host > [role="status"] { margin: var(--ui-space-4); }
+  #rx-host > button, #ot-embedded-root > button {
+    min-height: 44px;
+    margin: 0 var(--ui-space-4) var(--ui-space-4);
+  }
+}

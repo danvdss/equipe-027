@@ -411,3 +411,4 @@ const RxFlow = (() => {
   });
   return { output, clear, calibration, applyCalibration, overflow };
 })();
+document.documentElement.dataset.rxReady = "true";

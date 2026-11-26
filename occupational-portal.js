@@ -39,25 +39,48 @@
     }
     return target.href;
   }
+  let modulePromise;
+  let failedImports = 0;
   function loadModule() {
     // Fixed, same-origin asset built in the private integration deployment.
-    return import(url(document.baseURI));
+    if (!modulePromise) {
+      const asset = new URL(url(document.baseURI));
+      if (failedImports) asset.searchParams.set("retry", String(failedImports));
+      modulePromise = import(asset.href).catch(error => {
+        modulePromise = null;
+        failedImports++;
+        throw error;
+      });
+    }
+    return modulePromise;
   }
-  function showError(current) {
+  function showError(current, importer, restoreFocus) {
     current.replaceChildren();
     const message = document.createElement("p");
     message.className = "privacy ot-hub-unavailable";
     message.setAttribute("role", "status");
     message.textContent =
-      "As ferramentas do Projeto-TO ainda não estão disponíveis neste ambiente. " +
+      "Não foi possível abrir as ferramentas do Projeto-TO. " +
       "A Evolução rápida continua acessível pela opção acima. Nenhum dado clínico foi carregado.";
-    current.append(message);
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "Tentar novamente";
+    retry.addEventListener("click", () => {
+      if (current !== host || !current.isConnected) return;
+      message.textContent = "Carregando as ferramentas de Terapia Ocupacional…";
+      retry.setAttribute("aria-disabled", "true");
+      void mount(importer, retry);
+    }, { once: true });
+    current.append(message, retry);
+    if (restoreFocus) retry.focus();
+
   }
-  async function mount(importer = loadModule) {
+  async function mount(importer = loadModule, retry = null) {
     const target = document.getElementById("ot-embedded-root");
     if (!target || view !== "projeto") return false;
     const request = ++generation;
     host = target;
+    target.setAttribute("aria-busy", "true");
     try {
       const loaded = await importer();
       if (request !== generation || host !== target || !target.isConnected) return false;
@@ -65,6 +88,7 @@
       // The shell verifies its own account; the temporary TO tools never access
       // a patient database and never receive a Supabase client or JWT.
       // The React entrypoint requires an empty container (no loading placeholder).
+      const focusAfterMount = retry && document.activeElement === retry;
       target.replaceChildren();
       controller = loaded.mountProjetoTo(target, {
         verifyShellIdentity: async () => {
@@ -73,10 +97,16 @@
         },
       });
       if (!controller || typeof controller.unmount !== "function") throw new Error("Invalid module lifecycle");
+      if (focusAfterMount) {
+        target.tabIndex = -1;
+        target.focus();
+      }
       return true;
     } catch {
-      if (request === generation && host === target && target.isConnected) showError(target);
+      if (request === generation && host === target && target.isConnected) showError(target, importer, retry && document.activeElement === retry);
       return false;
+    } finally {
+      if (request === generation && target.isConnected) target.removeAttribute("aria-busy");
     }
   }
   function hasUnsavedChanges() {

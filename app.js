@@ -1150,11 +1150,45 @@ function syncReceituario() {
     host = document.createElement("section");
     host.id = "rx-host";
     host.setAttribute("aria-label", "Preenchimento de receituário");
+    const status = document.createElement("p");
+    status.className = "privacy";
+    status.setAttribute("role", "status");
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "Tentar novamente";
+    retry.hidden = true;
     const frame = document.createElement("iframe");
     frame.id = "rx-frame";
     frame.title = "Receituário da Secretaria Municipal da Saúde de Lagarto";
-    frame.src = "receituario.html?v=" + Care.version;
-    host.append(frame);
+    const source = "receituario.html?v=" + Care.version + "-recovery";
+    function loadPrescription() {
+      if (frame.getAttribute("aria-busy") === "true") return;
+      status.hidden = false;
+      status.textContent = "Carregando o receituário…";
+      retry.setAttribute("aria-disabled", "true");
+      frame.setAttribute("aria-busy", "true");
+      frame.inert = true;
+      frame.style.display = "";
+      frame.style.visibility = "hidden";
+      frame.src = source;
+    }
+    frame.addEventListener("load", () => {
+      if (!host.isConnected) return;
+      const ready = frame.contentDocument?.documentElement?.dataset.rxReady === "true";
+      frame.removeAttribute("aria-busy");
+      const returnFocus = document.activeElement === retry;
+      retry.removeAttribute("aria-disabled");
+      retry.hidden = ready;
+      status.hidden = ready;
+      frame.inert = !ready;
+      frame.style.visibility = "";
+      frame.style.display = ready ? "" : "none";
+      if (!ready) status.textContent = "Não foi possível abrir o receituário.";
+      if (ready && returnFocus && !host.hidden) frame.focus();
+    });
+    retry.addEventListener("click", loadPrescription);
+    loadPrescription();
+    host.append(status, retry, frame);
     app.after(host);
   }
   if (host) host.hidden = !logged || page !== "rx";
