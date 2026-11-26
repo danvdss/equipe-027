@@ -6,6 +6,24 @@ try{for(const width of [1440,390,320]){
 const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
 await page.route('**/*',r=>{const u=new URL(r.request().url());return u.hostname==='equipe.test'?r.fulfill({path:path.join(process.cwd(),u.pathname.slice(1)||'index.html')}):r.abort();});
 await page.goto('http://equipe.test');await page.evaluate('logged=true;render()');
+const cards = page.locator(".cards .module-card");
+assert.equal(await cards.count(), 14);
+const firstCard = cards.first();
+const secondCard = cards.nth(1);
+if (width <= 600) {
+  const first = await firstCard.boundingBox();
+  const second = await secondCard.boundingBox();
+  assert.equal(first.x, second.x);
+  assert.ok(second.y >= first.y + first.height);
+}
+await firstCard.hover();
+assert.equal(await firstCard.evaluate(el => getComputedStyle(el).transform), "none");
+await page.emulateMedia({ forcedColors: "active" });
+await firstCard.focus();
+await page.keyboard.press("Tab");
+assert.ok(await secondCard.evaluate(el => el.matches(":focus-visible") &&
+  getComputedStyle(el).outlineStyle === "solid" && parseFloat(getComputedStyle(el).outlineWidth) >= 3));
+await page.emulateMedia({ forcedColors: "none" });
 const search = page.locator(".dashboard-search");
 const shortcuts = page.locator(".quick-links");
 assert.ok((await search.boundingBox()).y < (await shortcuts.boundingBox()).y);
@@ -15,6 +33,11 @@ assert.ok(await shortcuts.locator("a").first().evaluate(link => link === documen
 await page.keyboard.press("Shift+Tab");
 await page.keyboard.press("Enter");
 assert.ok(await page.locator("#module-search").evaluate(input => input === document.activeElement));
+const favorite = page.locator('[data-favorite="general"]');
+await favorite.click();
+assert.equal(await favorite.getAttribute("aria-pressed"), "true");
+await favorite.click();
+assert.equal(await favorite.getAttribute("aria-pressed"), "false");
 await page.keyboard.press("Escape");
 assert.ok(await search.evaluate(button => button === document.activeElement));
 await page.evaluate('navigate("general")');
