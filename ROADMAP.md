@@ -189,3 +189,11 @@ Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/l
 - Grafo: 52 arquivos, 33 referências locais, 121 candidatos globais, eventos em 22 entradas, zero destinos locais ausentes no levantamento. Histórico main: 87 commits e 477 blobs examinados, zero correspondências nos padrões selecionados.
 - Fontes Onest/Inter OFL 1.1; MIF e demais instrumentos inventariados, direitos não presumidos. Registro de remoções e limites em docs/tcr/AUDITORIA-COMPLEMENTAR.md.
 - Auditoria local documentada e reproduzível, sem alterações clínicas. Gate integral da Fase 0 permanece condicionado aos itens abertos das seções 2 e 4. Preparação de Fase 1 somente com autorização explícita para paralelizar pendências externas; não implica homologação.
+
+### Consolidação de estabilidade — 26/11/2026, 11h36 BRT
+- Base local/remota conferida: 4cbf28d904e09e12b33bd0b6979f1df0bc513e1c, árvore limpa antes da consolidação.
+- GitHub Actions: cinco execuções mais recentes da main concluídas com sucesso (b575558, 41f3651, cbd83f7, ff7573c, 4cbf28d). Na execução https://github.com/danvdss/equipe-027/actions/runs/45831659892 os jobs quality e deploy foram aprovados; conclusão às 10h42 BRT.
+- Pages: THIRD-PARTY-NOTICES.md retornou HTTP 200 com cabeçalho esperado; bundle TO público de 923594 bytes coincide por SHA-256 com o arquivo local. Verificação de disponibilidade e integridade, não homologação assistencial.
+- Revalidados npm run check (34 arquivos próprios) e npm run verify:to (origem af9088309a09), saída 0. Regressão local anterior 137/137 permanece como evidência da base testada.
+- Processos: três Node iniciados às 06h56 aparentam integrar os serviços de conexão remota; nenhuma execução de teste/auditoria do projeto ou Git/npm ativa na amostragem. Nenhum processo interrompido. Não inferir ausência de trabalho não salvo em outros aplicativos.
+- Não houve alteração funcional nesta consolidação. As pendências residuais das seções 2 e 4 permanecem abertas; não iniciar remodelação até decisão explícita sobre paralelização. Não confundir publicação técnica com aprovação institucional ou acadêmica.
