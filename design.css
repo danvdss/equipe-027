@@ -284,3 +284,41 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
   .modern-login .login-note { border-color:var(--ui-line); }
   .modern-login input:focus { border-color:var(--ui-focus); }
 }
+
+/* Phase 1: clinical workspace controls; preserve overlay metrics and print. */
+@media screen {
+  #clinical > .panel {padding:var(--ui-space-4);margin-bottom:var(--ui-space-3);}
+  #clinical .section-toggle {padding:var(--ui-space-2);border-radius:var(--ui-radius-sm);font-weight:650;min-height:44px;}
+  #clinical .section-toggle:hover {background:var(--ui-hover);}
+  #clinical .section-toggle::before {color:var(--ui-brand);}
+  .section-body {margin-top:var(--ui-space-4);}
+  .fields {gap:var(--ui-space-4);}
+  label {color:var(--ui-text);font-weight:550;}
+  label .muted,.section-count {color:var(--ui-muted);font-weight:400;}
+  .form-tools,.form-shortcuts,.editor-toolbar {border-radius:var(--ui-radius-md);}
+  .chip {border-radius:var(--ui-radius-sm);transition:background-color var(--ui-motion),border-color var(--ui-motion);}
+  .chip:has(input:checked),.form-shortcuts button.selected,.view-switch button[aria-pressed=true] {background:var(--ui-action);color:var(--ui-brand);border-color:var(--ui-brand);}
+  .chip input {accent-color:var(--ui-brand);}
+  .result .panel {padding:var(--ui-space-4);}
+  .editor-stack #live-preview,.result .editor-stack #output {font:400 1rem/1.75 var(--ui-font);padding:var(--ui-space-4);border-radius:var(--ui-radius-md);border-color:var(--ui-control);}
+  .editor-stack #live-preview {background:var(--ui-field);color:var(--ui-text);}
+  .result .editor-stack #output {caret-color:var(--ui-brand);}
+  .result .editor-stack #output:focus {background:transparent;border-color:var(--ui-focus);box-shadow:none;}
+  .editor-stack #output::placeholder {-webkit-text-fill-color:var(--ui-muted);color:var(--ui-muted);}
+  .result .actions {gap:var(--ui-space-2);}
+  .result .actions button,.danger-actions button,.editor-options summary,#review-details summary {min-height:44px;}
+  .result #copy {flex:1 1 12rem;}
+  .result #generate {flex:1 1 10rem;}
+  .editor-options summary,#review-details summary {padding:var(--ui-space-3) 0;cursor:pointer;}
+  .danger-actions button {color:var(--ui-error);border-color:var(--ui-error);background:transparent;}
+  .danger-actions button:hover {background:var(--ui-error-bg);}
+  .exam-record,.medicine-row,.review-dialog,.document-tools {border-radius:var(--ui-radius-md);}
+  .ot-hub-actions button {background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-control);border-radius:var(--ui-radius-md);}
+  .ot-hub-actions button[aria-pressed=true] {background:var(--ui-action);color:var(--ui-brand);border-color:var(--ui-brand);}
+  .ot-hub-actions button:focus-visible {outline-color:var(--ui-focus);}
+  #ot-embedded-root {border-color:var(--ui-line);border-radius:var(--ui-radius-lg);}
+}
+@media screen and (max-width:600px) {
+  #clinical > .panel,.result .panel {padding:var(--ui-space-3);}
+  .fields {gap:var(--ui-space-3);}
+}

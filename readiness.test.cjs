@@ -51,8 +51,8 @@ test("shared screen palette meets text and control contrast targets", () => {
   check("error", "error-bg", 4.5);
   check("chart-low-high", "card", 3);
   check("chart-normal", "card", 3);
-  for (const sheet of ["design.css", "rx-workflow.css"]) {
-    assert.match(read(sheet), /^@import url\("theme\.css"\) screen;/);
+  for (const sheet of ["design.css", "rx-workflow.css", "controlados.css"]) {
+    assert.match(read(sheet), /^@import url\("theme\.css(?:\?v=[\w.-]+)?"\) screen;/);
   }
   assert.match(read(".github/workflows/quality.yml"), /cp .*\btheme\.css\b/);
 });

@@ -1,4 +1,4 @@
-@import url("theme.css") screen;
+@import url("theme.css?v=2026.11.23-phase1b") screen;
 
 .rx-switch {
   display: none;
@@ -123,4 +123,13 @@
   .primary:hover { background: var(--ui-action-hover); }
   .danger { background: var(--ui-error-bg); color: var(--danger); border-color: var(--danger); }
   .stage-shell { color-scheme: light; color: #111; }
+}
+
+/* Screen controls only; never restyle prescription paper. */
+@media screen {
+  .layout > .panel,.topbar,.rx-switch,.rx-dialog {font-family:var(--ui-font);}
+  .rx-dialog {border-radius:var(--ui-radius-lg);box-shadow:var(--ui-shadow);}
+  .layout > .panel :is(input,select,button),.rx-switch button,.rx-dialog button {border-radius:var(--ui-radius-sm);min-height:44px;}
+  .layout > .panel :is(details,.medgroup) {border-radius:var(--ui-radius-md);}
+  .rx-dialog::backdrop {background:#060d14b8;backdrop-filter:none;}
 }
