@@ -22,13 +22,13 @@
 :root {
   --radius: 26px;
   --radius-sm: 12px;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--ui-font, system-ui, sans-serif);
 }
 body{background:var(--bg)}
 button{background:var(--surface);color:var(--ink);border-color:var(--line)}
 button:hover{background:var(--ui-hover);border-color:var(--ui-control)}
 input,textarea,select,.result textarea{background:var(--field-bg);border-color:var(--ui-control);color:var(--ink);border-radius:12px}
-input:focus,textarea:focus,select:focus{background:#19191d;border-color:var(--brand);box-shadow:0 0 0 3px #91baff22}
+input:focus,textarea:focus,select:focus{background:var(--field-bg);border-color:var(--ui-focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--ui-focus) 20%,transparent)}
 input::placeholder,textarea::placeholder{color:var(--muted)}
 .primary,.generate,.actions .primary{background:var(--ui-action);color:var(--ui-brand);border-color:var(--ui-control);box-shadow:none}
 .primary:hover,.generate:hover{background:var(--ui-action-hover);color:var(--ink);border-color:var(--ui-brand)}
@@ -92,7 +92,6 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 .modern-login .login-note{border-top:1px solid #292929;padding-top:18px;margin:24px 0 0;font-size:.72rem;line-height:1.6;color:#999}
 .modern-login .error{font-size:.8rem;text-align:left}.modern-login .error:empty{margin:0}
 .login-signature{text-align:center;font-size:.75rem;letter-spacing:.03em;color:#85858b;margin:24px 0 0}
-@media(prefers-reduced-motion:no-preference){.login-dots{animation:dot-breathe 7s ease-in-out infinite alternate}@keyframes dot-breathe{from{opacity:.18}to{opacity:.42}}}
 @media(min-width:1500px){.cards .card{min-height:240px}}
 @media(max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.cards .card,.cards .card[data-nav=lab],.cards .card[data-nav=rx]{grid-column:span 1}.cards .card[data-nav=general]{grid-column:span 2}}
 @media(max-width:600px){.cards{gap:10px}.cards .card{min-height:210px;padding:18px}.cards .card strong{font-size:1.08rem}.cards .card p{font-size:.75rem}.cards .card .icon{margin-bottom:24px}.tile-art{right:15px;top:28px;transform:scale(.7);transform-origin:top right}.intro,.heading{padding:22px;border-radius:22px}.heading{align-items:flex-start}.heading h1{font-size:1.65rem}.panel,.result .panel{border-radius:20px}.modern-login{display:grid;padding:24px 16px}.modern-login .login-card{padding:26px}.modern-login .login-note{display:block}}
@@ -261,3 +260,27 @@ input::placeholder,textarea::placeholder{color:var(--muted)}
 #ot-embedded-root{min-height:380px;overflow:hidden;border:1px solid #38565b;border-radius:16px;background:#0a1110}
 #ot-embedded-root .privacy{padding:1.3rem;color:#c4d8d2}
 @media(max-width:600px){.ot-hub-actions{display:grid;grid-template-columns:1fr}.ot-hub-actions button{width:100%}#ot-embedded-root{border-radius:12px}}
+
+/* Phase 1: shared clinical surfaces, screen only. */
+@media screen {
+  :root { --radius: var(--ui-radius-lg); --radius-sm: var(--ui-radius-md); }
+  body,button,input,select,textarea,.result .editor-stack #output,.editor-stack #live-preview { font-family:var(--ui-font); }
+  .top { border-color:var(--ui-line); backdrop-filter:none; }
+  .mark { background:var(--ui-action);color:var(--ui-brand);box-shadow:none; }
+  .main-nav,.mobile-nav { border-color:var(--ui-line); }
+  .main-nav button { color:var(--ui-muted); }
+  .main-nav button.active { background:var(--ui-action);color:var(--ui-brand);box-shadow:inset 3px 0 var(--ui-brand); }
+  .main-nav button:hover:not(.active) { background:var(--ui-hover);color:var(--ui-text); }
+  .intro,.heading { background:var(--ui-card);border:1px solid var(--ui-line);border-radius:var(--ui-radius-lg);box-shadow:none; }
+  .intro h1 { font-size:clamp(1.65rem,2.5vw,2.6rem);letter-spacing:-.035em; }
+  .intro .eyebrow,.intro p { color:var(--ui-muted); }
+  .panel,.lab-group,.quick-links,.review-dialog,.result .panel { border-radius:var(--ui-radius-lg);box-shadow:none; }
+  .modern-login { background:var(--ui-page); }
+  .login-dots,.modern-login:after { display:none; }
+  .modern-login .login-card { border-color:var(--ui-line);border-radius:var(--ui-radius-lg);box-shadow:var(--ui-shadow); }
+  .login-emblem { background:var(--ui-action);color:var(--ui-brand); }
+  .modern-login .eyebrow,.modern-login .login-card>.muted,.modern-login label,.modern-login .login-note,.login-signature { color:var(--ui-muted); }
+  .modern-login input,.modern-login button { border-radius:var(--ui-radius-sm); }
+  .modern-login .login-note { border-color:var(--ui-line); }
+  .modern-login input:focus { border-color:var(--ui-focus); }
+}
