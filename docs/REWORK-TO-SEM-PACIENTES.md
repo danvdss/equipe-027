@@ -1,5 +1,8 @@
 # REWORK DO PROJETO-TO — Atendimento temporário sem prontuário
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](../ROADMAP.md); não representa homologação atual.
+
+
 **Decisão de produto:** 20/11/2026
 **Estado:** implementação em branch de desenvolvimento; publicação/homologação pendentes
 **Repositório origem:** `danvdss/projeto-to` (privado)

@@ -22,6 +22,8 @@ As alterações de código são desenvolvidas, revisadas e testadas **no reposit
 
 ## Proteções do pipeline
 
+- O artefato público inclui THIRD-PARTY-NOTICES.md; revisar avisos quando atualizar dependências ou bundle.
+
 - A pasta `ot-embedded/` só permite rastrear os dois arquivos de distribuição autorizados.
 - `prepare-private-to.cjs` verifica a origem privada, o commit limpo e bloqueia bibliotecas Node e referências ao banco de pacientes no pacote.
 - `verify-pages-to.cjs` confirma integridade por SHA-256, tamanho e proveniência.

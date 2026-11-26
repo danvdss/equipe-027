@@ -1,5 +1,8 @@
 # Etapa 02 — Experiência móvel
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 A navegação e os cartões foram compactados para telas estreitas. As ações do formulário e o editor acompanham a área visível durante a digitação. A troca de módulo preserva o texto editado e os campos temporários dos dois modos de exames. Apenas o modo ativo contribui para a evolução.
 
 ## Verificações

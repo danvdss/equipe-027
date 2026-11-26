@@ -1,5 +1,8 @@
 # Auditoria de redação e praticidade — 2026.10.08.3
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 ## Evidências encontradas e mudanças
 
 | Área | Problema observado no código anterior | Alteração |

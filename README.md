@@ -21,6 +21,13 @@ Os dados preenchidos ficam somente na memória da página e são apagados ao sai
 ## Publicação no GitHub Pages
 A publicação deve usar GitHub Actions. O fluxo `.github/workflows/quality.yml` verifica sintaxe e executa os testes antes de preparar o artefato e publicar. Em Settings → Pages, selecione GitHub Actions. Todos os recursos usam caminhos relativos.
 
+## Evidências e governança atuais
+
+- [ROADMAP.md](ROADMAP.md): planejamento único.
+- [Inventário técnico](docs/tcr/INVENTARIO-TECNICO.md) e [baseline de desempenho](docs/tcr/BASELINE-DESEMPENHO.md): evidências de engenharia.
+- [Avisos de terceiros](THIRD-PARTY-NOTICES.md): licenças das dependências distribuídas; não atribuem licença ao código próprio.
+- ETAPA-01 a ETAPA-06, AUDITORIA-TEXTOS, CRESCIMENTO, REVISAO-2026-10 e HOMOLOGACAO são documentos históricos. ACCESS mantém os limites operacionais; aprovação institucional continua pendente.
+
 ## Estrutura
 - `index.html`, `style.css`: interface principal.
 - `app.js`, `notes.js`, `prenatal.js`: formulários, modelos e cálculos.

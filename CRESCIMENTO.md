@@ -1,5 +1,8 @@
 # Gráficos de crescimento · 2026.10.12
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 Painel da puericultura no canto inferior direito, com escolha de indicador, recolhimento e expansão dos quatro gráficos. Atualização local imediata ao mudar nascimento, data do atendimento, sexo registrado, peso, comprimento/altura, forma de medição, perímetro cefálico ou idade gestacional ao nascer. Não move o foco nem altera a evolução.
 
 ## Fontes e fidelidade

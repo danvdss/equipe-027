@@ -1,5 +1,8 @@
 # Etapa 03 — Auditoria inicial de autenticação e privacidade
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 Auditoria de 18 de novembro de 2026 sobre a base da Etapa 02. A revisão abrangeu o cliente web, o código implantado da função de login e os metadados do projeto Supabase correspondente. As consultas administrativas foram somente de leitura. Nenhum prontuário, senha de usuário ou conteúdo de log foi coletado.
 
 | Item verificado | Evidência e resultado |

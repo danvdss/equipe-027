@@ -1,5 +1,8 @@
 # Revisão EQUIPE 027 · 2026.10.12
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 ## Entregue
 
 - Tokens do tema escuro reunidos, superfícies e bordas refinadas, movimentos de entrada reduzidos a 180 ms. Painel de crescimento com fontes maiores, controles de 44 px e tabela acessível.

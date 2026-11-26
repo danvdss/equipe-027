@@ -1,5 +1,8 @@
 # Validação de navegação e evolução temporária — Projeto-TO + Equipe-027
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](../ROADMAP.md); não representa homologação atual.
+
+
 **Data:** 20/11/2026
 **Escopo:** rework do Projeto-TO sem cadastro, armazenamento ou histórico clínico.
 **Branches de testes:** `projeto-to: feature/e027-embedded-ot-home`; `equipe-027: feature/e027-ot-host`.

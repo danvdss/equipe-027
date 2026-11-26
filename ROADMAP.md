@@ -23,7 +23,7 @@ A inspeção da cópia principal identificou HTML estático com JavaScript modul
 - [x] Remover relatório local antigo test-results.txt (versão 2026.11.22, 134 testes) e ignorar sua regeneração; não era arquivo versionado nem asset.
 - [ ] Registrar remoções com razão, dependências consultadas, testes e commit reversível. Nunca excluir por ausência de referência textual isolada.
 - [x] Consolidar os dois planejamentos anteriores neste arquivo e atualizar os links de README; remover os documentos concorrentes da árvore ativa, mantendo o histórico no Git.
-- [ ] Reconciliar documentação histórica e README com a versão atual; preservar ACCESS, HOMOLOGACAO, AUDITORIA-TEXTOS, fontes, relatórios e testes.
+- [x] Reconciliar a função documental de README e evidências históricas com o planejamento vigente; preservar ACCESS, HOMOLOGACAO, AUDITORIA-TEXTOS, fontes, relatórios e testes. Marcadores de historicidade e links para evidências atuais, 26/11/2026.
 **Aceite:** inventário rastreável, baseline registrada, ausência de referências quebradas, testes aprovados, relatório de riscos e exclusões. Não remover bibliotecas, cenários ou fontes usadas.
 
 ## 3. Organização da execução
@@ -172,3 +172,12 @@ Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/l
 - Baseline DOM simulado (mediana/p95 ms): geral 11.63/15.18; renovação 13.27/17.08; pré-natal 23.92/31.74; puericultura 37.65/44.25; TO 19.41/25.67. Script measure.cjs apresentou erro assíncrono após imprimir métricas; resultados preliminares, não aceite.
 - Licenças: avisos originais de dependências de produção instaladas e versões conferidas com lockfiles de Equipe-027 e Projeto-TO (origem af9088309a09) reunidos em THIRD-PARTY-NOTICES.md e incluídos no manifesto de publicação CI. html2canvas mantém aviso MIT no arquivo. Inventário conservador, não SBOM exaustiva.
 - Pendentes: licença do código próprio por decisão do titular, verificação de ativos/fontes e instrumentos, composição exata dos bundles, segredos e configuração remota; baseline em dispositivos reais e correção do script de medição. Fase 0 permanece aberta.
+
+### Complemento técnico — 26/11/2026
+- Corrigido measure.cjs; saída 0, mediana/p95 (ms): geral 11.07/14.91, renovação 13.75/16.71, pré-natal 21.87/28.04, puericultura 37.81/44.53, TO 19.94/24.10.
+- Baseline de navegador: tests/performance-browser.cjs aprovado em 1440×900 e 390×844, 16 rotas por viewport, zero erros de página. Evidência em docs/tcr/BASELINE-DESEMPENHO.md; medidas sintéticas, gzip estimado, cobertura acumulada e heap CDP, não dados de campo.
+- Triagem heurística de 84 arquivos textuais rastreados sem correspondências nos padrões selecionados; UMD Supabase igual após normalização de finais de linha e espaços externos. Não prova ausência de segredos nem substitui auditoria remota.
+- README, relatórios históricos e guia de publicação reconciliados quanto à governança e avisos de terceiros. Nenhum arquivo removido.
+- Permanecem abertos grafo exaustivo, cobertura por rota/interação, desempenho físico e rede real, licenças de fontes/instrumentos, histórico de segredos e configuração remota autorizada; escopo acadêmico e licença própria dependem dos responsáveis.
+
+- Regressão integrada: npm run check, npm run verify:to e npm test concluídos com saída 0; 137/137 testes aprovados.

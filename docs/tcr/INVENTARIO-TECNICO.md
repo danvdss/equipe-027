@@ -105,3 +105,9 @@ Base b575558, árvore de trabalho com ajuste do catálogo. Tamanhos brutos locai
 
 ## Governança
 Versão definida em package.json/Care e cache de HTML; validar check, test, verify:to e navegadores antes de marcar critérios. Commit reversível, sem reescrita de histórico. Riscos: perda de rascunho por navegação completa, divergência de cache, dependência de serviço remoto, uso assistencial sem homologação. Nenhuma exclusão proposta sem evidência.
+
+## Complemento — 26/11/2026
+- THIRD-PARTY-NOTICES.md: evidência de licenças de produção, incluída no CI.
+- tests/performance-browser.cjs e BASELINE-DESEMPENHO.md: instrumentação e resultados sintéticos em dois viewports.
+- scripts/audit-local.cjs: triagem heurística local sem imprimir valores; 84 arquivos textuais rastreados, zero correspondências nos padrões selecionados. Supabase UMD 2.117.1 equivale ao instalado após normalização de finais de linha e espaços externos; não é byte a byte idêntico.
+- Sem verificação exaustiva do histórico Git, segredos arbitrários, configuração remota, fontes/instrumentos clínicos ou cadeia completa dos bundles. Não remover ativos por ausência de cobertura.

@@ -1,5 +1,8 @@
 # Etapa 01 — Tema escuro e contraste
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 O ambiente clínico e os controles do receituário usam a paleta de tela em `theme.css`. As regras de impressão ficam separadas. A navegação entre módulos leva o foco ao conteúdo principal. O seletor de seção abre a seção escolhida e leva o foco ao respectivo controle. Cada botão de expansão identifica o conteúdo associado por `aria-controls`.
 
 ## Evidências

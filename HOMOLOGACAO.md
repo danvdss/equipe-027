@@ -1,5 +1,8 @@
 # Equipe-027 · Matriz de aceite da versão 2026.11.21
 
+> Evidência histórica da versão/data indicada, preservada para rastreabilidade. O planejamento vigente e os critérios atuais estão no [ROADMAP.md](ROADMAP.md); não representa homologação atual.
+
+
 A versão reúne as entregas de interface e os fluxos clínicos para avaliação. Os testes de interface utilizam dados fictícios. A aprovação para uso institucional permanece em aberto.
 
 | Etapa | Implementação e evidência técnica | Limite do aceite |
