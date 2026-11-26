@@ -49,11 +49,12 @@
         <div class="section-heading"><div><span class="section-kicker">CATÁLOGO DE SUBSTÂNCIAS</span><h2 id="search-title">Consultar a relação</h2></div><span class="minor-note" id="indexStatus" role="status">Carregando a base...</span></div>
         <div class="search-form">
           <label class="search-field"><span>Nome ou sinônimo</span><span class="search-input-wrap"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="search" type="search" autocomplete="off" placeholder="Ex.: clonazepam, tramadol, lisdexanfetamina..." aria-label="Pesquisar substância ou sinônimo"></span></label>
-          <label class="field"><span>Lista</span><select id="listFilter"><option value="">Todas as listas</option></select></label>
+          <label class="field"><span>Lista</span><select id="listFilter" disabled><option value="">Todas as listas</option></select></label>
           <label class="field"><span>Tipo de controle</span><select id="typeFilter"><option value="">Todos os tipos</option></select></label>
         </div>
-        <div class="result-toolbar"><p id="resultCount" aria-live="polite">Preparando resultados...</p><button class="clear" id="clearFilters" type="button">Limpar filtros</button></div>
-        <div id="results" class="results" aria-label="Resultados da busca"></div>
+        <div class="result-toolbar"><p id="resultCount" aria-live="polite">Carregando o catálogo…</p><button class="clear" id="clearFilters" type="button">Limpar filtros</button></div>
+        <div id="results" aria-busy="true" class="results" aria-label="Resultados da busca"></div>
+        <div class="load-more-wrap"><button id="retryCatalog" class="load-more" type="button" hidden>Tentar novamente</button></div>
         <div class="load-more-wrap"><button id="loadMore" class="load-more" type="button" hidden>Mostrar mais resultados</button></div>
       </section>
 
@@ -71,6 +72,6 @@
     </main>
     <footer><span>Equipe 027 · Base documental referenciada na Anvisa</span><span>RDC nº 1.036/2026 · Atualização de 13/07/2026</span></footer>
   </div>
-  <script src="controlados.js?v=2026.11.23-phase0" defer></script>
+  <script src="controlados.js?v=2026.11.26-retry" defer></script>
 </body>
 </html>

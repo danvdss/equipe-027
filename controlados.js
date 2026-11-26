@@ -155,7 +155,7 @@
     state.visible=24;
     render();
   }
-  async function start(){
+  function start(){
     buildLegend();
     ["search","listFilter","typeFilter"].forEach(id=>$(id).addEventListener(id==="search"?"input":"change",filtersChanged));
     $("clearFilters").addEventListener("click",()=>{
@@ -163,13 +163,26 @@
       filtersChanged();$("search").focus();
     });
     $("loadMore").addEventListener("click",()=>{state.visible+=24;render()});
+    $("retryCatalog").addEventListener("click",loadCatalog);
+    loadCatalog();
+  }
+
+  let loading = false;
+  async function loadCatalog(){
+    if (loading) return;
+    loading = true;
+    const retry = $("retryCatalog");
+    retry.setAttribute("aria-disabled","true");
+    $("indexStatus").textContent="Carregando a base…";
+    $("resultCount").textContent="Carregando o catálogo…";
+    $("results").setAttribute("aria-busy","true");
+    $("results").replaceChildren();
     try{
       const response=await fetch("controlados-dados.json",{cache:"no-store"});
       if(!response.ok)throw Error("HTTP "+response.status);
       const data=await response.json();
       if(!Array.isArray(data.registros) || data.registros.length!==data.total || data.total!==783)
         throw Error("Integridade ou versão da base inesperada");
-      state.data=data;
       $("totalCount").textContent=new Intl.NumberFormat("pt-BR").format(data.total);
       $("indexStatus").textContent="Base nominal · 13/07/2026";
       for(const [list,count] of Object.entries(data.contagens)){
@@ -178,15 +191,29 @@
         $("listFilter").append(opt);
       }
       $("sourceLink").href=data.paginaAnvisa;
-      render();
+      state.data=data;
+      filtersChanged();
+      $("listFilter").disabled=false;
+      if (document.activeElement===retry) $("search").focus();
+      retry.hidden=true;
     }catch(error){
+      state.data=null;
+      $("listFilter").length=1;
+      $("listFilter").disabled=true;
+      $("loadMore").hidden=true;
+      $("totalCount").textContent="—";
       $("indexStatus").textContent="Falha ao carregar a base";
       $("resultCount").textContent="Consulta temporariamente indisponível";
       const box=div("div","empty-state");
       box.append(div("strong","","Não foi possível verificar o catálogo."));
-      box.append(div("span","","Recarregue a página. Não use informações incompletas para determinar o receituário."));
+      box.append(div("span","","Sua busca e o tipo de controle serão mantidos. Não use informações incompletas para determinar o receituário."));
       $("results").replaceChildren(box);
+      retry.hidden=false;
       console.error("Controlados: falha ao carregar a fonte",error.message);
+    }finally{
+      loading=false;
+      retry.removeAttribute("aria-disabled");
+      $("results").setAttribute("aria-busy","false");
     }
   }
   if(window.self!==window.top && new URLSearchParams(location.search).get("embedded")==="1"){
