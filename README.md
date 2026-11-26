@@ -25,6 +25,8 @@ A publicação deve usar GitHub Actions. O fluxo `.github/workflows/quality.yml`
 - `index.html`, `style.css`: interface principal.
 - `app.js`, `notes.js`, `prenatal.js`: formulários, modelos e cálculos.
 - `receituario.html`: modelo de receituário integrado.
+- `controlados.html`, `controlados.js`, `controlados.css`, `controlados-dados.json`: catálogo normativo integrado à navegação, sem recarregar a página clínica.
+- `docs/tcr/INVENTARIO-TECNICO.md` e `docs/tcr/ESCOPO-E-REQUISITOS.md`: evidências técnicas e proposta de escopo, subordinadas ao ROADMAP.md.
 - `html2canvas.min.js`: exportação PNG; licença original incluída no arquivo.
 
 Não envie preenchimentos clínicos nem dados de pacientes ao repositório.

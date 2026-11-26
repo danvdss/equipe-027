@@ -75,6 +75,10 @@ async function run() {
         assert.equal(await page.evaluate(()=>document.activeElement.id),"workspace-main");
         const heading=await checkGradient(page,".heading");if(heading.failed)failures++;
         lowest=Math.min(lowest,heading.lowest);
+        if(id==="occupational"){
+          await page.locator('[data-ot-view="rapida"]').press("Enter");
+          assert.equal(await page.evaluate(()=>document.activeElement.id),"workspace-main");
+        }
         for(const b of await page.locator(".section-toggle:visible").all()){
           const expanded=await b.getAttribute("aria-expanded")==="true";
           if(expanded)await b.press("Space");
@@ -85,6 +89,10 @@ async function run() {
           await page.keyboard.press("Tab");
           assert.ok(await page.evaluate(()=>document.activeElement.matches(":focus-visible") && getComputedStyle(document.activeElement).outlineStyle!=="none"));
           count++;
+        }
+        if(id==="controlados"){
+          await page.frameLocator("#controlados-frame").locator(".result-card").first().waitFor();
+          continue;
         }
         const editorButton = page.locator(width < 900 ? "#mobile-review" : "#expand-editor");
         await editorButton.press("Enter");

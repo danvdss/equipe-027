@@ -41,6 +41,11 @@ async function run() {
       await enter();
       const marker="TEXTO FICTÍCIO DA SESSÃO ANTERIOR";
       await page.locator("#output").fill(marker);
+      await page.evaluate("navigate('controlados')");
+      await page.frameLocator("#controlados-frame").locator(".result-card").first().waitFor();
+      assert.equal(await page.evaluate(()=>logged),true);
+      await page.evaluate("navigate('general')");
+      assert.equal(await page.locator("#output").inputValue(),marker);
       await page.locator("#logout").click();
       await page.getByRole("button",{name:"Cancelar",exact:true}).click();
       assert.equal(await page.locator("#output").inputValue(),marker);

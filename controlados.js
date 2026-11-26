@@ -189,6 +189,9 @@
       console.error("Controlados: falha ao carregar a fonte",error.message);
     }
   }
+  if(window.self!==window.top && new URLSearchParams(location.search).get("embedded")==="1"){
+    document.querySelector(".topbar")?.setAttribute("hidden","");
+  }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
   else start();
 })();

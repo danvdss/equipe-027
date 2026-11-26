@@ -15,7 +15,7 @@ A inspeção da cópia principal identificou HTML estático com JavaScript modul
 - [x] Identificar concorrência documental dos dois roadmaps antigos.
 - [x] Conferir referências estáticas dos arquivos JS/CSS/HTML/JSON/CJS na raiz: todos os arquivos próprios consultados têm função identificada em execução, testes, documentação ou automação. Não houve remoção de código nesta passagem. Baseline: 34 arquivos próprios verificados; 137/137 testes aprovados em 23/11/2026, Node 24.22.3.
 - [ ] Completar grafo estático e dinâmico de dependências (includes, imports, URLs, rotas, globals, eventos, assets, scripts, CI, testes e bundle TO).
-- [ ] Classificar cada arquivo: execução, dados/fonte, teste, automação, documentação/evidência, gerado, obsoleto comprovado ou incerto.
+- [x] Classificar cada arquivo: 80 arquivos da base classificados, mais três novos artefatos; evidência em docs/tcr/INVENTARIO-TECNICO.md (26/11/2026). Nenhuma exclusão adicional justificada.
 - [ ] Medir tamanho bruto/transferido, tarefas longas, JS/CSS não utilizado por rota, renderizações, rede, memória e custo de interação em aparelhos reais.
 - [x] Executar npm audit --omit=dev: 0 vulnerabilidades conhecidas nas dependências de produção reportadas pelo registro npm nesta consulta; não inclui arquivos vendorizados, código próprio ou configuração remota.
 - [x] Verificar manifesto do bundle TO: 923594 bytes de cliente, fonte af9088309a09.
@@ -42,17 +42,17 @@ A inspeção da cópia principal identificou HTML estático com JavaScript modul
 P0: segurança, privacidade, regressões, integridade textual e bloqueadores antes da coleta. P1: entrega científica e melhorias essenciais de experiência. P2: melhorias opcionais. Distribuir trabalho de forma equilibrada entre interface, arquitetura/dados, qualidade/segurança e método/validação conforme capacidade e dependências. Cada item tem responsável, evidência, teste, status e risco. Concluir uma fase por vez com testes integrados; manter testes rápidos em mudanças críticas. Nenhum item é concluído por mera geração de código.
 
 ## 4. Fase 0 — saneamento e diagnóstico científico
-- [ ] Estabelecer inventário de módulos/rotas e matriz requisito → tarefa → indicador → evidência em docs/tcr/ESCOPO-E-REQUISITOS.md.
+- [x] Estabelecer inventário de módulos/rotas e matriz requisito → tarefa → indicador → evidência em docs/tcr/ESCOPO-E-REQUISITOS.md; proposta preliminar, não aprovação acadêmica.
 - [ ] Confirmar com orientação acadêmica modalidade do TCR, recorte APS multiprofissional ou especialidade, população, inclusão/exclusão, recrutamento e método de análise.
-- [ ] Selecionar 2–4 fluxos representativos, sem limitar o aprimoramento dos demais.
-- [ ] Documentar política de versões, riscos, critérios de conclusão, arquitetura atual e dependências.
-- [ ] Aplicar limpeza apenas a itens comprovados obsoletos; manter histórico no Git; não reescrever histórico nem remover outros clones.
+- [x] Selecionar três fluxos técnicos representativos preliminares: evolução geral, exames e catálogo com retorno ao rascunho. Confirmar a seleção com orientação; não limitar outros módulos.
+- [x] Documentar política de versões, riscos, critérios de conclusão, arquitetura atual e dependências de alto nível no inventário técnico e neste roadmap.
+- [x] Aplicar limpeza apenas a itens comprovados obsoletos: baseline anterior removeu test-results.txt; inventário atual não justifica outras exclusões. Histórico e outros clones preservados.
 **Aceite:** baseline reproduzível, escopo coerente, matriz e inventário, nenhum arquivo necessário removido.
 
 ## 5. Fase 1 — revisão integral de design, fluidez e desempenho
 Diagnóstico de código: paleta central em theme.css, múltiplas camadas sobrepostas, gradientes e animações em dois arquivos de cards, cor de foco hardcoded em design.css, tamanhos mínimos de cards de cerca de 200–260 px, login com animação contínua, fonte externa Onest coexistindo com declaração Inter, páginas de controlados e receituário com CSS específico. O render() de app.js também substitui app.innerHTML; medir custo, restauração de foco e eventos antes de modificar. São pontos de revisão, não falhas visuais comprovadas sem navegador.
 - [x] Executar baseline em Brave/Chromium local com Playwright isolado (sem alterar dependências versionadas): mobile-browser.cjs interrompido por contexto de execução destruído durante navegação (linha 31); theme-browser.cjs falhou na expectativa de foco workspace-main (linha 75). Nenhum dos dois ensaios foi aprovado.
-- [ ] P0: reproduzir e corrigir as duas falhas, adaptar testes à rota de controlados, que usa window.location.href antes de collect(), e investigar possível perda de rascunhos em memória ao sair/voltar; não presumir causa sem reprodução. Testar catálogo isolado, retorno, autenticação e foco por teclado.
+- [x] P0 (26/11/2026): removido redirecionamento anterior a collect(); catálogo integrado por iframe no workspace. Testes de navegador adaptados à consulta e ao modo rápido de TO. Validados retorno, rascunho manual, foco, catálogo isolado e login/logout com HTTP simulado; autenticação real e dispositivos físicos não avaliados.
 - [ ] Capturar baseline de login, dashboard, módulos, editor, controlados, TO e impressão com dados fictícios em desktop e mobile; mapear fluxo e fricção.
 - [ ] Consolidar tokens semânticos de fundo, superfície, texto, destaque, estados, borda, foco, tipografia, espaçamento, raios e sombras; preservar impressão independente.
 - [ ] Manter estética escura clínica com tons neutros azul-petróleo e verde discreto; gradientes moderados e cores específicas apenas quando distinguem módulo/estado. Unificar fonte com fallback local; evitar dependência de rede desnecessária.
@@ -158,4 +158,11 @@ Escopo excessivo → 2–4 fluxos; mudanças durante coleta → congelamento; us
 Entrega concluída somente com requisito implementado, teste automatizado e manual aplicável, ausência de regressão conhecida, documentação, evidência, riscos residuais e distinção entre conclusão técnica, validação profissional, aptidão para pesquisa e homologação assistencial. Não declarar aprovação ética ou institucional por automação.
 
 ## 15. Decisões e próximo ciclo
+
+### Evidências de execução — 26/11/2026
+- Base sincronizada b575558; alterações restritas a catálogo, testes e documentação. Rascunhos continuam em memória; sem dados reais.
+- Node 24.22.3: npm run check, 137/137 testes de npm test, npm run verify:to aprovados (bundle 923594 bytes).
+- Brave + Playwright Core isolado: mobile-browser aprovado em oito viewports, 16 rotas, sem ocorrências de overflow no teste; formulário e texto manual preservados após catálogo. theme-browser aprovado em 1440 e 390 px (90 seções por largura; menores razões de contraste medidas 4,54 e 5,55; não constitui auditoria WCAG completa). session-browser aprovado em logout simulado HTTP 204 e 503; retorno preserva texto, limpeza verificada. inventory-browser aprovado com requisições de rotas e assets registrados em docs/tcr/INVENTARIO-TECNICO.md.
+- Fase 0: matriz, inventário e proposta de fluxos entregues. Fechamento integral ainda condicionado a escopo acadêmico aprovado, cobertura fina de dependências, baseline de desempenho/dispositivos reais e revisão de segredos/licenças/documentação histórica (seção 2). Não presumir homologação. Próxima tarefa técnica: concluir essas verificações; não avançar gate acadêmico sem autorização.
+
 Em aberto: programa e normas do TCR, recorte, módulos avaliados, instrumentos/licenças, amostragem, persistência, autorizações e condições de assistência. Primeiro completar Fase 0 e baseline; executar Fases 1 e 2 em frentes equilibradas e controles da Fase 3 desde o início. Só então desenvolver pesquisa isolada e avançar aos gates. Manter este arquivo atualizado após cada fase; não criar um novo planejamento concorrente.

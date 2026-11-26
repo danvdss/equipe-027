@@ -29,6 +29,11 @@ async function run() {
       for (const id of modules) {
         await page.evaluate(id=>navigate(id),id);
         await layout(id);
+        if(id==="controlados"){
+          const frame=page.frameLocator("#controlados-frame");
+          await frame.locator(".result-card").first().waitFor();
+          await layout("catalogo",page.frames().find(f=>f.url().includes("controlados.html")));
+        }
         if(id==="rx"){
           const frame=page.frameLocator("#rx-frame");
           await frame.locator(".rx-switch").waitFor({state:"attached"});
@@ -77,6 +82,15 @@ async function run() {
         assert.ok(bar && bar.y+bar.height<=height-160+1 && bar.height>=44,"actions above keyboard");
         await page.evaluate(()=>{delete visualViewport.height;visualViewport.dispatchEvent(new Event("resize"));});
       }
+      await page.evaluate("navigate('controlados')");
+      const catalog=page.frameLocator("#controlados-frame");
+      await catalog.locator(".result-card").first().waitFor();
+      await catalog.locator("#search").fill("clonazepam");
+      await page.evaluate("navigate('lab')");
+      assert.equal(await page.locator('[name="labRequestedExams"]').inputValue(),"Exame fictício");
+      await editorButton.tap();
+      assert.equal(await output.inputValue(),"Rascunho de teste, editado à mão.");
+      await page.locator("#expand-editor").tap();
       await nav.tap();
       await page.locator('[data-module="general"]').tap();
       await nav.tap();

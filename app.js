@@ -317,6 +317,7 @@ const titles = {
   both: "Hipertensão + Diabetes",
   lab: "Exames laboratoriais",
   rx: "Receituário",
+  controlados: "Medicamentos controlados",
   history: "Histórico da sessão",
 };
 let logged = false,
@@ -627,7 +628,6 @@ function collect() {
   drafts[page] = d;
 }
 function navigate(p) {
-  if (p === "controlados") { window.location.href = "controlados.html"; return; }
   if (page === "occupational" && otPortal?.currentView() === "projeto" && !otPortal.leave()) return;
   if (page !== "occupational" && p === "occupational") otPortal?.resetView();
   collect();
@@ -808,7 +808,7 @@ function render() {
   otPortal?.leave(true);
   document.body.style.overflow='';
   if (!logged) return login();
-  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? (otPortal ? otPortal.form(() => Occupational.form()) : Occupational.form()) : clinical())}</main>`;
+  app.innerHTML = `<a class="skip-link" href="#workspace-main">Ir ao conteúdo</a><header class="top"><div class="logo"><span class="mark">+</span>EQUIPE 027</div><div class="session"><span>Ferramentas da equipe</span><button id="logout">Sair</button></div></header><nav class="main-nav" aria-label="Navegação principal"><span class="nav-caption">Área de trabalho</span>${modules.map(([p, t]) => `<button data-nav="${p}" class="${page === p ? "active" : ""}" ${page === p ? 'aria-current="page"' : ""}>${uiIcon(p)}<span>${t}</span></button>`).join("")}<div class="nav-bottom"><button data-nav="history" class="${page === "history" ? "active" : ""}">${uiIcon("history")}<span>Histórico da sessão</span></button><p>Dados temporários.<br>Apagados ao encerrar.</p></div></nav><main id="workspace-main" tabindex="-1">${page === "home" ? dashboard() : `<div class="heading"><div><div class="eyebrow">EQUIPE 027 / ${page === "lab" ? "Resultados" : "Área de trabalho"}</div><h1 style="margin-top:10px">${titles[page]}</h1><p>${page === "rx" ? "Preencha as duas vias, revise e imprima." : page === "controlados" ? "Consulta normativa de substâncias, sem alterar o atendimento." : page === "history" ? "Textos gerados nesta sessão." : "Preencha apenas o que foi avaliado ou realizado."}</p></div><button data-nav="home">Início</button></div>` + (page === "rx" ? `<p class="privacy rx-privacy">Os dados do receituário ficam apenas nesta sessão. Sair ou recarregar apaga o preenchimento.</p>` : page === "controlados" ? `<iframe id="controlados-frame" title="Catálogo de medicamentos controlados" src="controlados.html?embedded=1" style="display:block;width:100%;height:80dvh;min-height:320px;border:0"></iframe>` : page === "history" ? historyView() : page === "lab" ? labForm() : page === "prenatal" ? Prenatal.form() : page === "implante" ? Implante.form() : page === "diu" ? DIU.form() : page === "cervical" ? Cervical.form() : page === "child" ? ChildCare.form() : page === "renewal" ? Renewal.form() : page === "occupational" ? (otPortal ? otPortal.form(() => Occupational.form()) : Occupational.form()) : clinical())}</main>`;
   syncReceituario();
   mountMobileNavigation();
   Flow.shell();
